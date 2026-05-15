@@ -23,6 +23,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'reported_by');
+    }
+
+    public function handledReports()
+    {
+        return $this->hasMany(Report::class, 'handled_by');
+    }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 

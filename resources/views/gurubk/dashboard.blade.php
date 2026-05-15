@@ -36,6 +36,7 @@
                 <thead class="bg-gray-50 border-b">
                     <tr>
                         <th class="px-4 py-3 font-semibold text-gray-600">Perihal</th>
+                        <th class="px-4 py-3 font-semibold text-gray-600">Pelapor</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Tipe</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Prioritas</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Isi Singkat</th>
@@ -47,6 +48,13 @@
                     @forelse($pendingReports as $report)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 font-medium text-gray-800">{{ $report->title }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                @if($report->is_anonymous)
+                                    <span class="italic text-gray-400">Anonim</span>
+                                @else
+                                    {{ $report->reporter ? $report->reporter->username : '-' }}
+                                @endif
+                            </td>
                             <td class="px-4 py-3">
                                 @if($report->type == 'konsultasi')
                                     <span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded font-medium">Konsultasi</span>
@@ -71,7 +79,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-8 text-center text-gray-400">Tidak ada laporan baru yang perlu ditangani.</td>
+                            <td colspan="7" class="px-4 py-8 text-center text-gray-400">Tidak ada laporan baru yang perlu ditangani.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -86,6 +94,7 @@
                 <thead class="bg-gray-50 border-b">
                     <tr>
                         <th class="px-4 py-3 font-semibold text-gray-600">Perihal</th>
+                        <th class="px-4 py-3 font-semibold text-gray-600">Pelapor</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Tipe</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Prioritas</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Status</th>
@@ -97,6 +106,13 @@
                     @forelse($myReports as $report)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 font-medium text-gray-800">{{ $report->title }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                @if($report->is_anonymous)
+                                    <span class="italic text-gray-400">Anonim</span>
+                                @else
+                                    {{ $report->reporter ? $report->reporter->username : '-' }}
+                                @endif
+                            </td>
                             <td class="px-4 py-3">
                                 @if($report->type == 'konsultasi')
                                     <span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded font-medium">Konsultasi</span>
@@ -117,12 +133,12 @@
                             </td>
                             <td class="px-4 py-3 text-gray-500 text-xs">{{ $report->updated_at->format('d M Y, H:i') }}</td>
                             <td class="px-4 py-3 text-center">
-                                <button class="text-blue-600 hover:underline text-xs font-medium">Detail</button>
+                                <a href="{{ route('gurubk.report.show', $report->id) }}" class="text-blue-600 hover:underline text-xs font-medium">Detail</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-8 text-center text-gray-400">Anda belum mengambil kasus apapun.</td>
+                            <td colspan="7" class="px-4 py-8 text-center text-gray-400">Anda belum mengambil kasus apapun.</td>
                         </tr>
                     @endforelse
                 </tbody>

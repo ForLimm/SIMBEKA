@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -17,13 +18,16 @@ Route::post('/guest-login', [LoginController::class, 'guestLogin'])->name('guest
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/siswa/dashboard', function() {
-        return view('siswa.dashboard');
-    })->name('siswa.dashboard');
+    Route::get('/siswa/dashboard', [App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('siswa.dashboard');
 
     Route::get('/form', [ReportController::class, 'create'])->name('lapor.create');
     Route::post('/form', [ReportController::class, 'store'])->name('lapor.store');
     Route::get('/form/success', [ReportController::class, 'success'])->name('lapor.success');
+
+    // Chat routes
+    Route::get('/chat/{report}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{report}', [ChatController::class, 'send'])->name('chat.send');
+    Route::get('/chat/{report}/poll', [ChatController::class, 'poll'])->name('chat.poll');
 });
 
 use App\Http\Controllers\Admin\TeacherController;
@@ -45,6 +49,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('gurubk')->name('gurubk.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('claim/{report}', [DashboardController::class, 'claim'])->name('claim');
+    Route::get('report/{report}', [DashboardController::class, 'show'])->name('report.show');
+    Route::post('report/{report}/resolve', [DashboardController::class, 'resolve'])->name('report.resolve');
     
     Route::get('letters/create', [LetterController::class, 'create'])->name('letters.create');
     Route::post('letters', [LetterController::class, 'store'])->name('letters.store');
