@@ -1,49 +1,75 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrasi Siswa - SIMBEKA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-blue-700">SIMBEKA</h1>
-            <p class="text-sm text-gray-500">Registrasi Akun Siswa Baru</p>
+@extends('layouts.app')
+@section('title', 'Daftar Akun Baru')
+
+@section('content')
+<div class="fixed inset-0 z-[-1] overflow-hidden">
+    <div class="absolute inset-0 bg-slate-900/60 z-10 backdrop-blur-sm"></div>
+    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover" alt="Background">
+</div>
+
+<div class="min-h-[90vh] flex items-center justify-center px-4 py-12">
+    <div class="max-w-5xl w-full flex flex-col md:flex-row items-center gap-12">
+        {{-- Left: Greeting --}}
+        <div class="flex-1 text-white space-y-6">
+            <a href="/" class="inline-flex items-center gap-2 text-slate-300 hover:text-white transition group">
+                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                <span class="font-medium">Kembali ke Beranda</span>
+            </a>
+            <div class="space-y-2">
+                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+                    Gabung <br>
+                    <span class="text-blue-400">Bersama Kami</span>
+                </h2>
+                <p class="text-lg text-slate-300 font-medium max-w-sm leading-relaxed">
+                    Buat akun untuk mulai mengakses layanan bimbingan konseling terbaik kami.
+                </p>
+            </div>
+            <div class="flex items-center gap-4 pt-4">
+                <div class="flex -space-x-3">
+                    <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200"></div>
+                    <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-300"></div>
+                    <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-400"></div>
+                </div>
+                <p class="text-xs font-bold text-slate-300 uppercase tracking-widest">+500 Siswa Terdaftar</p>
+            </div>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Buat Akun</h2>
+        {{-- Right: Register Form --}}
+        <div class="w-full max-w-md">
+            <div class="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20">
+                <div class="bg-blue-600 p-8 text-white text-center">
+                    <h3 class="text-xl font-bold">Pendaftaran Siswa</h3>
+                    <p class="text-blue-100 text-xs mt-1 font-medium tracking-wide opacity-80 uppercase">Lengkapi Data Diri Anda</p>
+                </div>
+                
+                <div class="p-8 space-y-6">
+                    <form action="{{ route('register.post') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Username</label>
+                            <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Username unik Anda">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
+                            <input type="password" name="password" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="••••••••">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Konfirmasi Password</label>
+                            <input type="password" name="password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
+                            Daftar Sekarang
+                        </button>
+                    </form>
 
-            @if($errors->any())
-                <div class="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded mb-4">
-                    <ul class="list-disc ml-4">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    <div class="pt-4 text-center">
+                        <p class="text-sm text-slate-500 font-medium">
+                            Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline">Masuk di sini</a>
+                        </p>
+                    </div>
                 </div>
-            @endif
-
-            <form action="{{ route('register.post') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Username <span class="text-red-500">*</span></label>
-                    <input type="text" name="username" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Masukkan username" required value="{{ old('username') }}">
-                </div>
-                <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password <span class="text-red-500">*</span></label>
-                    <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Minimal 6 karakter" required>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded text-sm transition">Daftar Sekarang</button>
-            </form>
-            <div class="mt-4 text-center">
-                <a href="{{ route('login') }}" class="text-sm text-blue-600 hover:underline">&larr; Kembali ke Login</a>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

@@ -1,114 +1,123 @@
 @extends('layouts.app')
-@section('title', 'Detail Arsip - SIMBEKA')
+@section('title', 'Detail Arsip')
+@section('title_display', 'Detail Arsip')
 
 @section('content')
-<div class="mb-6">
-    <a href="{{ route('gurubk.archives.index') }}" class="text-blue-600 hover:underline text-sm font-medium flex items-center gap-1">
-        &larr; Kembali ke Daftar Arsip
-    </a>
-</div>
-
-<div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-    <div class="bg-gray-50 border-b px-6 py-4 flex items-center justify-between">
-        <h2 class="text-lg font-bold text-gray-800">Detail Arsip</h2>
-        <span class="text-sm text-gray-500 italic">Diselesaikan pada: {{ $archive->completed_date ? $archive->completed_date->format('d M Y') : $archive->created_at->format('d M Y') }}</span>
+<div class="max-w-4xl mx-auto space-y-8">
+    {{-- Header --}}
+    <div class="flex items-center justify-between">
+        <a href="{{ route('gurubk.archives.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Kembali
+        </a>
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">ID Arsip:</span>
+            <span class="text-xs font-black text-slate-900 tracking-tighter">#{{ str_pad($archive->id, 5, '0', STR_PAD_LEFT) }}</span>
+        </div>
     </div>
 
-    <div class="p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {{-- Info Siswa/Pelapor --}}
-            <div>
-                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Informasi Subjek</h3>
-                @if($archive->student)
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="font-bold text-gray-800">{{ $archive->student->name }}</p>
-                            <p class="text-sm text-gray-500">Kelas: {{ $archive->student->class }} | NISN: {{ $archive->student->nisn }}</p>
-                        </div>
-                    </div>
-                @elseif($archive->report)
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        </div>
-                        <div>
-                            <p class="font-bold text-gray-800">
-                                {{ $archive->report->reporter->username ?? $archive->report->reporter->name ?? 'Pelapor' }}
-                                @if($archive->report->is_anonymous)
-                                    <span class="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded ml-2 font-bold">ANONIM</span>
-                                @endif
-                            </p>
-                            <p class="text-sm text-gray-500 uppercase tracking-tight text-blue-600 font-medium">{{ $archive->report->type }}</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {{-- Left: Content --}}
+        <div class="lg:col-span-2 space-y-8">
+            <div class="card-premium p-8">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-100 pb-2">Isi Catatan Bimbingan / Laporan</h4>
+                <div class="bg-slate-50 rounded-[2rem] p-8 text-slate-700 leading-relaxed font-medium text-lg italic border border-slate-100 relative">
+                    <svg class="w-12 h-12 text-slate-200 absolute -top-4 -left-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.899 14.899 16 16 16L19 16L19 13L16 13C13.239 13 11 15.239 11 18L11 21L14.017 21ZM5.017 21L5.017 18C5.017 16.899 5.899 16 7 16L10 16L10 13L7 13C4.239 13 2 15.239 2 18L2 21L5.017 21Z"></path></svg>
+                    {{ $archive->guidance_notes }}
+                </div>
+
+                @if($archive->attachment_path)
+                    <div class="mt-8 pt-8 border-t border-slate-100">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Lampiran Dokumen</h4>
+                        <div class="flex items-center gap-4 bg-emerald-50 border border-emerald-100 p-6 rounded-[2rem]">
+                            <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-black text-emerald-900 text-sm">Dokumen Surat Panggilan / Pendukung</p>
+                                <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mt-0.5">Format: PDF Document</p>
+                            </div>
+                            <a href="{{ asset('storage/' . $archive->attachment_path) }}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/20 active:scale-95 uppercase tracking-widest">
+                                Buka File
+                            </a>
                         </div>
                     </div>
                 @endif
             </div>
 
-            {{-- Info Petugas --}}
-            <div>
-                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Ditangani Oleh</h3>
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            {{-- Original Report Meta --}}
+            @if($archive->report)
+                <div class="card-premium p-8">
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Metadata Laporan Asli</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Judul Laporan</span>
+                            <p class="font-bold text-slate-800 mt-1">{{ $archive->report->title }}</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Prioritas Awal</span>
+                            <div class="mt-1">
+                                <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest {{ $archive->report->priority === 'high' ? 'bg-rose-100 text-rose-600' : 'bg-slate-200 text-slate-600' }}">
+                                    {{ $archive->report->priority }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        {{-- Right: Meta Info --}}
+        <div class="space-y-6">
+            {{-- Subject Info --}}
+            <div class="card-premium p-6">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Informasi Subjek</h4>
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg shadow-blue-600/20">
+                        {{ substr($archive->reporter_username ?? $archive->reporter_name ?? '?', 0, 1) }}
                     </div>
                     <div>
-                        <p class="font-bold text-gray-800">{{ $archive->teacher->user->name ?? 'Guru BK' }}</p>
-                        <p class="text-sm text-gray-500">NIP: {{ $archive->teacher->nip ?? '-' }}</p>
+                        <div class="font-black text-slate-900 tracking-tight">{{ $archive->reporter_username ?? $archive->reporter_name ?? '-' }}</div>
+                        @if($archive->is_anonymous)
+                            <div class="text-[10px] bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded-md font-black w-fit uppercase tracking-tighter mt-0.5">Status Anonim</div>
+                        @else
+                            <div class="text-[10px] text-blue-600 font-black uppercase tracking-tighter">Siswa Terdaftar</div>
+                        @endif
                     </div>
+                </div>
+                
+                @if($archive->student)
+                <div class="mt-6 pt-6 border-t border-slate-100 space-y-4">
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NISN</span>
+                        <p class="text-xs font-black text-slate-800 tracking-wider">{{ $archive->student->nisn }}</p>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kelas / Jurusan</span>
+                        <p class="text-xs font-bold text-slate-800">{{ $archive->student->class }}</p>
+                    </div>
+                </div>
+                @endif
+            </div>
+
+            {{-- Officer Info --}}
+            <div class="card-premium p-6 bg-slate-900 text-white border-none">
+                <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Ditangani Oleh</h4>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center text-sm font-black border border-slate-700">
+                        {{ substr($archive->handler_name ?? '?', 0, 1) }}
+                    </div>
+                    <div>
+                        <div class="font-bold tracking-tight text-white">{{ $archive->handler_name ?? 'Guru BK' }}</div>
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Petugas Penanganan</div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-slate-800">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Selesai Pada</span>
+                    <p class="text-xs font-bold text-slate-300 mt-1">{{ $archive->created_at->format('d M Y, H:i') }} WIB</p>
                 </div>
             </div>
         </div>
-
-        <hr class="mb-8">
-
-        {{-- Isi Catatan/Kasus --}}
-        <div>
-            <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Catatan Bimbingan / Isi Laporan</h3>
-            <div class="bg-gray-50 border border-gray-100 rounded-lg p-5">
-                <p class="text-gray-800 leading-relaxed whitespace-pre-wrap">{{ $archive->guidance_notes }}</p>
-            </div>
-        </div>
-
-        @if($archive->attachment_path)
-            <div class="mt-8">
-                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Lampiran Terkait</h3>
-                <div class="flex items-center gap-3 bg-blue-50 border border-blue-100 p-4 rounded-lg">
-                    <div class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-bold text-blue-900">Dokumen Surat Panggilan</p>
-                        <p class="text-xs text-blue-700">Format: PDF</p>
-                    </div>
-                    <a href="{{ asset('storage/' . $archive->attachment_path) }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded transition">
-                        Lihat PDF
-                    </a>
-                </div>
-            </div>
-        @endif
-
-        @if($archive->report)
-            <div class="mt-8 border-t pt-8">
-                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Detail Laporan Asli</h3>
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                    <div class="bg-white border border-gray-200 p-3 rounded">
-                        <span class="text-gray-500">Judul Laporan:</span>
-                        <p class="font-medium text-gray-800">{{ $archive->report->title }}</p>
-                    </div>
-                    <div class="bg-white border border-gray-200 p-3 rounded">
-                        <span class="text-gray-500">Prioritas:</span>
-                        <p class="font-medium">
-                            <span class="px-2 py-0.5 rounded text-xs font-bold uppercase {{ $archive->report->priority === 'high' ? 'bg-red-100 text-red-700' : ($archive->report->priority === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700') }}">
-                                {{ $archive->report->priority }}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        @endif
     </div>
 </div>
 @endsection

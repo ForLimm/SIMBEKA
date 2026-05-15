@@ -1,178 +1,83 @@
 @extends('layouts.app')
-@section('title', 'Data Siswa Bimbingan - SIMBEKA')
+@section('title', 'Data Siswa')
+@section('title_display', 'Data Siswa')
 
 @section('content')
-<div x-data="{ showModal: false }">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+<div class="max-w-6xl mx-auto space-y-8">
+    {{-- Header --}}
+    <div class="flex items-center justify-between mb-8">
         <div>
-            <h2 class="text-xl font-bold text-gray-800">Data Siswa Bimbingan</h2>
-            <p class="text-sm text-gray-500 mt-1">Total: <strong>{{ $students->count() }}</strong> / {{ $teacher->max_quota }} siswa (Sisa kuota: {{ $teacher->max_quota - $students->count() }})</p>
+            <h2 class="text-3xl font-black text-slate-800 tracking-tight">Manajemen Siswa</h2>
+            <p class="text-slate-500 font-medium">Kelola data siswa bimbingan Anda ({{ $students->count() }}/{{ $teacher->max_quota }})</p>
         </div>
-        <div class="flex gap-2 mt-4 md:mt-0">
-            <button @click="showModal = true" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded transition">+ Tambah Siswa</button>
-            <a href="{{ route('gurubk.dashboard') }}" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-medium px-4 py-2 rounded transition">&larr; Kembali</a>
-        </div>
+        <a href="{{ route('gurubk.students.create') }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-black px-6 py-3 rounded-2xl shadow-lg shadow-blue-600/20 transition-all hover:scale-105 active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            Tambah Siswa
+        </a>
     </div>
 
-    {{-- Tabel Data Siswa --}}
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+    {{-- Table --}}
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="bg-gray-50 border-b">
-                    <tr>
-                        <th class="px-4 py-3 font-semibold text-gray-600">No</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">Nama Lengkap</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">NISN</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">Kelas</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">L/P</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">No. HP</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">Orang Tua</th>
-                        <th class="px-4 py-3 font-semibold text-gray-600">Ditambahkan</th>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50">
+                        <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Info Siswa</th>
+                        <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">NISN</th>
+                        <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Kelas</th>
+                        <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y">
-                    @forelse($students as $index => $student)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 text-gray-500">{{ $index + 1 }}</td>
-                            <td class="px-4 py-3 font-medium text-gray-800">{{ $student->name ?? '-' }}</td>
-                            <td class="px-4 py-3 text-gray-600 font-mono">{{ $student->nisn ?? '-' }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ $student->class ?? '-' }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ $student->gender ? substr($student->gender, 0, 1) : '-' }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ $student->phone ?? '-' }}</td>
-                            <td class="px-4 py-3 text-gray-600 text-xs">
-                                @if($student->father_name || $student->mother_name)
-                                    {{ $student->father_name ?? '' }}{{ $student->father_name && $student->mother_name ? ' / ' : '' }}{{ $student->mother_name ?? '' }}
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-gray-500 text-xs">{{ $student->created_at->format('d M Y') }}</td>
-                        </tr>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse($students as $student)
+                    <tr class="group hover:bg-slate-50/50 transition-colors">
+                        <td class="px-8 py-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm border border-blue-100">
+                                    {{ substr($student->name, 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 leading-tight">{{ $student->name }}</p>
+                                    <p class="text-xs text-slate-500 font-medium">{{ $student->gender }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-5">
+                            <span class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold">{{ $student->nisn }}</span>
+                        </td>
+                        <td class="px-8 py-5">
+                            <p class="text-sm font-bold text-slate-700">{{ $student->class }}</p>
+                        </td>
+                        <td class="px-8 py-5">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('gurubk.students.edit', $student->id) }}" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </a>
+                                <form action="{{ route('gurubk.students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Hapus data siswa ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="8" class="px-4 py-8 text-center text-gray-400">Belum ada data siswa bimbingan.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="4" class="px-8 py-12 text-center">
+                            <div class="flex flex-col items-center justify-center space-y-3">
+                                <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                </div>
+                                <p class="text-slate-400 font-bold tracking-tight">Belum ada data siswa</p>
+                                <a href="{{ route('gurubk.students.create') }}" class="text-blue-600 font-bold hover:underline text-sm">Tambah Siswa Pertama</a>
+                            </div>
+                        </td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    {{-- Modal Tambah Siswa --}}
-    <div x-show="showModal" class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
-        <div class="flex items-start justify-center min-h-screen px-4 pt-10 pb-20">
-            <div x-show="showModal" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/40" @click="showModal = false"></div>
-
-            <div x-show="showModal" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="relative bg-white rounded-lg shadow-xl w-full max-w-3xl z-10 border border-gray-200">
-                
-                <div class="flex items-center justify-between px-6 py-4 border-b bg-gray-50">
-                    <h3 class="text-lg font-bold text-gray-800">Form Input Data Siswa</h3>
-                    <button @click="showModal = false" class="text-gray-400 hover:text-gray-600">&times;</button>
-                </div>
-
-                <div class="px-6 py-5 max-h-[75vh] overflow-y-auto">
-                    <form action="{{ route('gurubk.students.store') }}" method="POST">
-                        @csrf
-                        
-                        {{-- SECTION: Data Identitas Siswa --}}
-                        <fieldset class="mb-6">
-                            <legend class="text-sm font-bold text-blue-700 uppercase tracking-wide mb-3 border-b border-blue-100 pb-2 w-full">Data Identitas Siswa</legend>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                                    <input type="text" name="name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required value="{{ old('name') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">NISN (10 Digit) <span class="text-red-500">*</span></label>
-                                    <input type="text" name="nisn" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-mono" required minlength="10" maxlength="10" pattern="\d{10}" title="NISN harus 10 digit angka" value="{{ old('nisn') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas <span class="text-red-500">*</span></label>
-                                    <input type="text" name="class" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required placeholder="Contoh: XII IPA 1" value="{{ old('class') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir</label>
-                                    <input type="text" name="birth_place" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" value="{{ old('birth_place') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
-                                    <input type="date" name="birth_date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" value="{{ old('birth_date') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
-                                    <select name="gender" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                        <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Agama</label>
-                                    <select name="religion" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="Islam" {{ old('religion') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                        <option value="Kristen" {{ old('religion') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                        <option value="Katolik" {{ old('religion') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                        <option value="Hindu" {{ old('religion') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                        <option value="Buddha" {{ old('religion') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                                        <option value="Konghucu" {{ old('religion') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">No. HP Siswa</label>
-                                    <input type="text" name="phone" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="08xxxxxxxxxx" value="{{ old('phone') }}">
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Siswa</label>
-                                    <textarea name="address" rows="2" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none">{{ old('address') }}</textarea>
-                                </div>
-                            </div>
-                        </fieldset>
-
-                        {{-- SECTION: Data Keluarga --}}
-                        <fieldset class="mb-6">
-                            <legend class="text-sm font-bold text-red-600 uppercase tracking-wide mb-3 border-b border-red-100 pb-2 w-full">Data Keluarga / Wali</legend>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Ayah</label>
-                                    <input type="text" name="father_name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" value="{{ old('father_name') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Ibu</label>
-                                    <input type="text" name="mother_name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" value="{{ old('mother_name') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan Orang Tua</label>
-                                    <input type="text" name="parents_job" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" value="{{ old('parents_job') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">No. HP Orang Tua / Wali</label>
-                                    <input type="text" name="parents_phone" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="08xxxxxxxxxx" value="{{ old('parents_phone') }}">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Status Tinggal</label>
-                                    <select name="living_status" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="Bersama Orang Tua" {{ old('living_status') == 'Bersama Orang Tua' ? 'selected' : '' }}>Bersama Orang Tua</option>
-                                        <option value="Bersama Wali / Saudara" {{ old('living_status') == 'Bersama Wali / Saudara' ? 'selected' : '' }}>Bersama Wali / Saudara</option>
-                                        <option value="Kost / Asrama" {{ old('living_status') == 'Kost / Asrama' ? 'selected' : '' }}>Kost / Asrama</option>
-                                    </select>
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Orang Tua / Wali</label>
-                                    <textarea name="parents_address" rows="2" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none">{{ old('parents_address') }}</textarea>
-                                </div>
-                            </div>
-                        </fieldset>
-
-                        {{-- Submit --}}
-                        <div class="flex justify-end gap-3 border-t pt-4">
-                            <button type="button" @click="showModal = false" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 rounded transition">Batal</button>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded transition">Simpan Data Siswa</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>

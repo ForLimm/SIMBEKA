@@ -14,12 +14,17 @@ class DashboardController extends Controller
     {
         $pendingReports = Report::where('status', 'pending')->with('reporter')->get();
         
+        $myInProgressReports = Report::where('handled_by', Auth::id())
+                           ->where('status', 'in-progress')
+                           ->with('reporter')
+                           ->get();
+
         $myReports = Report::where('handled_by', Auth::id())
                            ->whereIn('status', ['in-progress', 'resolved'])
                            ->with('reporter')
                            ->get();
                            
-        return view('gurubk.dashboard', compact('pendingReports', 'myReports'));
+        return view('gurubk.dashboard', compact('pendingReports', 'myInProgressReports', 'myReports'));
     }
 
     public function show(Report $report)

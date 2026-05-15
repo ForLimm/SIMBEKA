@@ -1,100 +1,140 @@
 @extends('layouts.app')
-@section('title', 'Chat Konsultasi - SIMBEKA')
+@section('title', 'Live Konsultasi - SIMBEKA')
 
 @section('content')
-<div class="max-w-3xl mx-auto" x-data="chatApp()" x-init="startPolling()">
-    {{-- Header --}}
-    <div class="flex items-center justify-between mb-4">
-        <div>
+<div class="fixed inset-0 lg:ml-64 bg-slate-50 flex flex-col z-[45]" x-data="chatApp()" x-init="startPolling()">
+    {{-- Chat Header --}}
+    <div class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-5">
+            {{-- Improved Back Button --}}
             @if(auth()->user()->role === 'guru_bk')
-                <a href="{{ route('gurubk.report.show', $report->id) }}" class="text-sm text-blue-600 hover:underline">&larr; Kembali ke Detail Kasus</a>
+                <a href="{{ route('gurubk.report.show', $report->id) }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm group">
+                    <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    <span>Kembali</span>
+                </a>
             @else
-                <a href="{{ route('siswa.dashboard') }}" class="text-sm text-blue-600 hover:underline">&larr; Kembali ke Dashboard</a>
+                <a href="{{ route('siswa.dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm group">
+                    <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    <span>Kembali</span>
+                </a>
             @endif
-            <h2 class="text-xl font-bold text-gray-800 mt-1">Chat Konsultasi</h2>
-            <p class="text-xs text-gray-400 mt-0.5">Topik: {{ $report->title }}</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <div class="flex items-center gap-1.5">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                </span>
-                <span class="text-xs text-gray-500">Live</span>
-            </div>
-            <span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0 0v2m0-2h2m-2 0H10m9.374-9.373a3 3 0 010 4.243L12 19.243l-7.374-7.373a3 3 0 010-4.243 3 3 0 014.243 0L12 10.87l3.131-3.243a3 3 0 014.243 0z"></path></svg>
-                Self-Destruct
-            </span>
-        </div>
-    </div>
-
-    {{-- Self-destruct notice --}}
-    <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-        <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <div>
-            <p class="text-sm font-medium text-amber-800">Mode Self-Destruct Aktif</p>
-            <p class="text-xs text-amber-600 mt-0.5">Seluruh riwayat chat ini akan otomatis terhapus selamanya begitu Guru BK menekan tombol <strong>"Selesaikan Kasus"</strong>.</p>
-        </div>
-    </div>
-
-    {{-- Chat Box --}}
-    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col" style="height: 480px;">
-        {{-- Messages Area --}}
-        <div class="flex-1 overflow-y-auto p-4 space-y-3" id="chat-messages" x-ref="chatContainer">
-            <template x-if="messages.length === 0">
-                <div class="flex items-center justify-center h-full">
-                    <div class="text-center">
-                        <svg class="w-12 h-12 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                        <p class="text-sm text-gray-400">Belum ada pesan. Mulai percakapan!</p>
+            <div class="h-10 w-px bg-slate-200 mx-1"></div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black shadow-lg shadow-blue-600/20 text-lg">
+                    {{ substr($report->reporter->name ?? 'S', 0, 1) }}
+                </div>
+                <div>
+                    <h3 class="font-black text-slate-800 tracking-tight text-lg leading-tight">
+                        {{ auth()->user()->role === 'guru_bk' ? ($report->reporter->name ?? 'Siswa') : 'Guru BK' }}
+                    </h3>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sesi Aktif</span>
                     </div>
                 </div>
-            </template>
+            </div>
+        </div>
 
-            <template x-for="msg in messages" :key="msg.id">
-                <div :class="msg.is_mine ? 'flex justify-end' : 'flex justify-start'">
-                    <div :class="msg.is_mine 
-                            ? 'bg-blue-600 text-white rounded-2xl rounded-br-md max-w-xs lg:max-w-md px-4 py-2.5 shadow-sm' 
-                            : 'bg-gray-100 text-gray-800 rounded-2xl rounded-bl-md max-w-xs lg:max-w-md px-4 py-2.5 shadow-sm'">
-                        <p class="text-xs font-semibold mb-1" :class="msg.is_mine ? 'text-blue-200' : 'text-gray-500'" x-text="msg.sender_name"></p>
-                        <p class="text-sm leading-relaxed whitespace-pre-line" x-text="msg.message"></p>
-                        <div class="flex items-center gap-1 mt-1" :class="msg.is_mine ? 'justify-end' : 'justify-start'">
-                            <span class="text-xs opacity-60" x-text="msg.time"></span>
+        <div class="hidden md:flex items-center gap-6">
+            <div class="text-right">
+                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Topik</div>
+                <div class="text-sm font-bold text-slate-700 truncate max-w-[200px]">{{ $report->title }}</div>
+            </div>
+            <div class="px-4 py-2 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Self-Destruct</span>
+            </div>
+        </div>
+    </div>
+
+    {{-- Chat Body --}}
+    <div class="flex-1 overflow-y-auto px-6 md:px-12 py-10 space-y-8 bg-[#f0f2f5] custom-scrollbar pattern-bg" id="chat-messages" x-ref="chatContainer">
+        {{-- Notice --}}
+        <div class="max-w-2xl mx-auto mb-10">
+            <div class="bg-amber-50/80 backdrop-blur border border-amber-200/50 p-6 rounded-[2rem] flex items-start gap-4 shadow-sm">
+                <div class="w-10 h-10 bg-amber-100 rounded-2xl flex items-center justify-center shrink-0 text-amber-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-black text-amber-900 uppercase tracking-tight">Mode Self-Destruct Aktif</h4>
+                    <p class="text-xs text-amber-700 font-medium leading-relaxed mt-1">Seluruh riwayat percakapan ini akan otomatis terhapus selamanya begitu Guru BK menekan tombol <strong>"Selesaikan Kasus"</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <template x-if="messages.length === 0">
+            <div class="flex flex-col items-center justify-center h-full space-y-4 opacity-30">
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-inner">
+                    <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                </div>
+                <div class="text-center">
+                    <p class="font-black uppercase tracking-[0.3em] text-sm text-slate-800">Mulai Chat</p>
+                </div>
+            </div>
+        </template>
+
+        <template x-for="msg in messages" :key="msg.id">
+            <div class="flex" :class="msg.is_mine ? 'justify-end' : 'justify-start'">
+                <div class="max-w-[85%] md:max-w-[65%] group relative">
+                    <template x-if="!msg.is_mine">
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-4" x-text="msg.sender_name"></span>
+                    </template>
+
+                    <div class="relative px-6 py-4 shadow-md break-words overflow-hidden" :class="msg.is_mine 
+                        ? 'bg-blue-600 text-white rounded-[1.8rem] rounded-tr-none' 
+                        : 'bg-white text-slate-700 rounded-[1.8rem] rounded-tl-none border border-white'">
+                        
+                        <p class="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words" x-text="msg.message"></p>
+                        
+                        <div class="mt-2 flex items-center gap-2" :class="msg.is_mine ? 'justify-end' : 'justify-start'">
+                            <span class="text-[9px] font-bold opacity-50 uppercase tracking-widest" x-text="msg.time"></span>
                             <template x-if="msg.is_mine">
-                                <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0 0v2m0-2h2m-2 0H10"></path></svg>
+                                <svg class="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </template>
                         </div>
                     </div>
                 </div>
-            </template>
-        </div>
+            </div>
+        </template>
+    </div>
 
-        {{-- Input Area --}}
+    {{-- Chat Input --}}
+    <div class="p-6 md:p-8 bg-white border-t border-slate-200 shrink-0">
         @if($report->status !== 'resolved')
-        <div class="border-t border-gray-200 p-3 bg-gray-50">
-            <form action="{{ route('chat.send', $report->id) }}" method="POST" class="flex gap-2" @submit="scrollToBottom()">
-                @csrf
-                <input 
-                    type="text" 
-                    name="message" 
-                    placeholder="Ketik pesan..." 
-                    class="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                    required
-                    autocomplete="off"
-                >
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-medium transition flex items-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                    Kirim
-                </button>
-            </form>
-        </div>
+        <form action="{{ route('chat.send', $report->id) }}" method="POST" class="max-w-5xl mx-auto flex gap-5 items-end" @submit="scrollToBottom()">
+            @csrf
+            <div class="flex-1 relative">
+                <textarea name="message" required autocomplete="off" rows="1"
+                    x-on:input="$el.style.height = '56px'; $el.style.height = $el.scrollHeight + 'px'"
+                    class="w-full bg-slate-50 border border-slate-200 rounded-[1.5rem] px-8 py-4 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all placeholder:text-slate-400 font-medium shadow-inner resize-none overflow-hidden max-h-40" 
+                    placeholder="Tulis pesan Anda di sini..."
+                    style="height: 56px;"></textarea>
+            </div>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-blue-600/30 transition-all hover:scale-110 active:scale-95 group shrink-0 mb-0.5">
+                <svg class="w-6 h-6 rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            </button>
+        </form>
         @else
-        <div class="border-t border-gray-200 p-4 bg-gray-50 text-center">
-            <p class="text-sm text-gray-500">Kasus ini telah diselesaikan. Chat tidak lagi aktif.</p>
+        <div class="max-w-2xl mx-auto text-center py-4 px-8 bg-slate-100 rounded-2xl border border-slate-200">
+            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Sesi Konsultasi Telah Selesai & Diarsipkan</p>
         </div>
         @endif
     </div>
 </div>
+
+<style>
+    .pattern-bg {
+        background-color: #f0f2f5;
+        background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+</style>
 
 <script>
 function chatApp() {
@@ -134,10 +174,6 @@ function chatApp() {
             const container = this.$refs.chatContainer;
             if (!container) return true;
             return container.scrollHeight - container.scrollTop - container.clientHeight < 50;
-        },
-
-        destroy() {
-            if (this.polling) clearInterval(this.polling);
         }
     }
 }

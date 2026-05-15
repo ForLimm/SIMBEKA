@@ -1,56 +1,75 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SIMBEKA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-blue-700">SIMBEKA</h1>
-            <p class="text-sm text-gray-500">Sistem Informasi Bimbingan & Konseling</p>
-        </div>
+@extends('layouts.app')
+@section('title', 'Masuk ke SIMBEKA')
 
-        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Login Pengguna</h2>
+@section('content')
+<div class="fixed inset-0 z-[-1] overflow-hidden">
+    <div class="absolute inset-0 bg-slate-900/60 z-10 backdrop-blur-sm"></div>
+    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover" alt="Background">
+</div>
 
-            @if($errors->any())
-                <div class="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded mb-4">
-                    {{ $errors->first() }}
-                </div>
-            @endif
-
-            <form action="{{ route('login.post') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Username / Email</label>
-                    <input type="text" name="login" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Masukkan username atau email" required>
-                </div>
-                <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Masukkan password" required>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded text-sm transition">Masuk</button>
-            </form>
-        </div>
-
-        <div class="mt-4 grid grid-cols-2 gap-3">
-            <a href="{{ route('register') }}" class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 text-center hover:bg-gray-50 transition block">
-                <span class="block text-sm font-semibold text-gray-700">Daftar Akun Siswa</span>
-                <span class="block text-xs text-gray-400 mt-1">Buat username & password</span>
+<div class="min-h-[85vh] flex items-center justify-center px-4">
+    <div class="max-w-5xl w-full flex flex-col md:flex-row items-center gap-12 py-12">
+        {{-- Left: Greeting --}}
+        <div class="flex-1 text-white space-y-6">
+            <a href="/" class="inline-flex items-center gap-2 text-slate-300 hover:text-white transition group">
+                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                <span class="font-medium">Kembali ke Beranda</span>
             </a>
-            <form action="{{ route('guest.login') }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full bg-white border border-gray-200 rounded-lg shadow-sm p-4 text-center hover:bg-gray-50 transition cursor-pointer">
-                    <span class="block text-sm font-semibold text-gray-700">Lapor Anonim</span>
-                    <span class="block text-xs text-gray-400 mt-1">Tanpa akun, langsung lapor</span>
-                </button>
-            </form>
+            <div class="space-y-2">
+                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+                    Halo 👋 <br>
+                    <span class="text-blue-400">Selamat Datang!</span>
+                </h2>
+                <p class="text-lg text-slate-300 font-medium max-w-sm leading-relaxed">
+                    Masuk untuk mengakses layanan bimbingan konseling Anda secara profesional.
+                </p>
+            </div>
+        </div>
+
+        {{-- Right: Login Form --}}
+        <div class="w-full max-w-md">
+            <div class="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20">
+                <div class="bg-blue-600 p-8 text-white text-center">
+                    <h3 class="text-xl font-bold">Silahkan Masuk</h3>
+                    <p class="text-blue-100 text-xs mt-1 font-medium tracking-wide opacity-80 uppercase">Akses Akun SIMBEKA</p>
+                </div>
+                
+                <div class="p-8 space-y-6">
+                    <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Username / Email</label>
+                            <input type="text" name="login" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Masukkan identitas Anda">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
+                            <input type="password" name="password" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                            Masuk Ke Akun
+                        </button>
+                    </form>
+
+                    <div class="relative flex items-center justify-center py-2">
+                        <div class="border-t border-slate-100 w-full"></div>
+                        <span class="bg-white px-4 text-xs font-bold text-slate-400 uppercase tracking-widest absolute">Atau</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        <form action="{{ route('guest.login') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-4 rounded-2xl border border-slate-200 transition text-sm flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                Masuk Sebagai Tamu
+                            </button>
+                        </form>
+                        <p class="text-center text-sm text-slate-500">
+                            Belum punya akun? <a href="{{ route('register') }}" class="text-blue-600 font-bold hover:underline">Daftar di sini</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

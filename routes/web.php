@@ -49,7 +49,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::prefix('gurubk')->name('gurubk.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('claim/{report}', [DashboardController::class, 'claim'])->name('claim');
+    Route::post('claim/{report}', [DashboardController::class, 'claim'])->name('report.take');
     Route::get('report/{report}', [DashboardController::class, 'show'])->name('report.show');
     Route::post('report/{report}/resolve', [DashboardController::class, 'resolve'])->name('report.resolve');
     
@@ -60,5 +60,9 @@ Route::prefix('gurubk')->name('gurubk.')->group(function () {
     Route::get('archives/{archive}', [ArchiveController::class, 'show'])->name('archives.show');
 
     Route::get('students', [App\Http\Controllers\GuruBK\StudentController::class, 'index'])->name('students.index');
+    Route::get('students/create', [App\Http\Controllers\GuruBK\StudentController::class, 'create'])->name('students.create');
     Route::post('students', [App\Http\Controllers\GuruBK\StudentController::class, 'store'])->name('students.store');
+    Route::get('students/{student}/edit', [App\Http\Controllers\GuruBK\StudentController::class, 'edit'])->name('students.edit');
+    Route::put('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'update'])->name('students.update');
+    Route::delete('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'destroy'])->name('students.destroy');
 });

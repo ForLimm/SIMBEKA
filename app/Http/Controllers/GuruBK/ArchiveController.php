@@ -26,6 +26,12 @@ class ArchiveController extends Controller
             });
         }
         
+        if ($request->has('type') && $request->type != '') {
+            $query->whereHas('report', function($q) use ($request) {
+                $q->where('type', $request->type);
+            });
+        }
+
         if ($request->has('date') && $request->date != '') {
             $query->whereDate('completed_date', $request->date);
         }
