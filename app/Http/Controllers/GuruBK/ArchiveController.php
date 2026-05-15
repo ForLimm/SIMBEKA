@@ -14,7 +14,7 @@ class ArchiveController extends Controller
     {
         $teacher = Auth::user()->teacher;
         
-        $query = Archive::with(['student.user'])->where('teacher_id', $teacher->id);
+        $query = Archive::with(['student.user', 'report.reporter'])->where('teacher_id', $teacher->id);
         
         if ($request->has('name') && $request->name != '') {
             $searchName = $request->name;
@@ -33,5 +33,18 @@ class ArchiveController extends Controller
         $archives = $query->orderBy('completed_date', 'desc')->get();
         
         return view('gurubk.archives.index', compact('archives'));
+    }
+
+    public function show(Archive $archive)
+    {
+        $teacher = Auth::user()->teacher;
+        
+        if ($archive->teacher_id !== $teacher->id) {
+            abort(403, 'Unauthorized access to archive.');
+        }
+
+        $archive->load(['student.user', 'report.reporter', 'report.handler']);
+        
+        return view('gurubk.archives.show', compact('archive'));
     }
 }

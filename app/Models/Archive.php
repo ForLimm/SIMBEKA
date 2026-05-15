@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Archive extends Model
 {
-    protected $fillable = ['student_id', 'teacher_id', 'guidance_notes', 'completed_date', 'attachment_path'];
+    protected $fillable = ['student_id', 'teacher_id', 'report_id', 'guidance_notes', 'completed_date', 'attachment_path'];
 
     protected function casts(): array
     {
@@ -23,5 +23,10 @@ class Archive extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class);
     }
 }

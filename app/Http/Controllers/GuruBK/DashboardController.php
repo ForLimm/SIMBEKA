@@ -59,7 +59,25 @@ class DashboardController extends Controller
         \App\Models\ChatMessage::where('report_id', $report->id)->update(['is_destroyed' => true]);
 
         $report->update(['status' => 'resolved']);
-        return back()->with('success', 'Kasus telah diselesaikan dan riwayat chat telah dihapus.');
+
+        // Create Archive entry
+        $teacher = Auth::user()->teacher;
+        
+        // Find student if the reporter is a student AND not anonymous
+        $student = null;
+        if (!$report->is_anonymous && $report->reported_by) {
+            $student = \App\Models\Student::where('user_id', $report->reported_by)->whereNotNull('user_id')->first();
+        }
+
+        \App\Models\Archive::create([
+            'student_id' => $student ? $student->id : null,
+            'teacher_id' => $teacher->id,
+            'report_id' => $report->id,
+            'guidance_notes' => '[' . ucfirst($report->type) . '] ' . $report->title . ': ' . $report->content,
+            'completed_date' => now(),
+        ]);
+
+        return back()->with('success', 'Kasus telah diselesaikan dan riwayat chat telah dihapus. Laporan telah masuk ke Arsip.');
     }
 }
 

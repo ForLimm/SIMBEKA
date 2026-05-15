@@ -49,10 +49,9 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 font-medium text-gray-800">{{ $report->title }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">
+                                {{ $report->reporter->username ?? $report->reporter->name ?? '-' }}
                                 @if($report->is_anonymous)
-                                    <span class="italic text-gray-400">Anonim</span>
-                                @else
-                                    {{ $report->reporter ? $report->reporter->username : '-' }}
+                                    <span class="text-[10px] bg-gray-100 text-gray-500 px-1 rounded ml-1">ANONIM</span>
                                 @endif
                             </td>
                             <td class="px-4 py-3">
@@ -107,10 +106,9 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 font-medium text-gray-800">{{ $report->title }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">
+                                {{ $report->reporter->username ?? $report->reporter->name ?? '-' }}
                                 @if($report->is_anonymous)
-                                    <span class="italic text-gray-400">Anonim</span>
-                                @else
-                                    {{ $report->reporter ? $report->reporter->username : '-' }}
+                                    <span class="text-[10px] bg-gray-100 text-gray-500 px-1 rounded ml-1">ANONIM</span>
                                 @endif
                             </td>
                             <td class="px-4 py-3">

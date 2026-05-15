@@ -104,7 +104,15 @@
                                 @elseif($report->status === 'pending')
                                     <span class="text-xs text-gray-400 italic">Menunggu diambil</span>
                                 @else
-                                    <span class="text-xs text-green-600 font-medium">✓ Selesai</span>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <span class="text-xs text-green-600 font-medium">✓ Selesai</span>
+                                        <form action="{{ route('siswa.report.hide', $report->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus riwayat ini dari tampilan Anda? (Tetap tersimpan di Arsip Sekolah)')">
+                                            @csrf
+                                            <button type="submit" class="text-red-500 hover:text-red-700 p-1" title="Hapus Riwayat">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                    </div>
                                 @endif
                             </td>
                         </tr>
@@ -128,6 +136,7 @@
                         <th class="px-4 py-3 font-semibold text-gray-600">Prioritas</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Status</th>
                         <th class="px-4 py-3 font-semibold text-gray-600">Tanggal</th>
+                        <th class="px-4 py-3 font-semibold text-gray-600 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y">
@@ -149,10 +158,18 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-gray-500 text-xs">{{ $report->created_at->format('d M Y, H:i') }}</td>
+                            <td class="px-4 py-3 text-center">
+                                <form action="{{ route('siswa.report.hide', $report->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus riwayat ini dari tampilan Anda? (Tetap tersimpan di Arsip Sekolah)')">
+                                    @csrf
+                                    <button type="submit" class="text-gray-400 hover:text-red-600 transition" title="Hapus Riwayat">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 py-8 text-center text-gray-400">Belum ada riwayat pelaporan.</td>
+                            <td colspan="5" class="px-4 py-8 text-center text-gray-400">Belum ada riwayat pelaporan.</td>
                         </tr>
                     @endforelse
                 </tbody>

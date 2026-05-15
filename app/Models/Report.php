@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
-    protected $fillable = ['title', 'content', 'type', 'priority', 'status', 'handled_by', 'is_anonymous', 'reported_by'];
+    protected $fillable = ['title', 'content', 'type', 'priority', 'status', 'handled_by', 'is_anonymous', 'reported_by', 'is_hidden_for_reporter'];
 
     public function handler()
     {

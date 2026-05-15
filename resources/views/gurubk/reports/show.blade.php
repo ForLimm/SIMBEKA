@@ -59,22 +59,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Pelapor</label>
-                    @if($report->is_anonymous)
-                        <p class="text-sm text-gray-600 flex items-center gap-1">
-                            <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            <span class="italic">Anonim</span>
-                            @if($report->reporter)
-                                <span class="text-xs text-gray-400">({{ $report->reporter->username }})</span>
-                            @endif
-                        </p>
-                    @else
-                        <p class="text-sm text-gray-800 font-medium">
-                            {{ $report->reporter ? $report->reporter->name : 'Tidak diketahui' }}
-                            @if($report->reporter)
-                                <span class="text-xs text-gray-400">({{ $report->reporter->username }})</span>
-                            @endif
-                        </p>
-                    @endif
+                    <p class="text-sm text-gray-800 font-medium">
+                        {{ $report->reporter->username ?? $report->reporter->name ?? 'Tidak diketahui' }}
+                        @if($report->reporter)
+                            <span class="text-xs text-gray-400">({{ $report->reporter->username }})</span>
+                        @endif
+                        @if($report->is_anonymous)
+                            <span class="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded ml-2 font-bold">ANONIM</span>
+                        @endif
+                    </p>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Ditangani Oleh</label>

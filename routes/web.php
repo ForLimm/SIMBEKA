@@ -19,6 +19,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/dashboard', [App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('siswa.dashboard');
+    Route::post('/siswa/report/{report}/hide', [App\Http\Controllers\Siswa\DashboardController::class, 'hide'])->name('siswa.report.hide');
 
     Route::get('/form', [ReportController::class, 'create'])->name('lapor.create');
     Route::post('/form', [ReportController::class, 'store'])->name('lapor.store');
@@ -56,6 +57,7 @@ Route::prefix('gurubk')->name('gurubk.')->group(function () {
     Route::post('letters', [LetterController::class, 'store'])->name('letters.store');
     
     Route::get('archives', [ArchiveController::class, 'index'])->name('archives.index');
+    Route::get('archives/{archive}', [ArchiveController::class, 'show'])->name('archives.show');
 
     Route::get('students', [App\Http\Controllers\GuruBK\StudentController::class, 'index'])->name('students.index');
     Route::post('students', [App\Http\Controllers\GuruBK\StudentController::class, 'store'])->name('students.store');
