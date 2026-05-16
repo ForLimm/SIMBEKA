@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title', 'Berhasil Terkirim')
+@section('title', 'Berhasil Terkirim - Sistem Informasi Manajemen Bimbingan & Konseling')
 @section('title_display', 'Status Pengiriman')
 
 @section('content')
 <div class="max-w-xl mx-auto py-12">
     <div class="card-premium p-12 text-center bg-white relative overflow-hidden">
         {{-- Success Animation Placeholder Decor --}}
-        <div class="absolute -top-12 -right-12 w-48 h-48 bg-emerald-50 rounded-full opacity-50"></div>
-        <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-blue-50 rounded-full opacity-50"></div>
+        <div class="absolute -top-12 -right-12 w-48 h-48 bg-accent/10 rounded-full opacity-50"></div>
+        <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-primary/10 rounded-full opacity-50"></div>
 
         <div class="relative">
-            <div class="bg-emerald-100 text-emerald-600 w-24 h-24 rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-xl shadow-emerald-500/10">
+            <div class="bg-accent/10 text-accent w-24 h-24 rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-xl shadow-accent/10">
                 <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
             </div>
             
@@ -20,7 +20,7 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ auth()->user()->role === 'siswa' ? route('siswa.dashboard') : route('gurubk.dashboard') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all active:scale-95 text-sm">
+                <a href="{{ auth()->user()->role === 'siswa' ? route('siswa.dashboard') : route('gurubk.dashboard') }}" class="bg-primary hover:bg-secondary text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 text-sm">
                     Kembali ke Dashboard
                 </a>
                 
@@ -36,10 +36,10 @@
         </div>
     </div>
 
-    <div class="mt-12 flex items-center justify-center gap-2">
-        <div class="w-8 h-1 bg-emerald-500 rounded-full"></div>
+    <div class="mt-12 flex items-center justify-center gap-4">
+        <div class="w-8 h-1 bg-accent rounded-full"></div>
         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sistem Keamanan Terenkripsi</span>
-        <div class="w-8 h-1 bg-blue-500 rounded-full"></div>
+        <div class="w-8 h-1 bg-primary rounded-full"></div>
     </div>
 </div>
 @endsection

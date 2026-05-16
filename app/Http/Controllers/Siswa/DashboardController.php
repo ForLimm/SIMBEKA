@@ -11,17 +11,33 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        return view('siswa.dashboard', compact('user'));
+    }
 
-        $reports = Report::where('reported_by', $user->id)
-                         ->where('is_hidden_for_reporter', false)
-                         ->with('handler')
-                         ->orderBy('created_at', 'desc')
-                         ->get();
+    public function historyKonsultasi()
+    {
+        $user = Auth::user();
+        $konsultasi = Report::where('reported_by', $user->id)
+                            ->where('type', 'konsultasi')
+                            ->where('is_hidden_for_reporter', false)
+                            ->with('handler')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
 
-        $konsultasi = $reports->where('type', 'konsultasi');
-        $pelaporan = $reports->where('type', 'pelaporan');
+        return view('siswa.history.konsultasi', compact('user', 'konsultasi'));
+    }
 
-        return view('siswa.dashboard', compact('user', 'reports', 'konsultasi', 'pelaporan'));
+    public function historyPelaporan()
+    {
+        $user = Auth::user();
+        $pelaporan = Report::where('reported_by', $user->id)
+                           ->where('type', 'pelaporan')
+                           ->where('is_hidden_for_reporter', false)
+                           ->with('handler')
+                           ->orderBy('created_at', 'desc')
+                           ->get();
+
+        return view('siswa.history.pelaporan', compact('user', 'pelaporan'));
     }
 
     public function hide(Report $report)

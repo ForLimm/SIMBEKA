@@ -46,9 +46,14 @@ class DashboardController extends Controller
             return back()->with('error', 'Kasus ini sudah diambil oleh guru lain.');
         }
 
+        $request->validate([
+            'priority' => 'required|in:low,medium,high',
+        ]);
+
         $report->update([
             'status' => 'in-progress',
             'handled_by' => Auth::id(),
+            'priority' => $request->priority,
         ]);
 
         return back()->with('success', 'Kasus berhasil diambil.');

@@ -20,7 +20,7 @@
             @endif
             <div class="h-10 w-px bg-slate-200 mx-1"></div>
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black shadow-lg shadow-blue-600/20 text-lg">
+                <div class="w-12 h-12 bg-primary text-white rounded-2xl flex items-center justify-center font-black shadow-lg shadow-primary/20 text-lg">
                     {{ substr($report->reporter->name ?? 'S', 0, 1) }}
                 </div>
                 <div>
@@ -84,7 +84,7 @@
                     </template>
 
                     <div class="relative px-6 py-4 shadow-md break-words overflow-hidden" :class="msg.is_mine 
-                        ? 'bg-blue-600 text-white rounded-[1.8rem] rounded-tr-none' 
+                        ? 'bg-primary text-white rounded-[1.8rem] rounded-tr-none' 
                         : 'bg-white text-slate-700 rounded-[1.8rem] rounded-tl-none border border-white'">
                         
                         <p class="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words" x-text="msg.message"></p>
@@ -109,11 +109,11 @@
             <div class="flex-1 relative">
                 <textarea name="message" required autocomplete="off" rows="1"
                     x-on:input="$el.style.height = '56px'; $el.style.height = $el.scrollHeight + 'px'"
-                    class="w-full bg-slate-50 border border-slate-200 rounded-[1.5rem] px-8 py-4 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all placeholder:text-slate-400 font-medium shadow-inner resize-none overflow-hidden max-h-40" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-[1.5rem] px-8 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium shadow-inner resize-none overflow-hidden max-h-40" 
                     placeholder="Tulis pesan Anda di sini..."
                     style="height: 56px;"></textarea>
             </div>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-blue-600/30 transition-all hover:scale-110 active:scale-95 group shrink-0 mb-0.5">
+            <button type="submit" class="bg-primary hover:bg-secondary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-primary/30 transition-all hover:scale-110 active:scale-95 group shrink-0 mb-0.5">
                 <svg class="w-6 h-6 rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
             </button>
         </form>

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Selamat Datang di SIMBEKA')
+@section('title', 'Selamat Datang di SIMBEKA - Sistem Informasi Manajemen Bimbingan & Konseling')
 
 @section('content')
 <div class="fixed inset-0 z-[-1] overflow-hidden">
@@ -10,8 +10,8 @@
 <div class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
     <div class="max-w-4xl space-y-8 relative z-20">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-4">
-            <span class="w-2 h-2 bg-blue-400 rounded-full animate-ping"></span>
-            Sistem Informasi Bimbingan Konseling
+            <span class="w-2 h-2 bg-accent rounded-full animate-ping"></span>
+            Sistem Informasi Manajemen Bimbingan & Konseling
         </div>
         
         <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter leading-none">
@@ -25,11 +25,11 @@
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
             @auth
-                <a href="{{ auth()->user()->role === 'siswa' ? route('siswa.dashboard') : route('gurubk.dashboard') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-blue-600/40 transition-all hover:scale-105 active:scale-95 text-lg">
+                <a href="{{ auth()->user()->role === 'siswa' ? route('siswa.dashboard') : route('gurubk.dashboard') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg">
                     Buka Dashboard
                 </a>
             @else
-                <a href="{{ route('login') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-blue-600/40 transition-all hover:scale-105 active:scale-95 text-lg">
+                <a href="{{ route('login') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg">
                     Mulai Sekarang
                 </a>
                 <a href="{{ route('register') }}" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold px-12 py-5 rounded-2xl border border-white/30 transition-all text-lg">

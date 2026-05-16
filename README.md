@@ -1,58 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIMBEKA - Sistem Informasi Bimbingan Konseling
+### 🏫 Khusus SMP Negeri 6 Palu
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+SIMBEKA adalah platform manajemen bimbingan konseling modern yang dirancang untuk memudahkan interaksi antara siswa dan Guru BK (Bimbingan Konseling) secara aman, transparan, dan efisien.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Alpine.js](https://img.shields.io/badge/alpinejs-%238BC0D0.svg?style=for-the-badge&logo=alpine.js&logoColor=black)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👮 Portal Guru BK
+- **Dashboard Holistik**: Pantau jumlah pelaporan aktif, konsultasi yang sedang berjalan, dan statistik kasus.
+- **Manajemen Siswa**: CRUD (Create, Read, Update, Delete) data siswa lengkap dengan informasi orang tua, kelas (standar SMPN 6 Palu), dan status tinggal.
+- **Sistem Penanganan Kasus**: Claim laporan siswa, lakukan interaksi, dan selesaikan kasus dengan catatan penanganan.
+- **Database Arsip**: Pencarian arsip yang dikategorikan berdasarkan Konsultasi, Pelaporan, dan Surat.
 
-## Learning Laravel
+### 🎓 Portal Siswa
+- **Live Chat Konsultasi**: Fitur chat real-time dengan Guru BK dengan antarmuka premium (mirip Messenger/WhatsApp).
+- **History Pelaporan**: Pantau status laporan yang dikirim (Pending, In Progress, Resolved).
+- **Privasi Terjamin**: Dukungan pengiriman laporan anonim (opsional) untuk kenyamanan siswa.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🏠 Portal Publik (Guest)
+- **Pelaporan Mandiri**: Siapapun dapat mengirimkan laporan (bullying, keluhan fasilitas, dll) tanpa harus login.
+- **Tracking ID**: Dapatkan ID unik untuk memantau progres laporan yang dikirim.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🔒 Keamanan & Privasi
+- **Mode Self-Destruct**: Seluruh riwayat chat konsultasi akan dihapus secara otomatis dan permanen dari database begitu kasus dinyatakan **Selesai** untuk menjaga kerahasiaan siswa.
+- **End-to-End Visual Security**: Notifikasi keamanan visual untuk meyakinkan pengguna bahwa data mereka aman.
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🛠️ Teknologi yang Digunakan
+- **Backend**: Laravel 11.x (PHP 8.4)
+- **Database**: MySQL / MariaDB
+- **Frontend**: Tailwind CSS & Alpine.js
+- **Typography**: Plus Jakarta Sans (Google Fonts)
+- **Icons**: Heroicons & Lucide Icons
 
-```bash
-composer require laravel/boost --dev
+---
 
-php artisan boost:install
-```
+## 🚀 Instalasi Lokal
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/ForLimm/SIMBEKA.git
+   cd simbeka
+   ```
 
-## Contributing
+2. **Instal Dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Konfigurasi Environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   *Sesuaikan konfigurasi database di file `.env`.*
 
-## Code of Conduct
+4. **Migrasi Database**
+   ```bash
+   php artisan migrate --seed
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Jalankan Aplikasi**
+   ```bash
+   php artisan serve
+   npm run dev
+   ```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📸 Antarmuka (Preview)
+- **Premium Design System**: Menggunakan skema warna *Slate & Blue* dengan efek *glassmorphism* dan *soft shadows*.
+- **Responsive Layout**: Optimal untuk desktop maupun perangkat mobile.
+- **Full-Screen Chat**: Layout chat imersif untuk pengalaman konseling yang lebih fokus.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📝 Kontribusi
+Proyek ini dikembangkan untuk meningkatkan kualitas pelayanan bimbingan konseling di **SMP Negeri 6 Palu**. Kritik dan saran sangat terbuka melalui *Issue* atau *Pull Request*.
+
+---
+
+**© 2026 SIMBEKA Team - Dedicated to SMP Negeri 6 Palu**

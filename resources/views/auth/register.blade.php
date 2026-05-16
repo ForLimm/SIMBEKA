@@ -1,75 +1,99 @@
 @extends('layouts.app')
-@section('title', 'Daftar Akun Baru')
+
+@section('title', 'Daftar Akun Siswa - Sistem Informasi Manajemen Bimbingan & Konseling')
 
 @section('content')
-<div class="fixed inset-0 z-[-1] overflow-hidden">
-    <div class="absolute inset-0 bg-slate-900/60 z-10 backdrop-blur-sm"></div>
-    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover" alt="Background">
-</div>
-
-<div class="min-h-[90vh] flex items-center justify-center px-4 py-12">
-    <div class="max-w-5xl w-full flex flex-col md:flex-row items-center gap-12">
-        {{-- Left: Greeting --}}
-        <div class="flex-1 text-white space-y-6">
-            <a href="/" class="inline-flex items-center gap-2 text-slate-300 hover:text-white transition group">
-                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                <span class="font-medium">Kembali ke Beranda</span>
-            </a>
-            <div class="space-y-2">
-                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-                    Gabung <br>
-                    <span class="text-blue-400">Bersama Kami</span>
-                </h2>
-                <p class="text-lg text-slate-300 font-medium max-w-sm leading-relaxed">
-                    Buat akun untuk mulai mengakses layanan bimbingan konseling terbaik kami.
-                </p>
+<div class="fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-white">
+    {{-- Left Column: Register Form --}}
+    <div class="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 overflow-y-auto custom-scrollbar bg-white">
+        <div class="w-full max-w-sm">
+            {{-- Branding for Mobile --}}
+            <div class="mb-8 md:hidden text-center">
+                <h1 class="text-3xl font-black text-slate-900 leading-none">SIMBEKA.</h1>
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-2">Pendaftaran Akun Baru</p>
             </div>
-            <div class="flex items-center gap-4 pt-4">
-                <div class="flex -space-x-3">
-                    <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200"></div>
-                    <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-300"></div>
-                    <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-400"></div>
-                </div>
-                <p class="text-xs font-bold text-slate-300 uppercase tracking-widest">+500 Siswa Terdaftar</p>
-            </div>
-        </div>
 
-        {{-- Right: Register Form --}}
-        <div class="w-full max-w-md">
-            <div class="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20">
-                <div class="bg-blue-600 p-8 text-white text-center">
-                    <h3 class="text-xl font-bold">Pendaftaran Siswa</h3>
-                    <p class="text-blue-100 text-xs mt-1 font-medium tracking-wide opacity-80 uppercase">Lengkapi Data Diri Anda</p>
-                </div>
+            <div class="mb-10 hidden md:block">
+                <h1 class="text-4xl font-black text-slate-900 mb-2 leading-tight">Registrasi <br> Akun Baru.</h1>
+                <p class="text-slate-500 font-medium">Buat akun untuk mulai menggunakan layanan BK.</p>
+            </div>
+
+            <form action="{{ route('register.post') }}" method="POST" class="space-y-4">
+                @csrf
                 
-                <div class="p-8 space-y-6">
-                    <form action="{{ route('register.post') }}" method="POST" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Username</label>
-                            <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Username unik Anda">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
-                            <input type="password" name="password" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="••••••••">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3.5 text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="••••••••">
-                        </div>
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
-                            Daftar Sekarang
-                        </button>
-                    </form>
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Username Untuk Login <span class="text-rose-500">*</span></label>
+                    <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Contoh: siswa123" value="{{ old('username') }}">
+                </div>
 
-                    <div class="pt-4 text-center">
-                        <p class="text-sm text-slate-500 font-medium">
-                            Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 font-bold hover:underline">Masuk di sini</a>
-                        </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password <span class="text-rose-500">*</span></label>
+                        <input type="password" name="password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Konfirmasi <span class="text-rose-500">*</span></label>
+                        <input type="password" name="password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
                     </div>
                 </div>
+
+                <div class="space-y-1.5 pt-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Pertanyaan Keamanan (Untuk Pemulihan) <span class="text-rose-500">*</span></label>
+                    <select name="security_question" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                        <option value="" disabled selected>Pilih pertanyaan rahasia</option>
+                        <option value="Apa nama hewan peliharaan pertama Anda?">Apa nama hewan peliharaan pertama Anda?</option>
+                        <option value="Nama sekolah dasar Anda?">Nama sekolah dasar Anda?</option>
+                        <option value="Siapa nama guru favorit Anda?">Siapa nama guru favorit Anda?</option>
+                        <option value="Di kota mana orang tua Anda bertemu?">Di kota mana orang tua Anda bertemu?</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Jawaban Anda <span class="text-rose-500">*</span></label>
+                    <input type="text" name="security_answer" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Jawaban rahasia Anda">
+                </div>
+
+                <div class="pt-6 space-y-6 text-center">
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-black py-4 rounded-xl shadow-xl transition-all hover:scale-[1.01] active:scale-[0.98] text-sm uppercase tracking-widest">
+                        Daftar Akun Baru
+                    </button>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+                        Sudah punya akun? <a href="{{ route('login') }}" class="text-primary hover:underline font-black">Masuk Workspace</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- Right Column: Branding --}}
+    <div class="hidden md:flex md:w-[55%] bg-slate-900 relative items-center justify-center p-20 overflow-hidden text-right">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[120px]"></div>
+        
+        <div class="relative z-10 w-full max-w-lg">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[10px] font-black uppercase tracking-[0.2em] mb-12 ml-auto">
+                Secure Registration
+            </div>
+            <h2 class="text-6xl font-black text-white leading-[1.1] mb-8">Satu Langkah <br> Menuju <span class="text-primary text-7xl italic">Konsultasi.</span></h2>
+            <div class="h-1.5 w-32 bg-primary mb-8 rounded-full ml-auto"></div>
+            <p class="text-slate-400 text-lg leading-relaxed mb-12 font-medium">Seluruh proses pendaftaran dirancang untuk melindungi identitas Anda. Username Anda adalah satu-satunya identitas yang diperlukan.</p>
+            
+            <div class="grid grid-cols-2 gap-8 text-right">
+                <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
+                    <h4 class="text-white font-black text-xs uppercase tracking-widest mb-1">Anonimitas</h4>
+                    <p class="text-slate-500 text-[10px] leading-relaxed">Sistem tidak meminta data sensitif seperti email atau no HP.</p>
+                </div>
+                <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
+                    <h4 class="text-white font-black text-xs uppercase tracking-widest mb-1">Keamanan</h4>
+                    <p class="text-slate-500 text-[10px] leading-relaxed">Gunakan pertanyaan keamanan untuk memulihkan akun Anda kapan saja.</p>
+                </div>
             </div>
         </div>
+        
+        <a href="/" class="absolute top-10 left-10 flex items-center gap-2 text-white/40 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Beranda
+        </a>
     </div>
 </div>
 @endsection

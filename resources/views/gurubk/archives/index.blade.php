@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Arsip Bimbingan')
+@section('title', 'Arsip Bimbingan - Sistem Informasi Manajemen Bimbingan & Konseling')
 @section('title_display', 'Arsip Bimbingan')
 
 @section('content')
@@ -8,19 +8,19 @@
     <div class="flex items-center justify-center sm:justify-start">
         <div class="inline-flex p-1.5 bg-white border border-slate-100 rounded-3xl shadow-sm">
             <a href="{{ route('gurubk.archives.index') }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ !request('type') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-slate-900' }}">
+                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ !request('type') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
                 Semua
             </a>
             <a href="{{ route('gurubk.archives.index', ['type' => 'konsultasi']) }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'konsultasi' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-slate-900' }}">
+                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'konsultasi' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
                 Konsultasi
             </a>
             <a href="{{ route('gurubk.archives.index', ['type' => 'pelaporan']) }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'pelaporan' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-slate-900' }}">
+                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'pelaporan' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
                 Pelaporan
             </a>
             <a href="{{ route('gurubk.archives.index', ['type' => 'surat']) }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'surat' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-500 hover:text-slate-900' }}">
+                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'surat' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
                 Surat
             </a>
         </div>
@@ -53,7 +53,7 @@
                         <tr class="hover:bg-slate-50/50 transition-colors group">
                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black border border-blue-100 transition-transform group-hover:scale-110 shadow-sm">
+                                    <div class="w-11 h-11 bg-primary/10 text-primary rounded-2xl flex items-center justify-center font-black border border-primary/20 transition-transform group-hover:scale-110 shadow-sm">
                                         {{ substr($archive->reporter_username ?? $archive->reporter_name ?? '?', 0, 1) }}
                                     </div>
                                     <div>
@@ -70,13 +70,13 @@
                             <td class="px-6 py-6">
                                 <div class="font-bold text-slate-700 leading-snug max-w-xs">{{ $archive->report_title }}</div>
                                 <div class="flex items-center gap-2 mt-2">
-                                    <span class="text-[9px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md">Tiket #{{ str_pad($archive->id, 5, '0', STR_PAD_LEFT) }}</span>
+                                    <span class="text-[9px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2 py-0.5 rounded-md">Tiket #{{ str_pad($archive->id, 5, '0', STR_PAD_LEFT) }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-6">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                                    <span class="font-black text-emerald-600 text-[10px] uppercase tracking-widest">Diselesaikan</span>
+                                    <div class="w-1.5 h-1.5 bg-accent rounded-full"></div>
+                                    <span class="font-black text-accent text-[10px] uppercase tracking-widest">Diselesaikan</span>
                                 </div>
                                 <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-tighter">Oleh: {{ $archive->handler_name ?? '-' }}</div>
                             </td>
@@ -85,7 +85,7 @@
                                 <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $archive->created_at->format('H:i') }} WIB</div>
                             </td>
                             <td class="px-8 py-6 text-right">
-                                <a href="{{ route('gurubk.archives.show', $archive->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-blue-600 text-slate-400 hover:text-white font-bold px-4 py-2 rounded-xl border border-slate-200 hover:border-blue-600 transition-all shadow-sm text-xs group/btn">
+                                <a href="{{ route('gurubk.archives.show', $archive->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-xl border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
                                     Detail
                                     <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                                 </a>

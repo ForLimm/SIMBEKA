@@ -1,154 +1,150 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Siswa Baru')
+@section('title', 'Tambah Siswa Baru - Sistem Informasi Manajemen Bimbingan & Konseling')
 
 @section('content')
-<div class="max-w-4xl mx-auto space-y-6">
+<div class="w-full space-y-4">
     {{-- Header --}}
-    <div class="flex items-center justify-between">
-        <div>
-            <h2 class="text-3xl font-black text-slate-800 tracking-tight">Tambah Siswa Baru</h2>
-            <p class="text-slate-500 font-medium">Lengkapi formulir di bawah untuk mendaftarkan siswa bimbingan.</p>
+    <div class="flex items-center justify-between bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+        <div class="flex items-center gap-6">
+            <a href="{{ route('gurubk.students.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition shadow-sm text-xs group">
+                <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali
+            </a>
+            <div class="h-8 w-px bg-slate-100"></div>
+            <div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Tambah Siswa</h2>
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Registrasi Database Bimbingan</p>
+            </div>
         </div>
-        <a href="{{ route('gurubk.students.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Kembali
-        </a>
     </div>
 
-    <form action="{{ route('gurubk.students.store') }}" method="POST" class="space-y-6">
+    <form action="{{ route('gurubk.students.store') }}" method="POST" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
         @csrf
         
-        {{-- Section: Data Pribadi --}}
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
-            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        {{-- Left: Identitas Pribadi (8/12) --}}
+        <div class="xl:col-span-8 space-y-4">
+            <div class="card-premium overflow-hidden bg-white">
+                <div class="bg-slate-50 px-8 py-4 border-b border-slate-100 flex items-center justify-between">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Data Identitas Pribadi</h3>
+                </div>
+                
+                <div class="p-8 grid grid-cols-1 md:grid-cols-6 gap-x-5 gap-y-4">
+                    <div class="md:col-span-4">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
+                        <input type="text" name="name" required value="{{ old('name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama lengkap">
                     </div>
-                    Data Identitas Pribadi
-                </h3>
-            </div>
-            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Nama Lengkap Siswa <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" required value="{{ old('name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Masukkan nama lengkap siswa">
-                </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">NISN <span class="text-red-500">*</span></label>
-                    <input type="text" name="nisn" required maxlength="10" value="{{ old('nisn') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="10 Digit NISN">
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">NISN <span class="text-rose-500">*</span></label>
+                        <input type="text" name="nisn" required maxlength="10" value="{{ old('nisn') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="10 Digit">
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Kelas <span class="text-red-500">*</span></label>
-                    <select name="class" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition appearance-none">
-                        <option value="">Pilih Kelas</option>
-                        @foreach(['VII-1','VII-2','VII-3','VII-4','VII-5','VII-6','VIII-1','VIII-2','VIII-3','VIII-4','VIII-5','VIII-6','IX-1','IX-2','IX-3','IX-4','IX-5','IX-6'] as $kls)
-                            <option value="{{ $kls }}" {{ old('class') == $kls ? 'selected' : '' }}>{{ $kls }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kelas <span class="text-rose-500">*</span></label>
+                        <select name="class" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <option value="">Pilih Kelas</option>
+                            @foreach(['VII-1','VII-2','VII-3','VII-4','VII-5','VII-6','VIII-1','VIII-2','VIII-3','VIII-4','VIII-5','VIII-6','IX-1','IX-2','IX-3','IX-4','IX-5','IX-6'] as $kls)
+                                <option value="{{ $kls }}" {{ old('class') == $kls ? 'selected' : '' }}>{{ $kls }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Jenis Kelamin <span class="text-red-500">*</span></label>
-                    <select name="gender" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition appearance-none">
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Jenis Kelamin <span class="text-rose-500">*</span></label>
+                        <select name="gender" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <option value="">Pilih Gender</option>
+                            <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        </select>
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Tempat Lahir</label>
-                    <input type="text" name="birth_place" value="{{ old('birth_place') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Kota Kelahiran">
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Agama</label>
+                        <select name="religion" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <option value="">Pilih Agama</option>
+                            @foreach(['Islam','Kristen','Katolik','Hindu','Buddha','Khonghucu'] as $agm)
+                                <option value="{{ $agm }}" {{ old('religion') == $agm ? 'selected' : '' }}>{{ $agm }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Tanggal Lahir</label>
-                    <input type="date" name="birth_date" value="{{ old('birth_date') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition">
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Tempat Lahir</label>
+                        <input type="text" name="birth_place" value="{{ old('birth_place') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Kota">
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Agama</label>
-                    <select name="religion" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition appearance-none">
-                        <option value="">Pilih Agama</option>
-                        @foreach(['Islam','Kristen','Katolik','Hindu','Buddha','Khonghucu'] as $agm)
-                            <option value="{{ $agm }}" {{ old('religion') == $agm ? 'selected' : '' }}>{{ $agm }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Tanggal Lahir</label>
+                        <input type="date" name="birth_date" value="{{ old('birth_date') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium">
+                    </div>
 
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Alamat Tinggal</label>
-                    <textarea name="address" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Alamat lengkap siswa">{{ old('address') }}</textarea>
-                </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Status Tinggal</label>
+                        <select name="living_status" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <option value="">Pilih Status</option>
+                            @foreach(['Bersama Orang Tua','Bersama Wali','Kos / Kontrak','Panti Asuhan','Lainnya'] as $stts)
+                                <option value="{{ $stts }}" {{ old('living_status') == $stts ? 'selected' : '' }}>{{ $stts }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">No. HP Siswa</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="08xxxxxxxxxx">
-                </div>
+                    <div class="md:col-span-4">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Alamat Lengkap</label>
+                        <input type="text" name="address" value="{{ old('address') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Alamat lengkap siswa">
+                    </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Status Tinggal</label>
-                    <select name="living_status" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition appearance-none">
-                        <option value="">Pilih Status Tinggal</option>
-                        @foreach(['Bersama Orang Tua','Bersama Wali','Kos / Kontrak','Panti Asuhan','Lainnya'] as $stts)
-                            <option value="{{ $stts }}" {{ old('living_status') == $stts ? 'selected' : '' }}>{{ $stts }}</option>
-                        @endforeach
-                    </select>
+                    <div class="md:col-span-2">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">No. HP Siswa</label>
+                        <input type="text" name="phone" value="{{ old('phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="08xxxxxxxxxx">
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- Section: Data Orang Tua --}}
-        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
-            <div class="bg-slate-50 px-8 py-6 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <div class="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/20">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        {{-- Right: Data Orang Tua (4/12) --}}
+        <div class="xl:col-span-4 space-y-4">
+            <div class="card-premium overflow-hidden bg-white">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-100">
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Data Orang Tua / Wali</h4>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Ayah</label>
+                        <input type="text" name="father_name" value="{{ old('father_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama Ayah">
                     </div>
-                    Data Orang Tua / Wali
-                </h3>
-            </div>
-            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Nama Ayah</label>
-                    <input type="text" name="father_name" value="{{ old('father_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Nama lengkap Ayah">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Nama Ibu</label>
-                    <input type="text" name="mother_name" value="{{ old('mother_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Nama lengkap Ibu">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Pekerjaan Orang Tua</label>
-                    <select name="parents_job" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition appearance-none">
-                        <option value="">Pilih Pekerjaan</option>
-                        @foreach(['PNS','TNI/POLRI','Karyawan Swasta','Wiraswasta','Buruh','Petani','Nelayan','Tidak Bekerja','Lainnya'] as $job)
-                            <option value="{{ $job }}" {{ old('parents_job') == $job ? 'selected' : '' }}>{{ $job }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">No. HP Orang Tua</label>
-                    <input type="text" name="parents_phone" value="{{ old('parents_phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="08xxxxxxxxxx">
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Alamat Orang Tua</label>
-                    <textarea name="parents_address" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition" placeholder="Kosongkan jika sama dengan alamat siswa">{{ old('parents_address') }}</textarea>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Ibu</label>
+                        <input type="text" name="mother_name" value="{{ old('mother_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama Ibu">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Pekerjaan</label>
+                        <select name="parents_job" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <option value="">Pilih Pekerjaan</option>
+                            @foreach(['PNS','TNI/POLRI','Karyawan Swasta','Wiraswasta','Buruh','Petani','Nelayan','Tidak Bekerja','Lainnya'] as $job)
+                                <option value="{{ $job }}" {{ old('parents_job') == $job ? 'selected' : '' }}>{{ $job }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">No. HP Orang Tua</label>
+                        <input type="text" name="parents_phone" value="{{ old('parents_phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="08xxxxxxxxxx">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Alamat Orang Tua</label>
+                        <textarea name="parents_address" rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition resize-none font-medium" placeholder="Kosongkan jika sama dengan siswa">{{ old('parents_address') }}</textarea>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="flex items-center justify-end gap-4 pt-4">
-            <button type="reset" class="px-8 py-4 text-slate-500 font-bold hover:text-slate-700 transition">Reset</button>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-black px-12 py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
-                Simpan Data Siswa
-            </button>
+            <div class="pt-2">
+                <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-black py-4 rounded-xl shadow-xl transition-all hover:scale-[1.01] active:scale-[0.98] text-sm">
+                    Simpan Data Siswa
+                </button>
+                <button type="reset" class="w-full text-slate-400 font-bold uppercase tracking-widest text-[9px] py-4 hover:text-slate-600 transition">
+                    Reset Formulir
+                </button>
+            </div>
         </div>
     </form>
 </div>

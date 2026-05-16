@@ -17,8 +17,15 @@ Route::post('/login', [LoginController::class, 'manualLogin'])->name('login.post
 Route::post('/guest-login', [LoginController::class, 'guestLogin'])->name('guest.login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Recovery routes
+Route::get('/forgot-password', [LoginController::class, 'forgotPassword'])->name('password.request');
+Route::post('/recovery-login', [LoginController::class, 'recoveryLogin'])->name('recovery.login');
+Route::post('/reset-password', [LoginController::class, 'resetWithSecurity'])->name('password.update');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/dashboard', [App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('siswa.dashboard');
+    Route::get('/siswa/history/konsultasi', [App\Http\Controllers\Siswa\DashboardController::class, 'historyKonsultasi'])->name('siswa.history.konsultasi');
+    Route::get('/siswa/history/pelaporan', [App\Http\Controllers\Siswa\DashboardController::class, 'historyPelaporan'])->name('siswa.history.pelaporan');
     Route::post('/siswa/report/{report}/hide', [App\Http\Controllers\Siswa\DashboardController::class, 'hide'])->name('siswa.report.hide');
 
     Route::get('/form', [ReportController::class, 'create'])->name('lapor.create');
@@ -33,11 +40,10 @@ Route::middleware(['auth'])->group(function () {
 
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\StudentController;
-use App\Http\Controllers\GuruBK\DashboardController;
-use App\Http\Controllers\GuruBK\LetterController;
-use App\Http\Controllers\GuruBK\ArchiveController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('teachers', [TeacherController::class, 'index'])->name('teachers.index');
     Route::get('teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
     Route::post('teachers', [TeacherController::class, 'store'])->name('teachers.store');

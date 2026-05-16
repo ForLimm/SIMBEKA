@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Detail Arsip')
+@section('title', 'Detail Arsip - Sistem Informasi Manajemen Bimbingan & Konseling')
 @section('title_display', 'Detail Arsip')
 
 @section('content')
@@ -29,15 +29,15 @@
                 @if($archive->attachment_path)
                     <div class="mt-8 pt-8 border-t border-slate-100">
                         <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Lampiran Dokumen</h4>
-                        <div class="flex items-center gap-4 bg-emerald-50 border border-emerald-100 p-6 rounded-[2rem]">
-                            <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                        <div class="flex items-center gap-4 bg-accent/10 border border-accent/20 p-6 rounded-[2rem]">
+                            <div class="w-12 h-12 bg-accent text-white rounded-2xl flex items-center justify-center shadow-lg shadow-accent/20">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                             </div>
                             <div class="flex-1">
-                                <p class="font-black text-emerald-900 text-sm">Dokumen Surat Panggilan / Pendukung</p>
-                                <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest mt-0.5">Format: PDF Document</p>
+                                <p class="font-black text-slate-900 text-sm">Dokumen Surat Panggilan / Pendukung</p>
+                                <p class="text-[10px] text-accent font-bold uppercase tracking-widest mt-0.5">Format: PDF Document</p>
                             </div>
-                            <a href="{{ asset('storage/' . $archive->attachment_path) }}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/20 active:scale-95 uppercase tracking-widest">
+                            <a href="{{ asset('storage/' . $archive->attachment_path) }}" target="_blank" class="bg-accent hover:bg-emerald-700 text-white text-[10px] font-black px-6 py-3 rounded-xl transition-all shadow-lg shadow-accent/20 active:scale-95 uppercase tracking-widest">
                                 Buka File
                             </a>
                         </div>
@@ -73,7 +73,7 @@
             <div class="card-premium p-6">
                 <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Informasi Subjek</h4>
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg shadow-blue-600/20">
+                    <div class="w-12 h-12 bg-primary text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg shadow-primary/20">
                         {{ substr($archive->reporter_username ?? $archive->reporter_name ?? '?', 0, 1) }}
                     </div>
                     <div>
@@ -81,7 +81,7 @@
                         @if($archive->is_anonymous)
                             <div class="text-[10px] bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded-md font-black w-fit uppercase tracking-tighter mt-0.5">Status Anonim</div>
                         @else
-                            <div class="text-[10px] text-blue-600 font-black uppercase tracking-tighter">Siswa Terdaftar</div>
+                            <div class="text-[10px] text-primary font-black uppercase tracking-tighter">Siswa Terdaftar</div>
                         @endif
                     </div>
                 </div>
@@ -101,7 +101,7 @@
             </div>
 
             {{-- Officer Info --}}
-            <div class="card-premium p-6 bg-slate-900 text-white border-none">
+            <div class="card-premium p-6 bg-slate-900 text-white border-none shadow-xl shadow-slate-900/20">
                 <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Ditangani Oleh</h4>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center text-sm font-black border border-slate-700">
