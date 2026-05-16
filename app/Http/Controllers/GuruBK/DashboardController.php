@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Report;
+use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        $teacher = Auth::user()->teacher;
+        
         $pendingReports = Report::where('status', 'pending')->with('reporter')->get();
         
         $myInProgressReports = Report::where('handled_by', Auth::id())
@@ -23,8 +27,41 @@ class DashboardController extends Controller
                            ->whereIn('status', ['in-progress', 'resolved'])
                            ->with('reporter')
                            ->get();
+
+        // New Statistics Part
+        $totalStudents = Student::where('teacher_id', $teacher->id)->count();
+        $classStats = Student::where('teacher_id', $teacher->id)
+            ->select('class', DB::raw('count(*) as total'))
+            ->groupBy('class')
+            ->get();
+            
+        $counseledStudentsCount = Student::where('teacher_id', $teacher->id)
+            ->whereHas('archives', function($q) {
+                $q->whereHas('report', function($q2) {
+                    $q2->where('type', 'konsultasi');
+                });
+            })->count();
+            
+        $violationCount = Report::whereHas('student', function($q) use ($teacher) {
+            $q->where('teacher_id', $teacher->id);
+        })->where('type', 'pelaporan')->count();
+
+        // Counseling Session Stats
+        $totalSessions = \App\Models\CounselingSession::where('teacher_id', $teacher->id)->count();
+        $topCategory = \App\Models\CounselingSession::where('teacher_id', $teacher->id)
+            ->select('category', DB::raw('count(*) as total'))
+            ->groupBy('category')
+            ->orderBy('total', 'desc')
+            ->first();
+        $activeFollowUps = \App\Models\CounselingSession::where('teacher_id', $teacher->id)
+            ->whereIn('status', ['monitoring', 'tindak_lanjut'])
+            ->count();
                            
-        return view('gurubk.dashboard', compact('pendingReports', 'myInProgressReports', 'myReports'));
+        return view('gurubk.dashboard', compact(
+            'pendingReports', 'myInProgressReports', 'myReports',
+            'totalStudents', 'classStats', 'counseledStudentsCount', 'violationCount',
+            'totalSessions', 'topCategory', 'activeFollowUps'
+        ));
     }
 
     public function show(Report $report)

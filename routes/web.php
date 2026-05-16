@@ -54,21 +54,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::prefix('gurubk')->name('gurubk.')->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('claim/{report}', [DashboardController::class, 'claim'])->name('report.take');
-    Route::get('report/{report}', [DashboardController::class, 'show'])->name('report.show');
-    Route::post('report/{report}/resolve', [DashboardController::class, 'resolve'])->name('report.resolve');
+    Route::get('dashboard', [App\Http\Controllers\GuruBK\DashboardController::class, 'index'])->name('dashboard');
+    Route::post('claim/{report}', [App\Http\Controllers\GuruBK\DashboardController::class, 'claim'])->name('report.take');
+    Route::get('report/{report}', [App\Http\Controllers\GuruBK\DashboardController::class, 'show'])->name('report.show');
+    Route::post('report/{report}/resolve', [App\Http\Controllers\GuruBK\DashboardController::class, 'resolve'])->name('report.resolve');
     
-    Route::get('letters/create', [LetterController::class, 'create'])->name('letters.create');
-    Route::post('letters', [LetterController::class, 'store'])->name('letters.store');
+    Route::get('letters/create', [App\Http\Controllers\GuruBK\LetterController::class, 'create'])->name('letters.create');
+    Route::post('letters', [App\Http\Controllers\GuruBK\LetterController::class, 'store'])->name('letters.store');
     
-    Route::get('archives', [ArchiveController::class, 'index'])->name('archives.index');
-    Route::get('archives/{archive}', [ArchiveController::class, 'show'])->name('archives.show');
+    Route::get('archives', [App\Http\Controllers\GuruBK\ArchiveController::class, 'index'])->name('archives.index');
+    Route::get('archives/export', [App\Http\Controllers\GuruBK\ArchiveController::class, 'export'])->name('archives.export');
+    Route::get('archives/{archive}', [App\Http\Controllers\GuruBK\ArchiveController::class, 'show'])->name('archives.show');
 
     Route::get('students', [App\Http\Controllers\GuruBK\StudentController::class, 'index'])->name('students.index');
     Route::get('students/create', [App\Http\Controllers\GuruBK\StudentController::class, 'create'])->name('students.create');
     Route::post('students', [App\Http\Controllers\GuruBK\StudentController::class, 'store'])->name('students.store');
+    Route::get('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'show'])->name('students.show');
     Route::get('students/{student}/edit', [App\Http\Controllers\GuruBK\StudentController::class, 'edit'])->name('students.edit');
     Route::put('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'update'])->name('students.update');
     Route::delete('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'destroy'])->name('students.destroy');
+    
+    // Counseling Sessions
+    Route::resource('counseling', App\Http\Controllers\GuruBK\CounselingSessionController::class)->names('counseling');
 });

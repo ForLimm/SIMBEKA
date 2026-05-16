@@ -4,25 +4,111 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto space-y-8">
-    {{-- Tabs Navigation --}}
-    <div class="flex items-center justify-center sm:justify-start">
-        <div class="inline-flex p-1.5 bg-white border border-slate-100 rounded-3xl shadow-sm">
-            <a href="{{ route('gurubk.archives.index') }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ !request('type') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
-                Semua
-            </a>
-            <a href="{{ route('gurubk.archives.index', ['type' => 'konsultasi']) }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'konsultasi' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
-                Konsultasi
-            </a>
-            <a href="{{ route('gurubk.archives.index', ['type' => 'pelaporan']) }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'pelaporan' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
-                Pelaporan
-            </a>
-            <a href="{{ route('gurubk.archives.index', ['type' => 'surat']) }}" 
-                class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'surat' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
-                Surat
-            </a>
+    <div class="flex items-center justify-between gap-6" x-data="{ showExport: false }">
+        {{-- Tabs Navigation --}}
+        <div class="flex items-center justify-center sm:justify-start">
+            <div class="inline-flex p-1.5 bg-white border border-slate-100 rounded-3xl shadow-sm">
+                <a href="{{ route('gurubk.archives.index') }}" 
+                    class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ !request('type') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
+                    Semua
+                </a>
+                <a href="{{ route('gurubk.archives.index', ['type' => 'konsultasi']) }}" 
+                    class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'konsultasi' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
+                    Konsultasi
+                </a>
+                <a href="{{ route('gurubk.archives.index', ['type' => 'pelaporan']) }}" 
+                    class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'pelaporan' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
+                    Pelaporan
+                </a>
+                <a href="{{ route('gurubk.archives.index', ['type' => 'surat']) }}" 
+                    class="px-8 py-3 rounded-2xl text-sm font-bold transition-all {{ request('type') == 'surat' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
+                    Surat
+                </a>
+            </div>
+        </div>
+
+        <button @click="showExport = true" class="bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-2xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2 text-sm group">
+            <svg class="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Ekspor Laporan Resmi
+        </button>
+
+        {{-- Export Modal --}}
+        <div x-show="showExport" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div @click.away="showExport = false" class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-300">
+                <div class="bg-primary p-8 text-white flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10">
+                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="font-black italic uppercase tracking-widest text-sm">Konfigurasi Laporan</h3>
+                        <p class="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1 opacity-80">Pilih Data Terpadu</p>
+                    </div>
+                    <button @click="showExport = false" class="relative z-10 w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form action="{{ route('gurubk.archives.export') }}" method="GET" class="p-8 space-y-6">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4 ml-1">Gabungkan Jenis Data</label>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-4 p-5 bg-slate-50 rounded-[1.5rem] border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-6 h-6 rounded-lg border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="konsul" checked class="w-4 h-4 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-black text-slate-800 leading-none">Riwayat Konsultasi</span>
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Data Sesi BK Tatap Muka</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-4 p-5 bg-slate-50 rounded-[1.5rem] border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-6 h-6 rounded-lg border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="lapor" checked class="w-4 h-4 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-black text-slate-800 leading-none">Riwayat Pelaporan</span>
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Data Kasus & Insiden Siswa</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-4 p-5 bg-slate-50 rounded-[1.5rem] border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-6 h-6 rounded-lg border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="surat" checked class="w-4 h-4 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-black text-slate-800 leading-none">Arsip Surat Terbit</span>
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Surat Panggilan & Referensi</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4 ml-1">Format Dokumen</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="relative">
+                                    <input type="radio" name="format" value="word" checked class="peer sr-only">
+                                    <div class="p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">Word (DOCX)</span>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="format" value="excel" class="peer sr-only">
+                                    <div class="p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">Excel (XLS)</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-[1.5rem] shadow-xl shadow-primary/20 transition-all active:scale-[0.95] uppercase tracking-widest text-xs flex items-center justify-center gap-3">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Download Laporan Terpadu
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

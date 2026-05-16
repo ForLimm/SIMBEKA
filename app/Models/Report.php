@@ -22,4 +22,9 @@ class Report extends Model
     {
         return $this->hasMany(ChatMessage::class)->visible()->orderBy('created_at', 'asc');
     }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'reported_by', 'user_id');
+    }
 }
