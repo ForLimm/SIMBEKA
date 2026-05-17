@@ -76,16 +76,7 @@
                         </div>
                     </div>
 
-                    {{-- User Profile Section --}}
-                    <div class="px-8 py-6 mb-4 flex items-center gap-4 border-b border-white/5">
-                        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white font-black border border-white/5">
-                            {{ substr(auth()->user()->name, 0, 1) }}
-                        </div>
-                        <div class="flex flex-col overflow-hidden">
-                            <span class="text-white font-bold text-sm truncate">{{ auth()->user()->name }}</span>
-                            <span class="text-[#565674] text-[10px] font-bold uppercase tracking-wider">{{ str_replace('_', ' ', auth()->user()->role) }}</span>
-                        </div>
-                    </div>
+
 
                     {{-- Navigation --}}
                     <nav class="flex-1 px-4 space-y-8 overflow-y-auto custom-scrollbar">
@@ -217,7 +208,7 @@
                             </button>
                             <h1 class="text-base lg:text-lg font-bold text-slate-900 truncate">@yield('title_display', 'Dashboard')</h1>
                         </div>
-                        <div class="flex items-center gap-4 lg:hidden">
+                        <div class="flex items-center gap-4">
                             <div class="hidden sm:flex flex-col items-end">
                                 <span class="text-sm font-bold text-slate-900">{{ auth()->user()->name }}</span>
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-primary">{{ str_replace('_', ' ', auth()->user()->role) }}</span>

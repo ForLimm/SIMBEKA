@@ -17,15 +17,6 @@
             </p>
         </div>
         
-        <div class="flex items-center gap-4 relative z-10">
-            <div class="text-right hidden md:block">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Status Sesi</p>
-                <p class="text-sm font-bold text-slate-700 italic">Akun Terverifikasi</p>
-            </div>
-            <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-primary shadow-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-            </div>
-        </div>
     </div>
 
     {{-- Menu Grid: Full Width --}}

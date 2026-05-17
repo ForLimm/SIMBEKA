@@ -17,14 +17,30 @@ class LoginController extends Controller
         $teachers = \App\Models\Teacher::with('user')->withCount('students')->get();
         return view('auth.register', compact('teachers'));
     }
-
     public function registerPost(Request $request)
     {
         $request->validate([
             'username' => 'required|string|unique:users,username',
-            'password' => 'required|min:6|confirmed',
+            'password' => [
+                'required',
+                'min:8',
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*?&]/',  // must contain at least one special character
+                'confirmed'
+            ],
             'security_question' => 'required|string',
             'security_answer' => 'required|string',
+        ], [
+            'username.required' => 'Kolom Username wajib diisi.',
+            'username.unique' => 'Username ini sudah digunakan oleh akun lain.',
+            'password.required' => 'Kolom Password wajib diisi.',
+            'password.min' => 'Password minimal harus 8 karakter.',
+            'password.regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@$!%*?&).',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'security_question.required' => 'Kolom Pertanyaan Keamanan wajib diisi.',
+            'security_answer.required' => 'Kolom Jawaban Keamanan wajib diisi.',
         ]);
 
         $user = \App\Models\User::create([
@@ -163,13 +179,22 @@ class LoginController extends Controller
             'username' => 'required|string',
             'security_question' => 'required|string',
             'security_answer' => 'required|string',
-            'new_password' => 'required|min:6|confirmed',
+            'new_password' => [
+                'required',
+                'min:8',
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*?&]/',  // must contain at least one special character
+                'confirmed'
+            ],
         ], [
             'username.required' => 'Kolom Username wajib diisi.',
             'security_question.required' => 'Kolom Pertanyaan Keamanan wajib diisi.',
             'security_answer.required' => 'Kolom Jawaban Keamanan wajib diisi.',
             'new_password.required' => 'Kolom Password Baru wajib diisi.',
-            'new_password.min' => 'Password baru minimal 6 karakter.',
+            'new_password.min' => 'Password baru minimal harus 8 karakter.',
+            'new_password.regex' => 'Password baru harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@$!%*?&).',
             'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
