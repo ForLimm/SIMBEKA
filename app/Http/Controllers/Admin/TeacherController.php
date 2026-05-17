@@ -25,11 +25,14 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'nip' => 'nullable|string|unique:teachers,nip',
+            'nip' => 'nullable|string|digits:18|unique:teachers,nip',
             'max_quota' => 'required|integer|min:1',
+        ], [
+            'name.regex' => 'Nama guru hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
+            'nip.digits' => 'NIP harus berisi tepat 18 digit angka.',
         ]);
 
         $user = User::create([

@@ -21,12 +21,15 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'nisn' => 'nullable|string|unique:students,nisn',
+            'nisn' => 'nullable|string|digits:10|unique:students,nisn',
             'class' => 'required|string',
             'teacher_id' => 'required|exists:teachers,id',
+        ], [
+            'name.regex' => 'Nama siswa hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
+            'nisn.digits' => 'NISN harus berisi tepat 10 digit angka.',
         ]);
 
         $teacher = Teacher::withCount('students')->findOrFail($request->teacher_id);
