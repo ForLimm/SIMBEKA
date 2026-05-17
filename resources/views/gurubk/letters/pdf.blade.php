@@ -115,7 +115,7 @@
             </tr>
             <tr>
                 <td><strong>Jam</strong></td>
-                <td>: <strong>{{ $time ?? '09:00' }} WIB</strong></td>
+                <td>: <strong>{{ $time ?? '09:00' }} WITA</strong></td>
             </tr>
         </table>
 

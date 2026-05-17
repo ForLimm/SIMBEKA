@@ -114,7 +114,7 @@
                 </div>
                 <div class="mt-6 pt-6 border-t border-slate-800">
                     <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Selesai Pada</span>
-                    <p class="text-xs font-bold text-slate-300 mt-1">{{ $archive->created_at->format('d M Y, H:i') }} WIB</p>
+                    <p class="text-xs font-bold text-slate-300 mt-1">{{ $archive->created_at->format('d M Y, H:i') }} WITA</p>
                 </div>
             </div>
         </div>

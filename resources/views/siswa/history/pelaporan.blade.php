@@ -63,7 +63,7 @@
                             </td>
                             <td class="px-6 py-6 text-slate-500 font-medium">
                                 <div class="font-bold text-slate-700">{{ $report->created_at->format('d M Y') }}</div>
-                                <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-tighter">{{ $report->created_at->format('H:i') }} WIB</div>
+                                <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-tighter">{{ $report->created_at->format('H:i') }} WITA</div>
                             </td>
                             <td class="px-8 py-6">
                                 <div class="flex items-center justify-center">

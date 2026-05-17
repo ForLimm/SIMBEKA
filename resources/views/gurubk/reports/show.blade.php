@@ -95,7 +95,7 @@
                     <div class="space-y-4 pt-6 border-t border-slate-50">
                         <div class="flex justify-between items-center">
                             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Dikirim Pada</span>
-                            <span class="text-xs font-black text-slate-700">{{ $report->created_at->format('d M Y, H:i') }} WIB</span>
+                            <span class="text-xs font-black text-slate-700">{{ $report->created_at->format('d M Y, H:i') }} WITA</span>
                         </div>
                         @if(!$report->is_anonymous && $report->reporter->student)
                         <div class="flex justify-between items-center">
