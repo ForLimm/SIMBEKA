@@ -24,12 +24,13 @@
                         <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">NIP / Identitas</th>
                         <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 text-center">Siswa Terdaftar</th>
                         <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 text-center">Sisa Kuota</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     @forelse($teachers as $teacher)
                         <tr class="hover:bg-slate-50/50 transition-colors group">
-                            <td class="px-8 py-6">
+                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-4">
                                     <div class="w-11 h-11 bg-primary/10 text-primary rounded-2xl flex items-center justify-center font-black border border-primary/20">
                                         {{ substr($teacher->user->name, 0, 1) }}
@@ -54,6 +55,12 @@
                                 @else
                                     <span class="bg-accent/10 text-accent text-[10px] px-3 py-1.5 rounded-xl font-black uppercase tracking-widest border border-accent/20">{{ $sisa }} Tersisa</span>
                                 @endif
+                            </td>
+                            <td class="px-8 py-6 text-center">
+                                <a href="{{ route('admin.teachers.edit', $teacher->id) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold rounded-xl border border-slate-200 transition shadow-sm text-xs">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                    Edit & Reset
+                                </a>
                             </td>
                         </tr>
                     @empty

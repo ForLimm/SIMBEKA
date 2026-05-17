@@ -50,4 +50,41 @@ class TeacherController extends Controller
 
         return redirect()->route('admin.teachers.index')->with('success', 'Guru BK berhasil ditambahkan.');
     }
+
+    public function edit(Teacher $teacher)
+    {
+        $teacher->load('user');
+        return view('admin.teachers.edit', compact('teacher'));
+    }
+
+    public function update(Request $request, Teacher $teacher)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
+            'email' => 'required|email|unique:users,email,' . $teacher->user_id,
+            'password' => 'nullable|min:6',
+            'nip' => 'nullable|string|digits:18|unique:teachers,nip,' . $teacher->id,
+            'max_quota' => 'required|integer|min:1',
+        ], [
+            'name.regex' => 'Nama guru hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
+            'nip.digits' => 'NIP harus berisi tepat 18 digit angka.',
+        ]);
+
+        $user = $teacher->user;
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+        if ($request->filled('password')) {
+            $userData['password'] = Hash::make($request->password);
+        }
+        $user->update($userData);
+
+        $teacher->update([
+            'nip' => $request->nip,
+            'max_quota' => $request->max_quota,
+        ]);
+
+        return redirect()->route('admin.teachers.index')->with('success', 'Data Guru BK berhasil diperbarui.');
+    }
 }

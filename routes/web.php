@@ -36,6 +36,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{report}', [ChatController::class, 'show'])->name('chat.show');
     Route::post('/chat/{report}', [ChatController::class, 'send'])->name('chat.send');
     Route::get('/chat/{report}/poll', [ChatController::class, 'poll'])->name('chat.poll');
+
+    // Profile & settings routes
+    Route::get('/settings', [LoginController::class, 'showSettings'])->name('profile.settings');
+    Route::post('/settings/password', [LoginController::class, 'updatePassword'])->name('profile.password.update');
 });
 
 use App\Http\Controllers\Admin\TeacherController;
@@ -47,6 +51,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('teachers', [TeacherController::class, 'index'])->name('teachers.index');
     Route::get('teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
     Route::post('teachers', [TeacherController::class, 'store'])->name('teachers.store');
+    Route::get('teachers/{teacher}/edit', [TeacherController::class, 'edit'])->name('teachers.edit');
+    Route::put('teachers/{teacher}', [TeacherController::class, 'update'])->name('teachers.update');
     
     Route::get('students/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('students', [StudentController::class, 'store'])->name('students.store');

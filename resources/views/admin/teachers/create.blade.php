@@ -33,7 +33,7 @@
                 <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                     <div class="md:col-span-2">
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Lengkap & Gelar <span class="text-rose-500">*</span></label>
-                        <input type="text" name="name" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan nama lengkap & gelar">
+                        <input type="text" name="name" required oninput="this.value = this.value.replace(/[^a-zA-Z\s.,']/g, '')" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan nama lengkap & gelar">
                     </div>
 
                     <div>
@@ -48,7 +48,7 @@
 
                     <div>
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">NIP (Nomor Induk Pegawai) <span class="text-rose-500">*</span></label>
-                        <input type="text" name="nip" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Wajib diisi">
+                        <input type="text" name="nip" required maxlength="18" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="18 Digit Angka NIP">
                     </div>
 
                     <div>

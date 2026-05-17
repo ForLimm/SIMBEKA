@@ -32,12 +32,12 @@
                 <div class="p-8 grid grid-cols-1 md:grid-cols-6 gap-x-5 gap-y-4">
                     <div class="md:col-span-4">
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
-                        <input type="text" name="name" required value="{{ old('name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama lengkap">
+                        <input type="text" name="name" required oninput="this.value = this.value.replace(/[^a-zA-Z\s.,']/g, '')" value="{{ old('name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama lengkap">
                     </div>
 
                     <div class="md:col-span-2">
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">NISN <span class="text-rose-500">*</span></label>
-                        <input type="text" name="nisn" required maxlength="10" value="{{ old('nisn') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="10 Digit">
+                        <input type="text" name="nisn" required maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{ old('nisn') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="10 Digit Angka">
                     </div>
 
                     <div class="md:col-span-2">
@@ -71,7 +71,7 @@
 
                     <div class="md:col-span-2">
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Tempat Lahir</label>
-                        <input type="text" name="birth_place" value="{{ old('birth_place') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Kota">
+                        <input type="text" name="birth_place" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" value="{{ old('birth_place') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Kota">
                     </div>
 
                     <div class="md:col-span-2">
@@ -96,7 +96,7 @@
 
                     <div class="md:col-span-2">
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">No. HP Siswa</label>
-                        <input type="text" name="phone" value="{{ old('phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="08xxxxxxxxxx">
+                        <input type="text" name="phone" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{ old('phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Maks 15 Digit Angka">
                     </div>
                 </div>
             </div>
@@ -111,11 +111,11 @@
                 <div class="p-6 space-y-4">
                     <div>
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Ayah</label>
-                        <input type="text" name="father_name" value="{{ old('father_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama Ayah">
+                        <input type="text" name="father_name" oninput="this.value = this.value.replace(/[^a-zA-Z\s.,']/g, '')" value="{{ old('father_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama Ayah">
                     </div>
                     <div>
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Nama Ibu</label>
-                        <input type="text" name="mother_name" value="{{ old('mother_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama Ibu">
+                        <input type="text" name="mother_name" oninput="this.value = this.value.replace(/[^a-zA-Z\s.,']/g, '')" value="{{ old('mother_name') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Nama Ibu">
                     </div>
                     <div>
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Pekerjaan</label>
@@ -128,7 +128,7 @@
                     </div>
                     <div>
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">No. HP Orang Tua</label>
-                        <input type="text" name="parents_phone" value="{{ old('parents_phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="08xxxxxxxxxx">
+                        <input type="text" name="parents_phone" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{ old('parents_phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Maks 15 Digit Angka">
                     </div>
                     <div>
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Alamat Orang Tua</label>

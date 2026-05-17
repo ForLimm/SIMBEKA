@@ -37,7 +37,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
-                    <input type="text" name="name" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan nama lengkap siswa" required value="{{ old('name') }}">
+                    <input type="text" name="name" oninput="this.value = this.value.replace(/[^a-zA-Z\s.,']/g, '')" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan nama lengkap siswa" required value="{{ old('name') }}">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -54,7 +54,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">NISN</label>
-                        <input type="text" name="nisn" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="10 Digit NISN" value="{{ old('nisn') }}">
+                        <input type="text" name="nisn" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="10 Digit NISN" value="{{ old('nisn') }}">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Kelas <span class="text-rose-500">*</span></label>
