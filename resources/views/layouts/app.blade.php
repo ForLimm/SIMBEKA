@@ -51,7 +51,7 @@
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased" x-data="{ showLogoutModal: false }">
+<body class="text-slate-800 antialiased" x-data="{ showLogoutModal: false, sidebarOpen: false }">
 
     @php
         $isGuestPage = request()->is('/') || 
@@ -60,10 +60,13 @@
     @endphp
 
     <div class="flex min-h-screen">
+        {{-- Sidebar Backdrop for Mobile --}}
+        <div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden"></div>
+
         {{-- Sidebar --}}
         @auth
             @if(!$isGuestPage)
-                <aside class="w-72 bg-[#1e1e2d] flex flex-col fixed h-full z-50 transition-all duration-300">
+                <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'" class="w-72 bg-[#1e1e2d] flex flex-col fixed h-full z-50 transition-all duration-300 ease-in-out transform lg:translate-x-0">
                     {{-- Logo Section --}}
                     <div class="p-8 flex items-center gap-3">
                         <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-primary/20">S</div>
@@ -191,18 +194,23 @@
         @endauth
 
         {{-- Main Content --}}
-        <div class="flex-1 @auth @if(!$isGuestPage) ml-72 @endif @endauth flex flex-col min-w-0">
+        <div class="flex-1 @auth @if(!$isGuestPage) lg:ml-72 @endif @endauth flex flex-col min-w-0">
             {{-- Header --}}
             @auth
                 @if(!$isGuestPage)
-                    <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-40 shadow-sm">
-                        <h1 class="text-lg font-bold text-slate-900">@yield('title_display', 'Dashboard')</h1>
+                    <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-40 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-slate-100 lg:hidden text-slate-600 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            </button>
+                            <h1 class="text-base lg:text-lg font-bold text-slate-900 truncate">@yield('title_display', 'Dashboard')</h1>
+                        </div>
                         <div class="flex items-center gap-4">
-                            <div class="flex flex-col items-end">
+                            <div class="hidden sm:flex flex-col items-end">
                                 <span class="text-sm font-bold text-slate-900">{{ auth()->user()->name }}</span>
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-primary">{{ str_replace('_', ' ', auth()->user()->role) }}</span>
                             </div>
-                            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 font-bold border border-slate-200">
+                            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 font-bold border border-slate-200 shrink-0">
                                 {{ substr(auth()->user()->name, 0, 1) }}
                             </div>
                         </div>
@@ -210,7 +218,7 @@
                 @endif
             @endauth
 
-            <main class="flex-1 @if(!$isGuestPage) p-8 @endif">
+            <main class="flex-1 @if(!$isGuestPage) p-4 md:p-8 @endif">
                 {{-- Flash Messages --}}
                 @if(session('success') || session('error') || $errors->any())
                 <div class="max-w-4xl mx-auto mb-6 @if($isGuestPage) mt-4 px-4 @endif">
