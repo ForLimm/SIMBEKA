@@ -51,9 +51,28 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'login' => ['required', 'string'],
             'password' => ['required'],
+        ], [
+            'login.required' => 'Kolom Username atau Email wajib diisi.',
+            'password.required' => 'Kolom Password wajib diisi.',
         ]);
 
         $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $user = User::where('email', $request->login)
+                    ->orWhere('username', $request->login)
+                    ->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'login' => 'Username atau Email tidak terdaftar dalam sistem kami.',
+            ])->onlyInput('login');
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'login' => 'Kata sandi yang Anda masukkan salah. Silakan coba lagi.',
+            ])->onlyInput('login');
+        }
 
         if (Auth::attempt([$loginType => $request->login, 'password' => $request->password])) {
             $request->session()->regenerate();
@@ -65,7 +84,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
+            'login' => 'Gagal masuk. Silakan periksa kembali akun Anda.',
         ])->onlyInput('login');
     }
 
@@ -123,17 +142,19 @@ class LoginController extends Controller
             'recovery_code' => 'required|string',
         ]);
 
-        $user = User::where('username', $request->username)
-                    ->where('recovery_code', $request->recovery_code)
-                    ->first();
+        $user = User::where('username', $request->username)->first();
 
-        if ($user) {
-            Auth::login($user);
-            $request->session()->regenerate();
-            return redirect()->route('siswa.dashboard');
+        if (!$user) {
+            return back()->withErrors(['username' => 'Username tidak ditemukan.'])->onlyInput('username');
         }
 
-        return back()->withErrors(['recovery_code' => 'Username atau Kode Pemulihan tidak valid.']);
+        if (strtoupper($user->recovery_code) !== strtoupper($request->recovery_code)) {
+            return back()->withErrors(['recovery_code' => 'Kode pemulihan salah. Silakan periksa kembali.'])->onlyInput('username');
+        }
+
+        Auth::login($user);
+        $request->session()->regenerate();
+        return redirect()->route('siswa.dashboard');
     }
 
     public function resetWithSecurity(Request $request)
@@ -143,21 +164,34 @@ class LoginController extends Controller
             'security_question' => 'required|string',
             'security_answer' => 'required|string',
             'new_password' => 'required|min:6|confirmed',
+        ], [
+            'username.required' => 'Kolom Username wajib diisi.',
+            'security_question.required' => 'Kolom Pertanyaan Keamanan wajib diisi.',
+            'security_answer.required' => 'Kolom Jawaban Keamanan wajib diisi.',
+            'new_password.required' => 'Kolom Password Baru wajib diisi.',
+            'new_password.min' => 'Password baru minimal 6 karakter.',
+            'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
-        $user = User::where('username', $request->username)
-                    ->where('security_question', $request->security_question)
-                    ->where('security_answer', $request->security_answer)
-                    ->first();
+        $user = User::where('username', $request->username)->first();
 
-        if ($user) {
-            $user->update([
-                'password' => Hash::make($request->new_password)
-            ]);
-            return redirect()->route('login')->with('success', 'Password berhasil diubah. Silahkan masuk.');
+        if (!$user) {
+            return back()->withErrors(['username' => 'Username tidak ditemukan.'])->onlyInput('username');
         }
 
-        return back()->withErrors(['security_answer' => 'Jawaban keamanan salah.']);
+        if ($user->security_question !== $request->security_question) {
+            return back()->withErrors(['security_question' => 'Pertanyaan Keamanan yang dipilih tidak cocok dengan akun ini.'])->onlyInput('username');
+        }
+
+        if (strtolower($user->security_answer) !== strtolower($request->security_answer)) {
+            return back()->withErrors(['security_answer' => 'Jawaban Keamanan Anda salah. Silakan coba lagi.'])->onlyInput('username');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return redirect()->route('login')->with('success', 'Sandi berhasil diubah. Silakan masuk dengan sandi baru.');
     }
 
     private function generateRecoveryCode()
@@ -174,11 +208,20 @@ class LoginController extends Controller
     {
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:6|confirmed',
+            'new_password' => [
+                'required',
+                'min:8',
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*?&]/',  // must contain at least one special character
+                'confirmed'
+            ],
         ], [
             'current_password.required' => 'Password saat ini wajib diisi.',
             'new_password.required' => 'Password baru wajib diisi.',
-            'new_password.min' => 'Password baru minimal 6 karakter.',
+            'new_password.min' => 'Password baru minimal 8 karakter.',
+            'new_password.regex' => 'Password baru harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@$!%*?&).',
             'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 

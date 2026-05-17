@@ -69,7 +69,7 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ ucfirst($archive->report->type) }}</td>
                         <td>{{ $archive->report->title }}</td>
-                        <td>{{ $archive->student?->user?->name ?? $archive->report?->reporter?->name ?? 'Anonim' }}</td>
+                        <td>{{ $archive->student?->name ?? $archive->student?->user?->name ?? $archive->report?->reporter?->username ?? $archive->report?->reporter?->name ?? '-' }}</td>
                         <td>{{ $archive->completed_date->format('d/m/Y') }}</td>
                         <td>{{ ucfirst($archive->report->status) }}</td>
                     </tr>

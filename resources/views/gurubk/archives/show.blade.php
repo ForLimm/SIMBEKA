@@ -72,17 +72,22 @@
             {{-- Subject Info --}}
             <div class="card-premium p-6">
                 <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Informasi Subjek</h4>
+                @php
+                    $isAnonymous = $archive->report && $archive->report->is_anonymous;
+                    $displayName = '-';
+                    if ($isAnonymous) {
+                        $displayName = $archive->report->reporter->username ?? 'Tamu';
+                    } else {
+                        $displayName = $archive->student->name ?? ($archive->report && $archive->report->reporter ? $archive->report->reporter->name : '-');
+                    }
+                @endphp
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 bg-primary text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg shadow-primary/20">
-                        {{ substr($archive->reporter_username ?? $archive->reporter_name ?? '?', 0, 1) }}
+                        {{ substr($displayName, 0, 1) }}
                     </div>
                     <div>
-                        <div class="font-black text-slate-900 tracking-tight">{{ $archive->reporter_username ?? $archive->reporter_name ?? '-' }}</div>
-                        @if($archive->is_anonymous)
-                            <div class="text-[10px] bg-slate-100 text-slate-400 px-1.5 py-0.5 rounded-md font-black w-fit uppercase tracking-tighter mt-0.5">Status Anonim</div>
-                        @else
-                            <div class="text-[10px] text-primary font-black uppercase tracking-tighter">Siswa Terdaftar</div>
-                        @endif
+                        <div class="font-black text-slate-900 tracking-tight">{{ $displayName }}</div>
+                        <div class="text-[10px] text-primary font-black uppercase tracking-tighter">Siswa Terdaftar</div>
                     </div>
                 </div>
                 

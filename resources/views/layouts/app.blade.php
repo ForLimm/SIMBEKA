@@ -167,9 +167,16 @@
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.counseling.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                     <span class="font-bold text-sm">Dokumentasi Konseling</span>
                                 </a>
-                                <a href="{{ route('gurubk.archives.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.archives.*') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
-                                    <svg class="w-5 h-5 {{ request()->routeIs('gurubk.archives.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
-                                    <span class="font-bold text-sm">Arsip Dokumen</span>
+                                {{-- Arsip Kasus & Bimbingan --}}
+                                <a href="{{ route('gurubk.archives.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.archives.*') && request('type') != 'surat' ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                    <svg class="w-5 h-5 {{ request()->routeIs('gurubk.archives.*') && request('type') != 'surat' ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+                                    <span class="font-bold text-sm">Arsip Kasus & Bimbingan</span>
+                                </a>
+
+                                {{-- Arsip Surat Terbit --}}
+                                <a href="{{ route('gurubk.archives.index', ['type' => 'surat']) }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.archives.*') && request('type') == 'surat' ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                    <svg class="w-5 h-5 {{ request()->routeIs('gurubk.archives.*') && request('type') == 'surat' ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    <span class="font-bold text-sm">Arsip Surat Terbit</span>
                                 </a>
                             </div>
                         </div>
@@ -210,7 +217,7 @@
                             </button>
                             <h1 class="text-base lg:text-lg font-bold text-slate-900 truncate">@yield('title_display', 'Dashboard')</h1>
                         </div>
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-4 lg:hidden">
                             <div class="hidden sm:flex flex-col items-end">
                                 <span class="text-sm font-bold text-slate-900">{{ auth()->user()->name }}</span>
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-primary">{{ str_replace('_', ' ', auth()->user()->role) }}</span>

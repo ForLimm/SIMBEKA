@@ -81,14 +81,7 @@
                         </div>
                         <div>
                             <div class="font-black text-slate-900 tracking-tight text-xl leading-none mb-2">{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}</div>
-                            @if($report->is_anonymous)
-                                <div class="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-100 text-slate-400 rounded text-[8px] font-black uppercase tracking-tighter">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                                    Anonimitas Aktif
-                                </div>
-                            @else
-                                <div class="text-[9px] text-primary font-black uppercase tracking-widest">Siswa Terdaftar</div>
-                            @endif
+                            <div class="text-[9px] text-primary font-black uppercase tracking-widest">Siswa Terdaftar</div>
                         </div>
                     </div>
                     
@@ -97,7 +90,7 @@
                             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Dikirim Pada</span>
                             <span class="text-xs font-black text-slate-700">{{ $report->created_at->format('d M Y, H:i') }} WITA</span>
                         </div>
-                        @if(!$report->is_anonymous && $report->reporter->student)
+                        @if($report->reporter && $report->reporter->student)
                         <div class="flex justify-between items-center">
                             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Kelas Siswa</span>
                             <span class="text-xs font-black text-slate-700">{{ $report->reporter->student->class }}</span>

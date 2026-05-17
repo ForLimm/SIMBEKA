@@ -44,9 +44,6 @@
                                     <span class="text-[9px] uppercase font-black px-2 py-0.5 rounded {{ $report->priority === 'high' ? 'bg-rose-50 text-rose-500' : ($report->priority === 'medium' ? 'bg-amber-50 text-amber-500' : 'bg-emerald-50 text-emerald-500') }}">
                                         {{ $report->priority }} Priority
                                     </span>
-                                    @if($report->is_anonymous)
-                                        <span class="text-[9px] bg-slate-900 text-white px-2 py-0.5 rounded font-black uppercase tracking-widest">Anonim</span>
-                                    @endif
                                 </div>
                             </td>
                             <td class="px-6 py-6 text-xs font-black">

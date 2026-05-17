@@ -16,6 +16,30 @@ class ArchiveController extends Controller
     {
         $teacher = Auth::user()->teacher;
         
+        // Handle Surat (Letters) separately!
+        if ($request->type === 'surat') {
+            $lettersQuery = Letter::with('student.user')->where('teacher_id', $teacher->id);
+            
+            if ($request->has('name') && $request->name != '') {
+                $searchName = $request->name;
+                $lettersQuery->whereHas('student', function($q) use ($searchName) {
+                    $q->where('name', 'like', '%' . $searchName . '%')
+                      ->orWhereHas('user', function($q2) use ($searchName) {
+                          $q2->where('name', 'like', '%' . $searchName . '%');
+                      });
+                });
+            }
+            
+            if ($request->has('date') && $request->date != '') {
+                $lettersQuery->whereDate('created_at', $request->date);
+            }
+            
+            $letters = $lettersQuery->orderBy('created_at', 'desc')->get();
+            
+            return view('gurubk.archives.index', compact('letters'));
+        }
+        
+        // Handle normal counseling/pelaporan archives!
         $query = Archive::with(['student.user', 'report.reporter'])->where('teacher_id', $teacher->id);
         
         if ($request->has('name') && $request->name != '') {
@@ -37,6 +61,9 @@ class ArchiveController extends Controller
         if ($request->has('date') && $request->date != '') {
             $query->whereDate('completed_date', $request->date);
         }
+        
+        // Exclude direct letter-only archives from this view
+        $query->whereNotNull('report_id');
         
         $archives = $query->orderBy('completed_date', 'desc')->get();
         

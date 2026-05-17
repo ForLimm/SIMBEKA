@@ -16,104 +16,69 @@
     } 
 }">
     <div class="max-w-6xl mx-auto space-y-8">
-        {{-- Student Binaan Stats --}}
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        {{-- Consolidated Premium Stats Grid --}}
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {{-- Student Overview --}}
+            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
+                <div class="absolute -right-4 -top-4 opacity-5">
+                    <svg class="w-24 h-24 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
                 </div>
                 <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $totalStudents }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Siswa Binaan</div>
+                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ $totalStudents }} Siswa</div>
+                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Pendidikan di {{ $classStats->count() }} Kelas</div>
                 </div>
             </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
-                </div>
-                <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $classStats->count() }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Total Kelas</div>
-                </div>
-            </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                </div>
-                <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $counseledStudentsCount }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Pernah Konseling</div>
-                </div>
-            </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                </div>
-                <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $violationCount }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Total Pelanggaran</div>
-                </div>
-            </div>
-        </div>
 
-        {{-- Dokumentasi Sesi Stats --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            {{-- Counseling Overview --}}
+            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
+                <div class="absolute -right-4 -top-4 opacity-5">
+                    <svg class="w-24 h-24 text-purple-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
                 </div>
                 <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $totalSessions }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Total Sesi Dokumentasi</div>
+                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ $totalSessions }} Sesi</div>
+                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{{ $counseledStudentsCount }} Siswa Terbantu</div>
                 </div>
             </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $activeFollowUps }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Tindak Lanjut Aktif</div>
-                </div>
-            </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-purple-50 text-purple-700 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                </div>
-                <div>
-                    <div class="text-xl font-black text-slate-900">{{ $topCategory->category ?? '-' }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Masalah Terbanyak</div>
-                </div>
-            </div>
-        </div>
 
-        {{-- Summary Stats --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            {{-- Active Cases Overview --}}
+            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
+                <div class="absolute -right-4 -top-4 opacity-5">
+                    <svg class="w-24 h-24 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
                 </div>
                 <div>
-                    <div class="text-2xl font-black text-slate-900">{{ $pendingReports->count() }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Antrean Kasus</div>
+                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ $pendingReports->count() + $myInProgressReports->count() }} Kasus Aktif</div>
+                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{{ $pendingReports->count() }} Antrean | {{ $myInProgressReports->count() }} Proses</div>
                 </div>
             </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+
+            {{-- Resolved Cases Overview --}}
+            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
+                <div class="absolute -right-4 -top-4 opacity-5">
+                    <svg class="w-24 h-24 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
                 </div>
                 <div>
-                    <div class="text-2xl font-black text-text">{{ $myInProgressReports->count() }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Sedang Ditangani</div>
-                </div>
-            </div>
-            <div class="card-premium p-6 flex items-center gap-4 transition-all hover:shadow-lg">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <div>
-                    <div class="text-2xl font-black text-slate-900">{{ \App\Models\Report::where('status', 'resolved')->count() }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Kasus Selesai</div>
+                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ \App\Models\Report::where('status', 'resolved')->count() }} Selesai</div>
+                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{{ $activeFollowUps }} Tindak Lanjut Aktif</div>
                 </div>
             </div>
         </div>
@@ -147,9 +112,6 @@
                                 <td class="px-6 py-5">
                                     <div class="flex items-center gap-2">
                                         <span class="font-bold text-slate-700">{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}</span>
-                                        @if($report->is_anonymous)
-                                            <span class="text-[9px] bg-slate-100 text-slate-400 px-1 py-0.5 rounded font-black">ANONIM</span>
-                                        @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-5">
@@ -207,9 +169,6 @@
                                 <td class="px-8 py-5 font-bold text-slate-900">{{ $report->title }}</td>
                                 <td class="px-6 py-5 font-bold text-slate-700">
                                     {{ $report->reporter->username ?? $report->reporter->name ?? '-' }}
-                                    @if($report->is_anonymous)
-                                        <span class="text-[9px] bg-slate-100 text-slate-400 px-1 py-0.5 rounded font-black ml-1">ANONIM</span>
-                                    @endif
                                 </td>
                                 <td class="px-6 py-5">
                                     <span class="text-[10px] font-black uppercase {{ $report->type === 'konsultasi' ? 'text-blue-500' : 'text-rose-500' }}">
@@ -265,9 +224,6 @@
                             <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Pelapor</label>
                             <div class="text-sm font-bold text-slate-700 flex items-center gap-2">
                                 <span x-text="selectedReport.reporter"></span>
-                                <template x-if="selectedReport.is_anonymous">
-                                    <span class="text-[9px] bg-slate-100 text-slate-400 px-1 py-0.5 rounded font-black">ANONIM</span>
-                                </template>
                             </div>
                         </div>
                     </div>

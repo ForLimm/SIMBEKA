@@ -18,6 +18,33 @@
                 <p class="text-slate-400 text-xs font-semibold">Pilih metode akses Anda di bawah ini.</p>
             </div>
 
+            {{-- Alert Messages --}}
+            @if($errors->any() || session('success') || session('error'))
+                <div class="mb-6 space-y-2">
+                    @if(session('success'))
+                        <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 px-4 py-3 rounded-xl text-[11px] font-bold shadow-sm flex items-center gap-2">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-xl text-[11px] font-bold shadow-sm flex items-center gap-2">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>{{ session('error') }}</span>
+                        </div>
+                    @endif
+                    @if($errors->any())
+                        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-xl text-[11px] font-bold shadow-sm">
+                            <ul class="list-disc ml-4 space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             {{-- Guest Access Section (COMPACT & HORIZONTAL) --}}
             <div class="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-100/80">
                 <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Akses Cepat (Tanpa Akun)</h4>

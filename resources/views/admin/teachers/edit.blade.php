@@ -18,17 +18,6 @@
             </div>
         </div>
     </div>
-
-    @if($errors->any())
-        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-6 py-4 rounded-2xl text-sm font-bold shadow-sm">
-            <ul class="list-disc ml-5">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form action="{{ route('admin.teachers.update', $teacher->id) }}" method="POST" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
         @csrf
         @method('PUT')
