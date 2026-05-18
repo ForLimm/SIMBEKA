@@ -169,6 +169,12 @@
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.archives.*') && request('type') == 'surat' ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                     <span class="font-bold text-sm">Arsip Surat Terbit</span>
                                 </a>
+
+                                {{-- Buat Surat Panggilan --}}
+                                <a href="{{ route('gurubk.letters.create') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.letters.create') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                    <svg class="w-5 h-5 {{ request()->routeIs('gurubk.letters.create') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    <span class="font-bold text-sm">Buat Surat Panggilan</span>
+                                </a>
                             </div>
                         </div>
                         @endif

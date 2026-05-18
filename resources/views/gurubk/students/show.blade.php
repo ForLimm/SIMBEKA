@@ -16,6 +16,10 @@
             </div>
         </div>
         <div class="flex items-center gap-3">
+            <a href="{{ route('gurubk.letters.create', ['student_id' => $student->id]) }}" class="bg-primary hover:bg-secondary text-white font-bold px-6 py-3 rounded-2xl transition shadow-lg shadow-primary/20 flex items-center gap-2 text-sm group/letter">
+                <svg class="w-4 h-4 text-white/90 group-hover/letter:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Buat Surat Panggilan
+            </a>
             <a href="{{ route('gurubk.students.edit', $student->id) }}" class="bg-white border border-slate-200 text-slate-700 font-bold px-6 py-3 rounded-2xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2 text-sm">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 Edit Profil

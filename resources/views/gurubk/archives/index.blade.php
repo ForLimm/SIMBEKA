@@ -28,10 +28,19 @@
             </div>
         @endif
 
-        <button @click="showExport = true" class="w-full md:w-auto bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-2xl hover:bg-slate-50 transition shadow-sm flex items-center justify-center gap-2 text-sm group shrink-0">
-            <svg class="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            Ekspor Laporan Resmi
-        </button>
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+            @if(request('type') == 'surat')
+                <a href="{{ route('gurubk.letters.create') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-bold px-6 py-3.5 rounded-2xl transition shadow-lg shadow-primary/20 flex items-center justify-center gap-2 text-sm group">
+                    <svg class="w-5 h-5 text-white/80 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Buat Surat Panggilan
+                </a>
+            @endif
+
+            <button @click="showExport = true" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-2xl hover:bg-slate-50 transition shadow-sm flex items-center justify-center gap-2 text-sm group">
+                <svg class="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Ekspor Laporan Resmi
+            </button>
+        </div>
 
         {{-- Export Modal --}}
         <div x-show="showExport" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">

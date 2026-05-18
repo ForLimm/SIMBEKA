@@ -27,9 +27,9 @@
                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Pilih Siswa (Bimbingan Anda) <span class="text-rose-500">*</span></label>
                 <div class="relative">
                     <select name="student_id" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium" required>
-                        <option value="" disabled selected>-- Pilih Siswa --</option>
+                        <option value="" disabled {{ !isset($selectedStudentId) ? 'selected' : '' }}>-- Pilih Siswa --</option>
                         @foreach($students as $student)
-                            <option value="{{ $student->id }}">{{ $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama') }} - {{ $student->class }} (NISN: {{ $student->nisn ?? '-' }})</option>
+                            <option value="{{ $student->id }}" {{ (isset($selectedStudentId) && $selectedStudentId == $student->id) ? 'selected' : '' }}>{{ $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama') }} - {{ $student->class }} (NISN: {{ $student->nisn ?? '-' }})</option>
                         @endforeach
                     </select>
                     <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">

@@ -14,11 +14,12 @@ use Illuminate\Support\Str;
 
 class LetterController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
         $teacher = Auth::user()->teacher;
         $students = Student::with('user')->where('teacher_id', $teacher->id)->get();
-        return view('gurubk.letters.create', compact('students'));
+        $selectedStudentId = $request->query('student_id');
+        return view('gurubk.letters.create', compact('students', 'selectedStudentId'));
     }
 
     public function store(Request $request)
