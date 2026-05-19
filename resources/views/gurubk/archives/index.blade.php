@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('title', request('type') == 'surat' ? 'Arsip Surat Terbit - Sistem Informasi Manajemen Bimbingan & Konseling' : 'Arsip Kasus & Bimbingan - Sistem Informasi Manajemen Bimbingan & Konseling')
-@section('title_display', request('type') == 'surat' ? 'Arsip Surat Terbit' : 'Arsip Kasus & Bimbingan')
+@section('title', request('type') == 'surat' ? 'Arsip Surat Terbit - Sistem Informasi Manajemen Bimbingan & Konseling' : (request('type') == 'konseling' ? 'Arsip Sesi Bimbingan - Sistem Informasi Manajemen Bimbingan & Konseling' : 'Arsip Kasus & Bimbingan - Sistem Informasi Manajemen Bimbingan & Konseling'))
+@section('title_display', request('type') == 'surat' ? 'Arsip Surat Terbit' : (request('type') == 'konseling' ? 'Arsip Sesi Bimbingan' : 'Arsip Kasus & Bimbingan'))
 
 @section('content')
 <div class="max-w-6xl mx-auto space-y-8">
@@ -10,7 +10,11 @@
             <div class="flex overflow-x-auto whitespace-nowrap p-1.5 bg-white border border-slate-100 rounded-3xl shadow-sm max-w-full custom-scrollbar shrink-0">
                 <a href="{{ route('gurubk.archives.index') }}" 
                     class="px-6 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {{ !request('type') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
-                    Semua Bimbingan
+                    Semua Kasus (Konsul & Lapor)
+                </a>
+                <a href="{{ route('gurubk.archives.index', ['type' => 'konseling']) }}" 
+                    class="px-6 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {{ request('type') == 'konseling' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
+                    Konseling
                 </a>
                 <a href="{{ route('gurubk.archives.index', ['type' => 'konsultasi']) }}" 
                     class="px-6 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {{ request('type') == 'konsultasi' ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 hover:text-slate-900' }}">
@@ -94,17 +98,23 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4 ml-1">Format Dokumen</label>
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-3 gap-2">
                                 <label class="relative">
-                                    <input type="radio" name="format" value="word" checked class="peer sr-only">
-                                    <div class="p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
-                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">Word (DOCX)</span>
+                                    <input type="radio" name="format" value="pdf" checked class="peer sr-only">
+                                    <div class="py-4 px-1 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">PDF</span>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="format" value="word" class="peer sr-only">
+                                    <div class="py-4 px-1 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">Word</span>
                                     </div>
                                 </label>
                                 <label class="relative">
                                     <input type="radio" name="format" value="excel" class="peer sr-only">
-                                    <div class="p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
-                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">Excel (XLS)</span>
+                                    <div class="py-4 px-1 rounded-2xl border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                        <span class="block text-xs font-black text-slate-800 peer-checked:text-primary uppercase tracking-widest">Excel</span>
                                     </div>
                                 </label>
                             </div>
@@ -114,7 +124,7 @@
                     <div class="pt-4">
                         <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-[1.5rem] shadow-xl shadow-primary/20 transition-all active:scale-[0.95] uppercase tracking-widest text-xs flex items-center justify-center gap-3">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            Download Laporan Terpadu
+                            Unduh Laporan Terpadu
                         </button>
                     </div>
                 </form>
@@ -126,14 +136,33 @@
         <div class="px-4 md:px-8 py-6 border-b border-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white">
             <div>
                 <h3 class="font-black text-slate-800 text-xl tracking-tight">
-                    {{ request('type') == 'surat' ? 'Database Arsip Surat' : 'Database Arsip Kasus & Bimbingan' }}
+                    @if(request('type') == 'surat')
+                        Database Arsip Surat
+                    @elseif(request('type') == 'konseling')
+                        Database Arsip Konseling
+                    @else
+                        Database Arsip Kasus & Bimbingan
+                    @endif
                 </h3>
                 <p class="text-xs text-slate-400 mt-1 font-bold uppercase tracking-widest">
-                    {{ request('type') == 'surat' ? 'Kumpulan Surat Panggilan Resmi' : 'Kumpulan Sesi Konseling & Laporan Selesai' }}
+                    @if(request('type') == 'surat')
+                        Kumpulan Surat Panggilan Resmi
+                    @elseif(request('type') == 'konseling')
+                        Dokumentasi Sesi Bimbingan / Konseling yang Telah Selesai
+                    @else
+                        Kumpulan Sesi Konsul & Laporan Selesai
+                    @endif
                 </p>
             </div>
             <div class="bg-slate-50 text-slate-400 text-[10px] font-black px-4 py-2 rounded-xl uppercase tracking-widest border border-slate-100 self-start sm:self-auto">
-                {{ request('type') == 'surat' ? $letters->count() : $archives->count() }} Data Ditemukan
+                @if(request('type') == 'surat')
+                    {{ $letters->count() }}
+                @elseif(request('type') == 'konseling')
+                    {{ $sessions->count() }}
+                @else
+                    {{ $archives->count() }}
+                @endif
+                Data Ditemukan
             </div>
         </div>
 
@@ -164,19 +193,39 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-6">
-                                    <span class="bg-amber-50 border border-amber-100 text-amber-600 text-[9px] font-black px-2.5 py-1 rounded-xl uppercase tracking-widest">
-                                        Surat Panggilan
-                                    </span>
+                                    @if(($letter->type ?? 'panggilan') == 'skorsing')
+                                        <span class="bg-rose-50 border border-rose-100 text-rose-600 text-[9px] font-black px-2.5 py-1 rounded-xl uppercase tracking-widest">
+                                            Surat Skorsing
+                                        </span>
+                                    @elseif(($letter->type ?? 'panggilan') == 'sp1')
+                                        <span class="bg-amber-50 border border-amber-100 text-amber-600 text-[9px] font-black px-2.5 py-1 rounded-xl uppercase tracking-widest">
+                                            Surat SP1
+                                        </span>
+                                    @elseif(($letter->type ?? 'panggilan') == 'sp2')
+                                        <span class="bg-orange-50 border border-orange-100 text-orange-600 text-[9px] font-black px-2.5 py-1 rounded-xl uppercase tracking-widest">
+                                            Surat SP2
+                                        </span>
+                                    @else
+                                        <span class="bg-indigo-50 border border-indigo-100 text-indigo-600 text-[9px] font-black px-2.5 py-1 rounded-xl uppercase tracking-widest">
+                                            Surat Panggilan
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-6">
                                     <div class="font-bold text-slate-700 leading-snug max-w-xs">{{ $letter->content_json['reason'] ?? '-' }}</div>
                                     <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-widest">
-                                        Rencana: {{ isset($letter->content_json['date']) ? date('d M Y', strtotime($letter->content_json['date'])) : '-' }} | Pukul {{ $letter->content_json['time'] ?? '09:00' }} WITA
+                                        @if(($letter->type ?? 'panggilan') == 'skorsing')
+                                            Durasi: {{ $letter->content_json['duration'] ?? '-' }} Hari | {{ isset($letter->content_json['start_date']) ? date('d M Y', strtotime($letter->content_json['start_date'])) : '-' }} s/d {{ isset($letter->content_json['end_date']) ? date('d M Y', strtotime($letter->content_json['end_date'])) : '-' }}
+                                        @elseif(($letter->type ?? 'panggilan') == 'sp1' || ($letter->type ?? 'panggilan') == 'sp2')
+                                            Dibuat: {{ $letter->created_at->format('d M Y') }}
+                                        @else
+                                            Rencana: {{ isset($letter->content_json['date']) ? date('d M Y', strtotime($letter->content_json['date'])) : '-' }} | Pukul {{ $letter->content_json['time'] ?? '09:00' }} WITA
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-6">
-                                    <div class="font-bold text-slate-700 text-xs">{{ $letter->created_at->format('d M, Y') }}</div>
-                                    <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $letter->created_at->format('H:i') }} WITA</div>
+                                    <div class="font-bold text-slate-700 text-xs">{{ $letter->created_at->translatedFormat('d M Y') }}</div>
+                                    <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $letter->created_at->translatedFormat('H:i') }} WITA</div>
                                 </td>
                                 <td class="px-8 py-6 text-right">
                                     <a href="{{ asset('storage/' . $letter->file_path) }}" target="_blank" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-xl border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
@@ -195,6 +244,75 @@
                                         <div>
                                             <p class="text-slate-400 font-black uppercase tracking-[0.2em] text-sm">Arsip Surat Kosong</p>
                                             <p class="text-xs font-bold text-slate-300 mt-1 uppercase tracking-widest">Belum ada surat terbit yang dibuat</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                @elseif(request('type') == 'konseling')
+                    <thead>
+                        <tr class="bg-slate-50/30">
+                            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Siswa</th>
+                            <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Topik & Kategori</th>
+                            <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Ringkasan Sesi</th>
+                            <th class="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Tanggal Selesai</th>
+                            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 text-right">Opsi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        @forelse($sessions as $session)
+                            <tr class="hover:bg-slate-50/50 transition-colors group">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-11 h-11 bg-primary/10 text-primary rounded-2xl flex items-center justify-center font-black border border-primary/20 transition-transform group-hover:scale-110 shadow-sm">
+                                            {{ substr($session->student->name, 0, 1) }}
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-slate-800 leading-none mb-1.5">{{ $session->student->name }}</div>
+                                            <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Kelas {{ $session->student->class }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <div class="font-bold text-slate-700 leading-snug max-w-xs">
+                                        {{ $session->title ?? 'Sesi Bimbingan Tatap Muka' }}
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <span class="text-[9px] font-black text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-0.5 rounded-md">
+                                            {{ $session->category }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <p class="text-xs text-slate-500 font-medium line-clamp-2 max-w-xs italic leading-relaxed">"{{ $session->summary }}"</p>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <div class="font-bold text-slate-700 text-xs">
+                                        {{ $session->completed_at ? $session->completed_at->translatedFormat('d M Y') : $session->counseling_date->translatedFormat('d M Y') }}
+                                    </div>
+                                    @if($session->completed_at)
+                                        <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $session->completed_at->translatedFormat('H:i') }} WITA</div>
+                                    @endif
+                                    <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-tighter">Mulai: {{ $session->counseling_date->translatedFormat('d M Y') }}</div>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <a href="{{ route('gurubk.counseling.show', $session->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-xl border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
+                                        Detail Sesi
+                                        <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-8 py-20 text-center">
+                                    <div class="flex flex-col items-center justify-center space-y-4">
+                                        <div class="w-20 h-20 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200">
+                                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-slate-400 font-black uppercase tracking-[0.2em] text-sm">Arsip Kosong</p>
+                                            <p class="text-xs font-bold text-slate-300 mt-1 uppercase tracking-widest">Belum ada sesi bimbingan yang diselesaikan</p>
                                         </div>
                                     </div>
                                 </td>
@@ -225,7 +343,26 @@
                                         <div>
                                             <div class="font-bold text-slate-800 leading-none mb-1.5">{{ $displayName }}</div>
                                             <div class="flex items-center gap-1.5">
-                                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Siswa Terdaftar</span>
+                                                @php
+                                                    $subjectUser = null;
+                                                    if ($archive->student && $archive->student->user) {
+                                                        $subjectUser = $archive->student->user;
+                                                    } elseif ($archive->report && $archive->report->reporter) {
+                                                        $subjectUser = $archive->report->reporter;
+                                                    }
+
+                                                    $accountStatus = 'Siswa Terdaftar';
+                                                    if ($archive->report && $archive->report->is_anonymous) {
+                                                        $accountStatus = 'Anonim';
+                                                    } elseif ($subjectUser) {
+                                                        if ($subjectUser->is_guest) {
+                                                            $accountStatus = 'Akun Guest';
+                                                        } else {
+                                                            $accountStatus = 'Akun Regis';
+                                                        }
+                                                    }
+                                                @endphp
+                                                <span class="text-[9px] font-bold {{ $accountStatus === 'Akun Guest' ? 'text-amber-500' : ($accountStatus === 'Akun Regis' ? 'text-indigo-600' : 'text-slate-400') }} uppercase tracking-widest">{{ $accountStatus }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -251,8 +388,13 @@
                                     <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-tighter">Oleh: {{ $archive->teacher->user->name ?? '-' }}</div>
                                 </td>
                                 <td class="px-6 py-6">
-                                    <div class="font-bold text-slate-700 text-xs">{{ $archive->created_at->format('d M, Y') }}</div>
-                                    <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $archive->created_at->format('H:i') }} WITA</div>
+                                    <div class="font-bold text-slate-700 text-xs">{{ $archive->created_at->translatedFormat('d M Y') }}</div>
+                                    <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $archive->created_at->translatedFormat('H:i') }} WITA</div>
+                                    @if($archive->report)
+                                        <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-tighter">
+                                            Masuk: {{ $archive->report->created_at->translatedFormat('d M Y') }}
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="px-8 py-6 text-right">
                                     <a href="{{ route('gurubk.archives.show', $archive->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-xl border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
@@ -269,7 +411,7 @@
                                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
                                         </div>
                                         <div>
-                                            <p class="text-slate-400 font-black uppercase tracking-[0.2em] text-sm">Arsip Kosong</p>
+                                            <p class="text-slate-400 font-black uppercase tracking-[0.2em] text-sm">Arsip Kasung Kosong</p>
                                             <p class="text-xs font-bold text-slate-300 mt-1 uppercase tracking-widest">Belum ada kasus yang diselesaikan</p>
                                         </div>
                                     </div>
@@ -282,4 +424,24 @@
         </div>
     </div>
 </div>
+
+@if(session('download_pdf_path'))
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const pdfUrl = "{{ session('download_pdf_path') }}";
+            
+            // 1. Auto Preview in new tab
+            const previewWin = window.open(pdfUrl, '_blank');
+            
+            // 2. Auto Download using a temporary link
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            const filename = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+@endif
 @endsection

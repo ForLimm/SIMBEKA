@@ -3,13 +3,20 @@
 @section('title_display', 'Detail Arsip')
 
 @section('content')
-<div class="max-w-4xl mx-auto space-y-8">
+<div class="w-full space-y-6">
     {{-- Header --}}
-    <div class="flex items-center justify-between">
-        <a href="{{ route('gurubk.archives.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Kembali
-        </a>
+    <div class="flex items-center justify-between bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+        <div class="flex items-center gap-6">
+            <a href="{{ route('gurubk.archives.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition shadow-sm text-xs group">
+                <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali
+            </a>
+            <div class="h-8 w-px bg-slate-100"></div>
+            <div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Detail Arsip</h2>
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Arsip Catatan Bimbingan & Surat</p>
+            </div>
+        </div>
         <div class="flex items-center gap-2">
             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">ID Arsip:</span>
             <span class="text-xs font-black text-slate-900 tracking-tighter">#{{ str_pad($archive->id, 5, '0', STR_PAD_LEFT) }}</span>
@@ -21,9 +28,47 @@
         <div class="lg:col-span-2 space-y-8">
             <div class="card-premium p-8">
                 <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-100 pb-2">Isi Catatan Bimbingan / Laporan</h4>
-                <div class="bg-slate-50 rounded-[2rem] p-8 text-slate-700 leading-relaxed font-medium text-lg italic border border-slate-100 relative">
-                    <svg class="w-12 h-12 text-slate-200 absolute -top-4 -left-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.899 14.899 16 16 16L19 16L19 13L16 13C13.239 13 11 15.239 11 18L11 21L14.017 21ZM5.017 21L5.017 18C5.017 16.899 5.899 16 7 16L10 16L10 13L7 13C4.239 13 2 15.239 2 18L2 21L5.017 21Z"></path></svg>
-                    {{ $archive->guidance_notes }}
+                
+                @php
+                    $rawNotes = $archive->guidance_notes;
+                    $title = '';
+                    $desc = '';
+                    $category = '';
+
+                    if (preg_match('/^\[(.*?)\] (.*?): (.*)$/s', $rawNotes, $matches)) {
+                        $category = $matches[1];
+                        $title = $matches[2];
+                        $desc = $matches[3];
+                    } elseif (preg_match('/^(.*?): (.*)$/s', $rawNotes, $matches)) {
+                        $title = $matches[1];
+                        $desc = $matches[2];
+                        if (str_contains($title, 'Surat') || str_contains($title, 'SP1') || str_contains($title, 'SP2') || str_contains($title, 'Skorsing')) {
+                            $category = 'Surat Terbit';
+                        } else {
+                            $category = 'Umum';
+                        }
+                    } else {
+                        $desc = $rawNotes;
+                    }
+
+                    if (!$category && $archive->report) {
+                        $category = $archive->report->type === 'konsultasi' ? 'Konsultasi' : 'Pelaporan';
+                    }
+                @endphp
+
+                @if($title)
+                    <div class="mb-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-100/80">
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Topik Catatan / Kasus</span>
+                        <h3 class="text-lg font-black text-slate-800 tracking-tight">{{ $title }}</h3>
+                    </div>
+                @endif
+
+                <div class="relative">
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-3">Detail Deskripsi / Alasan</span>
+                    <div class="bg-slate-50 rounded-[2rem] p-8 text-slate-700 leading-relaxed font-medium text-lg italic border border-slate-100 relative">
+                        <svg class="w-12 h-12 text-slate-200 absolute -top-4 -left-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.899 14.899 16 16 16L19 16L19 13L16 13C13.239 13 11 15.239 11 18L11 21L14.017 21ZM5.017 21L5.017 18C5.017 16.899 5.899 16 7 16L10 16L10 13L7 13C4.239 13 2 15.239 2 18L2 21L5.017 21Z"></path></svg>
+                        {{ $desc }}
+                    </div>
                 </div>
 
                 @if($archive->attachment_path)
@@ -58,7 +103,7 @@
                             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Prioritas Awal</span>
                             <div class="mt-1">
                                 <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest {{ $archive->report->priority === 'high' ? 'bg-rose-100 text-rose-600' : 'bg-slate-200 text-slate-600' }}">
-                                    {{ $archive->report->priority }}
+                                    {{ $archive->report->priority === 'high' ? 'Tinggi' : ($archive->report->priority === 'medium' ? 'Sedang' : 'Rendah') }}
                                 </span>
                             </div>
                         </div>
@@ -87,20 +132,54 @@
                     </div>
                     <div>
                         <div class="font-black text-slate-900 tracking-tight">{{ $displayName }}</div>
-                        <div class="text-[10px] text-primary font-black uppercase tracking-tighter">Siswa Terdaftar</div>
+                        @php
+                            $subjectUser = null;
+                            if ($archive->student && $archive->student->user) {
+                                $subjectUser = $archive->student->user;
+                            } elseif ($archive->report && $archive->report->reporter) {
+                                $subjectUser = $archive->report->reporter;
+                            }
+
+                            $accountStatus = 'Siswa Terdaftar';
+                            if ($archive->report && $archive->report->is_anonymous) {
+                                $accountStatus = 'Anonim';
+                            } elseif ($subjectUser) {
+                                if ($subjectUser->is_guest) {
+                                    $accountStatus = 'Akun Guest';
+                                } else {
+                                    $accountStatus = 'Akun Regis';
+                                }
+                            }
+                        @endphp
+                        <div class="text-[10px] {{ $accountStatus === 'Akun Guest' ? 'text-amber-500' : ($accountStatus === 'Akun Regis' ? 'text-indigo-600' : 'text-primary') }} font-black uppercase tracking-tighter">{{ $accountStatus }}</div>
                     </div>
                 </div>
                 
-                @if($archive->student)
+                @if($archive->student && ($archive->student->nisn || $archive->student->class))
                 <div class="mt-6 pt-6 border-t border-slate-100 space-y-4">
+                    @if($archive->student->nisn)
                     <div>
                         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NISN</span>
                         <p class="text-xs font-black text-slate-800 tracking-wider">{{ $archive->student->nisn }}</p>
                     </div>
+                    @endif
+                    @if($archive->student->class)
                     <div>
                         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kelas / Jurusan</span>
                         <p class="text-xs font-bold text-slate-800">{{ $archive->student->class }}</p>
                     </div>
+                    @endif
+                </div>
+                @endif
+
+                @if($category)
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kategori Bimbingan</span>
+                    <p class="mt-1.5">
+                        <span class="px-2.5 py-1 bg-primary/10 text-primary text-[9px] font-black uppercase rounded-md tracking-wider">
+                            {{ $category }}
+                        </span>
+                    </p>
                 </div>
                 @endif
             </div>
@@ -117,9 +196,23 @@
                         <div class="text-[10px] text-slate-500 font-bold uppercase">Petugas Penanganan</div>
                     </div>
                 </div>
-                <div class="mt-6 pt-6 border-t border-slate-800">
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Selesai Pada</span>
-                    <p class="text-xs font-bold text-slate-300 mt-1">{{ $archive->created_at->format('d M Y, H:i') }} WITA</p>
+                <div class="mt-6 pt-6 border-t border-slate-800 space-y-4">
+                    @if($archive->report)
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                            Tanggal {{ $archive->report->type === 'konsultasi' ? 'Konsultasi' : 'Laporan' }}
+                        </span>
+                        <p class="text-xs font-bold text-slate-300 mt-1">
+                            {{ $archive->report->created_at->translatedFormat('d M Y, H:i') }} WITA
+                        </p>
+                    </div>
+                    @endif
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Selesai Pada</span>
+                        <p class="text-xs font-bold text-slate-300 mt-1">
+                            {{ $archive->created_at->translatedFormat('d M Y, H:i') }} WITA
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

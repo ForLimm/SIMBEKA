@@ -88,7 +88,7 @@
             </div>
 
             <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
-                <button type="reset" class="px-8 py-4 text-slate-400 font-bold hover:text-slate-600 transition text-sm">Reset</button>
+                <button type="reset" class="px-8 py-4 text-slate-400 font-bold hover:text-slate-600 transition text-sm">Atur Ulang</button>
                 <button type="submit" class="bg-primary hover:bg-secondary text-white font-black px-12 py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.95]">
                     Simpan & Daftarkan Siswa
                 </button>

@@ -4,16 +4,22 @@
 
 @section('content')
 <div class="w-full space-y-6">
-    {{-- Top Action Bar --}}
-    <div class="flex items-center justify-between bg-white px-6 py-4 rounded-3xl border border-slate-100 shadow-sm">
-        <a href="{{ route('gurubk.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition text-xs group">
-            <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Kembali
-        </a>
+    {{-- Header --}}
+    <div class="flex items-center justify-between bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+        <div class="flex items-center gap-6">
+            <a href="{{ route('gurubk.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition shadow-sm text-xs group">
+                <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali
+            </a>
+            <div class="h-8 w-px bg-slate-100"></div>
+            <div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Detail Pelaporan</h2>
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">ID Pelaporan: #{{ str_pad($report->id, 5, '0', STR_PAD_LEFT) }}</p>
+            </div>
+        </div>
         <div class="flex items-center gap-4">
-            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID: #{{ str_pad($report->id, 5, '0', STR_PAD_LEFT) }}</span>
             <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest {{ $report->status === 'resolved' ? 'bg-accent/10 text-accent' : 'bg-primary/10 text-primary' }}">
-                {{ str_replace('-', ' ', $report->status) }}
+                {{ $report->status === 'resolved' ? 'Selesai' : ($report->status === 'in-progress' ? 'Dalam Proses' : 'Menunggu') }}
             </span>
         </div>
     </div>
@@ -29,7 +35,7 @@
                 <div class="relative z-10">
                     <div class="flex items-center gap-2 mb-4">
                         <span class="text-[9px] font-black uppercase tracking-[0.2em] text-primary bg-primary/10 px-2 py-0.5 rounded-md">{{ $report->type }}</span>
-                        <span class="text-[9px] font-black uppercase tracking-[0.2em] {{ $report->priority === 'high' ? 'text-rose-600 bg-rose-50' : 'text-slate-400 bg-slate-50' }} px-2 py-0.5 rounded-md">{{ $report->priority }} Priority</span>
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] {{ $report->priority === 'high' ? 'text-rose-600 bg-rose-50' : 'text-slate-400 bg-slate-50' }} px-2 py-0.5 rounded-md">Prioritas {{ $report->priority === 'high' ? 'Tinggi' : ($report->priority === 'medium' ? 'Sedang' : 'Rendah') }}</span>
                     </div>
                     
                     <h1 class="text-3xl font-black text-slate-900 tracking-tight mb-8">{{ $report->title }}</h1>
@@ -52,7 +58,7 @@
                     @if($report->type === 'konsultasi' && $report->handled_by === auth()->id())
                         <a href="{{ route('chat.show', $report->id) }}" class="flex-1 md:flex-none bg-primary hover:bg-secondary text-white font-black px-6 py-3.5 rounded-2xl shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 text-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                            Lanjut Chat
+                            Lanjut Percakapan
                         </a>
                     @endif
                     <form action="{{ route('gurubk.report.resolve', $report->id) }}" method="POST" class="flex-1 md:flex-none">
@@ -81,14 +87,27 @@
                         </div>
                         <div>
                             <div class="font-black text-slate-900 tracking-tight text-xl leading-none mb-2">{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}</div>
-                            <div class="text-[9px] text-primary font-black uppercase tracking-widest">Siswa Terdaftar</div>
+                            @php
+                                $reporterUser = $report->reporter;
+                                $accountStatus = 'Siswa Terdaftar';
+                                if ($report->is_anonymous) {
+                                    $accountStatus = 'Anonim';
+                                } elseif ($reporterUser) {
+                                    if ($reporterUser->is_guest) {
+                                        $accountStatus = 'Akun Guest';
+                                    } else {
+                                        $accountStatus = 'Akun Regis';
+                                    }
+                                }
+                            @endphp
+                            <div class="text-[9px] {{ $accountStatus === 'Akun Guest' ? 'text-amber-500' : ($accountStatus === 'Akun Regis' ? 'text-indigo-600' : 'text-primary') }} font-black uppercase tracking-widest">{{ $accountStatus }}</div>
                         </div>
                     </div>
                     
                     <div class="space-y-4 pt-6 border-t border-slate-50">
                         <div class="flex justify-between items-center">
                             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Dikirim Pada</span>
-                            <span class="text-xs font-black text-slate-700">{{ $report->created_at->format('d M Y, H:i') }} WITA</span>
+                            <span class="text-xs font-black text-slate-700">{{ $report->created_at->translatedFormat('d M Y, H:i') }} WITA</span>
                         </div>
                         @if($report->reporter && $report->reporter->student)
                         <div class="flex justify-between items-center">

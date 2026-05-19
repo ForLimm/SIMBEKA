@@ -241,19 +241,19 @@
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="priority" value="low" class="peer sr-only" required>
                                 <div class="px-4 py-3 rounded-xl border-2 border-slate-100 text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition group-hover:bg-slate-50">
-                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-emerald-700 uppercase tracking-wider">Low</span>
+                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-emerald-700 uppercase tracking-wider">Rendah</span>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="priority" value="medium" class="peer sr-only">
                                 <div class="px-4 py-3 rounded-xl border-2 border-slate-100 text-center peer-checked:border-amber-500 peer-checked:bg-amber-50 transition group-hover:bg-slate-50">
-                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-amber-700 uppercase tracking-wider">Medium</span>
+                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-amber-700 uppercase tracking-wider">Sedang</span>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="priority" value="high" class="peer sr-only">
                                 <div class="px-4 py-3 rounded-xl border-2 border-slate-100 text-center peer-checked:border-rose-500 peer-checked:bg-rose-50 transition group-hover:bg-slate-50">
-                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-rose-700 uppercase tracking-wider">High</span>
+                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-rose-700 uppercase tracking-wider">Tinggi</span>
                                 </div>
                             </label>
                         </div>

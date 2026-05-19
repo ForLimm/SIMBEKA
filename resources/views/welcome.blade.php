@@ -48,7 +48,7 @@
                 <div class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Akses</div>
             </div>
             <div class="text-white text-center">
-                <div class="text-2xl font-black">Online</div>
+                <div class="text-2xl font-black">Daring</div>
                 <div class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Konsultasi</div>
             </div>
             <div class="text-white text-center">

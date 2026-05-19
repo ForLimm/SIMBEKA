@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Archive;
 use App\Models\Letter;
+use App\Models\CounselingSession;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -37,6 +38,26 @@ class ArchiveController extends Controller
             $letters = $lettersQuery->orderBy('created_at', 'desc')->get();
             
             return view('gurubk.archives.index', compact('letters'));
+        }
+        
+        // Handle Konseling (Counseling Sessions) separately!
+        if ($request->type === 'konseling') {
+            $sessionsQuery = CounselingSession::with('student')->where('teacher_id', $teacher->id)->where('status', 'selesai');
+            
+            if ($request->has('name') && $request->name != '') {
+                $searchName = $request->name;
+                $sessionsQuery->whereHas('student', function($q) use ($searchName) {
+                    $q->where('name', 'like', '%' . $searchName . '%');
+                });
+            }
+            
+            if ($request->has('date') && $request->date != '') {
+                $sessionsQuery->whereDate('counseling_date', $request->date);
+            }
+            
+            $sessions = $sessionsQuery->orderBy('counseling_date', 'desc')->get();
+            
+            return view('gurubk.archives.index', compact('sessions'));
         }
         
         // Handle normal counseling/pelaporan archives!
@@ -129,6 +150,12 @@ class ArchiveController extends Controller
             return response($html)
                 ->header('Content-Type', 'application/vnd.ms-excel')
                 ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        }
+
+        if ($request->format === 'pdf') {
+            $pdf = Pdf::loadView('gurubk.archives.export_pdf', compact('data', 'teacher'));
+            $filename = 'Laporan_BK_' . now()->format('Ymd') . '.pdf';
+            return $pdf->download($filename);
         }
 
         return back()->with('error', 'Format tidak didukung.');

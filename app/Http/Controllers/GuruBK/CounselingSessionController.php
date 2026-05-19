@@ -15,7 +15,8 @@ class CounselingSessionController extends Controller
         $teacher = Auth::user()->teacher;
         
         $query = CounselingSession::with('student')
-            ->where('teacher_id', $teacher->id);
+            ->where('teacher_id', $teacher->id)
+            ->where('status', '!=', 'selesai');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -54,8 +55,9 @@ class CounselingSessionController extends Controller
 
         $request->validate([
             'student_id' => 'required|exists:students,id',
+            'title' => 'required|string|max:255',
             'counseling_date' => 'required|date',
-            'category' => 'required|in:akademik,disiplin,keluarga,pertemanan,bullying,karier,pribadi,lainnya',
+            'category' => 'required|string|max:255',
             'summary' => 'required|string',
             'follow_up' => 'nullable|string',
             'status' => 'required|in:selesai,monitoring,tindak_lanjut',
@@ -68,49 +70,88 @@ class CounselingSessionController extends Controller
         }
 
         CounselingSession::create(array_merge($request->all(), [
-            'teacher_id' => $teacher->id
+            'teacher_id' => $teacher->id,
+            'completed_at' => $request->status === 'selesai' ? now() : null
         ]));
+
+        if ($request->status === 'selesai') {
+            return redirect()->route('gurubk.archives.index', ['type' => 'konseling'])->with('success', 'Catatan bimbingan berhasil diselesaikan dan diarsipkan.');
+        }
 
         return redirect()->route('gurubk.counseling.index')->with('success', 'Catatan konseling berhasil disimpan.');
     }
 
-    public function edit(CounselingSession $session)
+    public function show(CounselingSession $counseling)
     {
+        $session = $counseling;
         $teacher = Auth::user()->teacher;
         if ($session->teacher_id !== $teacher->id) {
             return redirect()->route('gurubk.counseling.index')->with('error', 'Akses ditolak.');
+        }
+
+        $session->load('student');
+        return view('gurubk.counseling.show', compact('session', 'teacher'));
+    }
+
+    public function edit(CounselingSession $counseling)
+    {
+        $session = $counseling;
+        $teacher = Auth::user()->teacher;
+        if ($session->teacher_id !== $teacher->id) {
+            return redirect()->route('gurubk.counseling.index')->with('error', 'Akses ditolak.');
+        }
+
+        if ($session->status === 'selesai') {
+            return redirect()->route('gurubk.counseling.index')->with('error', 'Catatan konseling yang telah selesai tidak dapat diubah.');
         }
 
         $students = Student::where('teacher_id', $teacher->id)->orderBy('name')->get();
         return view('gurubk.counseling.edit', compact('session', 'students', 'teacher'));
     }
 
-    public function update(Request $request, CounselingSession $session)
+    public function update(Request $request, CounselingSession $counseling)
     {
+        $session = $counseling;
         $teacher = Auth::user()->teacher;
         if ($session->teacher_id !== $teacher->id) {
             return redirect()->route('gurubk.counseling.index')->with('error', 'Akses ditolak.');
         }
 
+        if ($session->status === 'selesai') {
+            return redirect()->route('gurubk.counseling.index')->with('error', 'Catatan konseling yang telah selesai tidak dapat diubah.');
+        }
+
         $request->validate([
             'student_id' => 'required|exists:students,id',
+            'title' => 'required|string|max:255',
             'counseling_date' => 'required|date',
-            'category' => 'required|in:akademik,disiplin,keluarga,pertemanan,bullying,karier,pribadi,lainnya',
+            'category' => 'required|string|max:255',
             'summary' => 'required|string',
             'follow_up' => 'nullable|string',
             'status' => 'required|in:selesai,monitoring,tindak_lanjut',
         ]);
 
-        $session->update($request->all());
+        $session->update(array_merge($request->all(), [
+            'completed_at' => $request->status === 'selesai' ? ($session->completed_at ?? now()) : null
+        ]));
+
+        if ($request->status === 'selesai') {
+            return redirect()->route('gurubk.archives.index', ['type' => 'konseling'])->with('success', 'Catatan konseling diselesaikan dan dipindahkan ke arsip.');
+        }
 
         return redirect()->route('gurubk.counseling.index')->with('success', 'Catatan konseling berhasil diperbarui.');
     }
 
-    public function destroy(CounselingSession $session)
+    public function destroy(CounselingSession $counseling)
     {
+        $session = $counseling;
         $teacher = Auth::user()->teacher;
         if ($session->teacher_id !== $teacher->id) {
             return back()->with('error', 'Akses ditolak.');
+        }
+
+        if ($session->status === 'selesai') {
+            return back()->with('error', 'Catatan konseling yang telah selesai tidak dapat dihapus.');
         }
 
         $session->delete();

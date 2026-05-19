@@ -9,15 +9,18 @@ class CounselingSession extends Model
     protected $fillable = [
         'student_id',
         'teacher_id',
+        'title',
         'counseling_date',
         'category',
         'summary',
         'follow_up',
-        'status'
+        'status',
+        'completed_at'
     ];
 
     protected $casts = [
-        'counseling_date' => 'date'
+        'counseling_date' => 'date',
+        'completed_at' => 'datetime'
     ];
 
     public function student()

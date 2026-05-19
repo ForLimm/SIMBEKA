@@ -42,7 +42,7 @@
                                 <div class="font-black text-slate-800 text-base tracking-tight mb-1">{{ $report->title }}</div>
                                 <div class="flex items-center gap-2">
                                     <span class="text-[9px] uppercase font-black px-2 py-0.5 rounded {{ $report->priority === 'high' ? 'bg-rose-50 text-rose-500' : ($report->priority === 'medium' ? 'bg-amber-50 text-amber-500' : 'bg-emerald-50 text-emerald-500') }}">
-                                        {{ $report->priority }} Priority
+                                        Prioritas {{ $report->priority === 'high' ? 'Tinggi' : ($report->priority === 'medium' ? 'Sedang' : 'Rendah') }}
                                     </span>
                                 </div>
                             </td>
@@ -59,8 +59,8 @@
                                 @endif
                             </td>
                             <td class="px-6 py-6 text-slate-500 font-medium">
-                                <div class="font-bold text-slate-700">{{ $report->created_at->format('d M Y') }}</div>
-                                <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-tighter">{{ $report->created_at->format('H:i') }} WITA</div>
+                                <div class="font-bold text-slate-700">{{ $report->created_at->translatedFormat('d M Y') }}</div>
+                                <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-tighter">{{ $report->created_at->translatedFormat('H:i') }} WITA</div>
                             </td>
                             <td class="px-8 py-6">
                                 <div class="flex items-center justify-center">

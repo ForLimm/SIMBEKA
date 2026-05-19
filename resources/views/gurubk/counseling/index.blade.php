@@ -40,7 +40,6 @@
             <div class="w-full md:w-48">
                 <select name="status" class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm font-bold text-slate-700 focus:bg-white focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
                     <option value="">Semua Status</option>
-                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                     <option value="monitoring" {{ request('status') == 'monitoring' ? 'selected' : '' }}>Monitoring</option>
                     <option value="tindak_lanjut" {{ request('status') == 'tindak_lanjut' ? 'selected' : '' }}>Tindak Lanjut</option>
                 </select>
@@ -66,7 +65,7 @@
                     <tr class="bg-slate-50/50">
                         <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Tanggal</th>
                         <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Info Siswa</th>
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Kategori</th>
+                        <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Topik & Kategori</th>
                         <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">Ringkasan</th>
                         <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">Status</th>
                         <th class="px-8 py-5 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 text-right">Aksi</th>
@@ -76,7 +75,7 @@
                     @forelse($sessions as $session)
                     <tr class="group hover:bg-slate-50/50 transition-colors">
                         <td class="px-8 py-5">
-                            <span class="text-sm font-black text-slate-800">{{ $session->counseling_date->format('d M Y') }}</span>
+                            <span class="text-sm font-black text-slate-800">{{ $session->counseling_date->translatedFormat('d M Y') }}</span>
                         </td>
                         <td class="px-8 py-5">
                             <div class="flex items-center gap-3">
@@ -90,7 +89,12 @@
                             </div>
                         </td>
                         <td class="px-8 py-5">
-                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest">{{ $session->category }}</span>
+                            <div class="font-bold text-slate-700 leading-snug max-w-xs">
+                                {{ $session->title ?? 'Sesi Bimbingan Tatap Muka' }}
+                            </div>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[9px] font-black uppercase tracking-widest">{{ $session->category }}</span>
+                            </div>
                         </td>
                         <td class="px-8 py-5">
                             <p class="text-xs text-slate-500 font-medium line-clamp-2 max-w-xs italic leading-relaxed">"{{ $session->summary }}"</p>

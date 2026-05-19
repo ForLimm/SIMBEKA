@@ -65,12 +65,22 @@ Route::prefix('gurubk')->name('gurubk.')->group(function () {
     Route::get('report/{report}', [App\Http\Controllers\GuruBK\DashboardController::class, 'show'])->name('report.show');
     Route::post('report/{report}/resolve', [App\Http\Controllers\GuruBK\DashboardController::class, 'resolve'])->name('report.resolve');
     
+    Route::get('documents', [App\Http\Controllers\GuruBK\DocumentController::class, 'index'])->name('documents.index');
+
     Route::get('letters/create', [App\Http\Controllers\GuruBK\LetterController::class, 'create'])->name('letters.create');
     Route::post('letters', [App\Http\Controllers\GuruBK\LetterController::class, 'store'])->name('letters.store');
+    Route::get('letters/skorsing/create', [App\Http\Controllers\GuruBK\LetterController::class, 'createSkorsing'])->name('letters.skorsing.create');
+    Route::post('letters/skorsing', [App\Http\Controllers\GuruBK\LetterController::class, 'storeSkorsing'])->name('letters.skorsing.store');
+    Route::get('letters/sp1/create', [App\Http\Controllers\GuruBK\LetterController::class, 'createSp1'])->name('letters.sp1.create');
+    Route::post('letters/sp1', [App\Http\Controllers\GuruBK\LetterController::class, 'storeSp1'])->name('letters.sp1.store');
+    Route::get('letters/sp2/create', [App\Http\Controllers\GuruBK\LetterController::class, 'createSp2'])->name('letters.sp2.create');
+    Route::post('letters/sp2', [App\Http\Controllers\GuruBK\LetterController::class, 'storeSp2'])->name('letters.sp2.store');
     
     Route::get('archives', [App\Http\Controllers\GuruBK\ArchiveController::class, 'index'])->name('archives.index');
     Route::get('archives/export', [App\Http\Controllers\GuruBK\ArchiveController::class, 'export'])->name('archives.export');
     Route::get('archives/{archive}', [App\Http\Controllers\GuruBK\ArchiveController::class, 'show'])->name('archives.show');
+
+    Route::get('anecdotes/export', [App\Http\Controllers\GuruBK\AnecdoteController::class, 'export'])->name('anecdotes.export');
 
     Route::get('students', [App\Http\Controllers\GuruBK\StudentController::class, 'index'])->name('students.index');
     Route::get('students/create', [App\Http\Controllers\GuruBK\StudentController::class, 'create'])->name('students.create');
@@ -78,6 +88,7 @@ Route::prefix('gurubk')->name('gurubk.')->group(function () {
     Route::get('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'show'])->name('students.show');
     Route::get('students/{student}/edit', [App\Http\Controllers\GuruBK\StudentController::class, 'edit'])->name('students.edit');
     Route::put('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'update'])->name('students.update');
+    Route::delete('students/bulk-destroy', [App\Http\Controllers\GuruBK\StudentController::class, 'bulkDestroy'])->name('students.bulk_destroy');
     Route::delete('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'destroy'])->name('students.destroy');
     
     // Counseling Sessions

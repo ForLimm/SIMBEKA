@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Surat Panggilan Orang Tua</title>
+    <meta charset="utf-8">
+    <title>Surat Peringatan Pertama (SP1)</title>
     <style>
         @page {
             margin: 0;
         }
         body {
             font-family: 'Times New Roman', Times, serif;
-            font-size: 11pt;
+            font-size: 12pt;
             line-height: 1.5;
             color: #000;
             margin-top: 1.8cm;
             margin-bottom: 2cm;
             margin-left: 2.5cm;
-            margin-right: 2.5cm;
+            margin-right: 2cm;
         }
         
+        /* KOP SURAT */
         .kop-container {
-            text-align: center;
+            width: 100%;
             margin-bottom: 15px;
         }
         .kop-img {
             width: 100%;
             height: auto;
+            display: block;
         }
         
+        /* META SURAT */
         .meta-table {
             width: 100%;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border-collapse: collapse;
         }
         .meta-table td {
             vertical-align: top;
-            padding: 1px 0;
+            padding: 2px 0;
         }
         .meta-left {
             width: 60%;
@@ -42,52 +45,49 @@
         .meta-right {
             width: 40%;
             text-align: left;
-            padding-left: 20px;
         }
         
+        /* ISI SURAT */
         .content {
             text-align: justify;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .content p {
-            margin: 10px 0;
-            text-indent: 40px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            text-indent: 30px;
+        }
+        .content p.no-indent {
+            text-indent: 0;
         }
         
+        /* DETAIL SISWA TABLE */
         .detail-table {
             width: 90%;
             margin: 15px auto;
             border-collapse: collapse;
         }
         .detail-table td {
-            padding: 4px 8px;
+            padding: 4px 5px;
             vertical-align: top;
         }
         .detail-table td.label {
-            width: 150px;
+            width: 130px;
         }
         .detail-table td.colon {
             width: 10px;
             text-align: center;
         }
         
-        .closing {
-            margin-top: 20px;
-            text-align: justify;
-        }
-        
+        /* TANDA TANGAN */
         .signature-table {
             width: 100%;
             margin-top: 40px;
-            page-break-inside: avoid;
+            border-collapse: collapse;
         }
         .signature-table td {
             vertical-align: top;
             width: 50%;
-        }
-        .sig-left {
-            text-align: left;
-            padding-left: 20px;
         }
         .sig-right {
             text-align: left;
@@ -139,7 +139,7 @@
                     <tr>
                         <td>Hal</td>
                         <td>:</td>
-                        <td><strong>Undangan Orang Tua/Wali Siswa</strong></td>
+                        <td><strong>Surat Peringatan Pertama (SP1)</strong></td>
                     </tr>
                 </table>
             </td>
@@ -155,34 +155,34 @@
 
     {{-- ISI SURAT --}}
     <div class="content">
-        <p style="text-indent: 0;">Dengan Hormat,</p>
-        <p>Sehubungan dengan adanya permasalahan/pelanggaran tata tertib yang dilakukan oleh putra/putri Bapak/Ibu, maka kami mengharapkan kehadiran Bapak/Ibu pada:</p>
+        <p class="no-indent" style="margin-bottom: 15px;">Dengan hormat,</p>
+        <p class="no-indent">Sehubungan dengan pelanggaran tata tertib sekolah yang dilakukan oleh siswa di bawah ini:</p>
 
         <table class="detail-table">
             <tr>
-                <td class="label">Hari / Tanggal</td>
+                <td class="label">Nama</td>
                 <td class="colon">:</td>
-                <td><strong>{{ \Carbon\Carbon::parse($date)->locale('id')->isoFormat('dddd, D MMMM Y') }}</strong></td>
+                <td><strong>{{ $student_name }}</strong></td>
             </tr>
             <tr>
-                <td class="label">Jam</td>
+                <td class="label">Kelas</td>
                 <td class="colon">:</td>
-                <td><strong>{{ $time ?? '09:00' }} WITA</strong></td>
+                <td>{{ $class }}</td>
             </tr>
             <tr>
-                <td class="label">Tempat</td>
-                <td class="colon">:</td>
-                <td><strong>Ruang Bimbingan Konseling (BK) SMP Negeri 6 Palu</strong></td>
-            </tr>
-            <tr>
-                <td class="label">Keterangan / Alasan</td>
+                <td class="label">Pelanggaran</td>
                 <td class="colon">:</td>
                 <td style="font-weight: bold;">{!! nl2br(e($reason)) !!}</td>
             </tr>
         </table>
 
-        <p class="closing">Mengingat pentingnya hal tersebut, maka kami mengharapkan Bapak/Ibu untuk datang tepat waktu sesuai dengan waktu yang telah ditentukan.</p>
-        <p class="closing">Demikian surat panggilan ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
+        <p class="no-indent" style="margin-top: 15px;">Maka pihak sekolah memberikan surat peringatan pertama atau yang biasa disebut <strong>SP 1</strong> kepada siswa yang bersangkutan.</p>
+        
+        <p class="no-indent">Apabila di kemudian hari terulang kembali pelanggaran tata tertib sekolah, baik pelanggaran yang sama maupun berbeda, maka pihak sekolah akan memberikan surat peringatan kedua (SP 2) serta tindakan pembinaan yang lebih tegas.</p>
+        
+        <p class="no-indent">Namun, apabila dalam masa pemantauan siswa tersebut menunjukkan perubahan perilaku ke arah yang lebih baik dan mematuhi tata tertib sekolah, maka Surat Peringatan Pertama (SP1) ini akan diputihkan kembali.</p>
+        
+        <p class="no-indent" style="margin-top: 15px;">Demikian surat peringatan pertama ini dibuat agar siswa yang bersangkutan dapat memperbaiki perilakunya. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
     </div>
 
     {{-- TANDA TANGAN --}}
@@ -193,7 +193,7 @@
                 <div class="sig-image-container">
                     <img class="sig-image" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/cap_signature.png'))) }}" />
                 </div>
-                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::parse($date)->locale('id')->isoFormat('D MMMM Y') }}</p>
+                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</p>
                 <p style="margin-top: 5px; margin-bottom: 0; position: relative; z-index: 2;">Mengetahui,<br/>Kepala Sekolah,</p>
                 <div class="sig-space"></div>
                 <p class="sig-name" style="margin-top: 0; margin-bottom: 0; position: relative; z-index: 2;">Hartadi Gatot, S.Pd., M.P.Mat.</p>

@@ -167,4 +167,23 @@ class StudentController extends Controller
 
         return back()->with('success', 'Data siswa berhasil dihapus.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $teacher = Auth::user()->teacher;
+        
+        if (!$request->has('student_ids')) {
+            return back()->with('error', 'Tidak ada siswa yang dipilih.');
+        }
+
+        $ids = explode(',', $request->student_ids);
+        
+        // Ensure the teacher only deletes their own students
+        $students = Student::whereIn('id', $ids)->where('teacher_id', $teacher->id)->get();
+        foreach ($students as $student) {
+            $student->delete();
+        }
+
+        return back()->with('success', 'Data siswa terpilih berhasil dihapus.');
+    }
 }

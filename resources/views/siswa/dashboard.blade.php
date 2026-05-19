@@ -13,7 +13,7 @@
             <h2 class="text-3xl font-black text-slate-800 tracking-tight leading-none">Halo, {{ auth()->user()->username }}!</h2>
             <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-3 flex items-center gap-2">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                Selamat Datang di Workspace Siswa
+                Selamat Datang di Ruang Kerja Siswa
             </p>
         </div>
         

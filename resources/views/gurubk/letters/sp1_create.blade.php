@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Buat Surat Panggilan - Sistem Informasi Manajemen Bimbingan & Konseling')
+@section('title', 'Buat Surat Peringatan (SP1) - Sistem Informasi Manajemen Bimbingan & Konseling')
 @section('title_display', 'Administrasi Surat')
 
 @section('content')
@@ -13,24 +13,24 @@
             </a>
             <div class="h-8 w-px bg-slate-100"></div>
             <div>
-                <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Surat Panggilan</h2>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Generate surat panggilan orang tua / wali murid</p>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Surat Peringatan (SP1)</h2>
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Generate surat peringatan pertama resmi pelanggaran tata tertib</p>
             </div>
         </div>
     </div>
 
     <div class="card-premium overflow-hidden">
-        <div class="bg-primary px-8 py-6 text-white">
-            <h3 class="text-lg font-bold">Formulir Panggilan</h3>
-            <p class="text-blue-100 text-[10px] font-black uppercase tracking-widest opacity-80 mt-1">Sistem Informasi Manajemen Bimbingan & Konseling</p>
+        <div class="bg-amber-600 px-8 py-6 text-white">
+            <h3 class="text-lg font-bold">Formulir Surat Peringatan Pertama (SP1)</h3>
+            <p class="text-amber-100 text-[10px] font-black uppercase tracking-widest opacity-80 mt-1">Sistem Informasi Manajemen Bimbingan & Konseling</p>
         </div>
 
-        <form action="{{ route('gurubk.letters.store') }}" method="POST" class="p-8 space-y-6">
+        <form action="{{ route('gurubk.letters.sp1.store') }}" method="POST" class="p-8 space-y-6">
             @csrf
             <div>
                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Pilih Siswa (Bimbingan Anda) <span class="text-rose-500">*</span></label>
                 <div class="relative">
-                    <select name="student_id" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium" required>
+                    <select name="student_id" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition appearance-none font-medium" required>
                         <option value="" disabled {{ !isset($selectedStudentId) ? 'selected' : '' }}>-- Pilih Siswa --</option>
                         @foreach($students as $student)
                             <option value="{{ $student->id }}" {{ (isset($selectedStudentId) && $selectedStudentId == $student->id) ? 'selected' : '' }}>{{ $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama') }} - {{ $student->class }} (NISN: {{ $student->nisn ?? '-' }})</option>
@@ -40,37 +40,26 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
                 </div>
-                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight ml-1 italic">* Nama & alamat orang tua akan otomatis diambil dari database.</p>
+                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight ml-1 italic">* Nama orang tua akan otomatis diambil dari database.</p>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Nomor Surat <span class="text-rose-500">*</span></label>
-                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus-within:ring-4 focus-within:ring-primary/10 focus-within:border-primary transition max-w-sm">
+                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 focus-within:ring-4 focus-within:ring-amber-500/10 focus-within:border-amber-500 transition max-w-sm">
                     <span class="text-sm font-bold text-slate-500">421.7 /</span>
-                    <input type="text" name="letter_number" maxlength="3" placeholder="001" class="w-16 bg-transparent border-b-2 border-slate-300 font-bold text-center text-sm outline-none focus:border-primary transition" required>
+                    <input type="text" name="letter_number" maxlength="3" placeholder="001" class="w-16 bg-transparent border-b-2 border-slate-300 font-bold text-center text-sm outline-none focus:border-amber-500 transition" required>
                     <span class="text-sm font-bold text-slate-500">/ SMP.06 / {{ date('Y') }}</span>
                 </div>
                 <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight ml-1 italic">* Masukkan 3 digit nomor urut surat (contoh: 001, 012).</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Tanggal Panggilan <span class="text-rose-500">*</span></label>
-                    <input type="date" name="date" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Jam Panggilan</label>
-                    <input type="time" name="time" value="09:00" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium">
-                </div>
-            </div>
-
             <div>
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Alasan Panggilan / Keterangan <span class="text-rose-500">*</span></label>
-                <textarea name="reason" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition resize-none font-medium" placeholder="Contoh: Terkait ketidakhadiran berturut-turut selama 5 hari..." required></textarea>
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Pelanggaran / Alasan SP1 <span class="text-rose-500">*</span></label>
+                <textarea name="reason" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-sm focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition resize-none font-medium" placeholder="Contoh: Sering bolos sekolah tanpa keterangan dan terlambat masuk..." required></textarea>
             </div>
 
             <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
-                <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.95] flex items-center justify-center gap-2">
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-black py-4 rounded-2xl shadow-xl shadow-amber-600/20 transition-all hover:scale-[1.02] active:scale-[0.95] flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     Generate PDF & Arsipkan
                 </button>

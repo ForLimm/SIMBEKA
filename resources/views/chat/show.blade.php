@@ -66,7 +66,7 @@
                         <p class="text-sm font-medium leading-relaxed">{{ $message->message }}</p>
                         
                         <div class="mt-2 flex items-center gap-1.5 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
-                            <span class="text-[8px] md:text-[9px] font-bold opacity-50 uppercase tracking-widest">{{ $message->created_at->format('H:i') }}</span>
+                            <span class="text-[8px] md:text-[9px] font-bold opacity-50 uppercase tracking-widest">{{ $message->created_at->translatedFormat('H:i') }}</span>
                             @if($message->sender_id === auth()->id())
                                 <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             @endif
@@ -80,7 +80,7 @@
                     <svg class="w-8 h-8 md:w-12 md:h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                 </div>
                 <div class="text-center">
-                    <p class="font-black uppercase tracking-[0.3em] text-xs md:text-sm text-slate-800">Mulai Chat</p>
+                    <p class="font-black uppercase tracking-[0.3em] text-xs md:text-sm text-slate-800">Mulai Percakapan</p>
                     <p class="text-[8px] md:text-[10px] font-bold mt-1 uppercase tracking-widest text-slate-500">Sampaikan keluhan atau pertanyaan Anda</p>
                 </div>
             </div>

@@ -72,7 +72,7 @@
                         <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-primary/20">S</div>
                         <div class="flex flex-col">
                             <span class="font-black text-white tracking-tighter text-lg leading-none">SIMBEKA</span>
-                            <span class="text-[8px] font-bold text-[#565674] uppercase tracking-widest mt-1">Sistem Manajemen BK</span>
+                            <span class="text-[8px] font-bold text-[#565674] uppercase tracking-widest mt-1">Sistem Informasi Manajemen BK</span>
                         </div>
                     </div>
 
@@ -152,28 +152,28 @@
                             <div class="space-y-1">
                                 <a href="{{ route('gurubk.students.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.students.*') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.students.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                    <span class="font-bold text-sm">Database Siswa</span>
+                                    <span class="font-bold text-sm">Data Siswa</span>
                                 </a>
                                 <a href="{{ route('gurubk.counseling.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.counseling.*') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.counseling.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                    <span class="font-bold text-sm">Dokumentasi Konseling</span>
+                                    <span class="font-bold text-sm">Catatan Konseling</span>
                                 </a>
-                                {{-- Arsip Kasus & Bimbingan --}}
+                                {{-- Arsip Bimbingan --}}
                                 <a href="{{ route('gurubk.archives.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.archives.*') && request('type') != 'surat' ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.archives.*') && request('type') != 'surat' ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
-                                    <span class="font-bold text-sm">Arsip Kasus & Bimbingan</span>
+                                    <span class="font-bold text-sm">Arsip Bimbingan</span>
                                 </a>
 
-                                {{-- Arsip Surat Terbit --}}
+                                {{-- Arsip Surat --}}
                                 <a href="{{ route('gurubk.archives.index', ['type' => 'surat']) }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.archives.*') && request('type') == 'surat' ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.archives.*') && request('type') == 'surat' ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                     <span class="font-bold text-sm">Arsip Surat Terbit</span>
                                 </a>
 
-                                {{-- Buat Surat Panggilan --}}
-                                <a href="{{ route('gurubk.letters.create') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.letters.create') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
-                                    <svg class="w-5 h-5 {{ request()->routeIs('gurubk.letters.create') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                    <span class="font-bold text-sm">Buat Surat Panggilan</span>
+                                {{-- Buat Surat & Laporan --}}
+                                <a href="{{ route('gurubk.documents.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('gurubk.documents.*') || request()->routeIs('gurubk.letters.create') || request()->routeIs('letters.*') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                    <svg class="w-5 h-5 {{ request()->routeIs('gurubk.documents.*') || request()->routeIs('gurubk.letters.create') || request()->routeIs('letters.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    <span class="font-bold text-sm">Buat Surat</span>
                                 </a>
                             </div>
                         </div>

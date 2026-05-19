@@ -48,12 +48,63 @@
                     </div>
 
                     <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Topik / Judul Bimbingan <span class="text-rose-500">*</span></label>
+                        <input type="text" name="title" value="{{ old('title', $session->title) }}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Contoh: Motivasi Belajar Menurun / Pelanggaran Disiplin">
+                    </div>
+
+                    <div x-data="{ 
+                        isCustom: {{ !in_array(old('category', $session->category), ['akademik', 'disiplin', 'keluarga', 'pertemanan', 'bullying', 'karier', 'pribadi']) && old('category', $session->category) !== null ? 'true' : 'false' }}, 
+                        categoryValue: '{{ old('category', $session->category) }}' 
+                    }">
                         <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kategori Masalah <span class="text-rose-500">*</span></label>
-                        <select name="category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
-                            @foreach(['akademik', 'disiplin', 'keluarga', 'pertemanan', 'bullying', 'karier', 'pribadi', 'lainnya'] as $cat)
-                                <option value="{{ $cat }}" {{ $session->category == $cat ? 'selected' : '' }}>{{ ucfirst($cat) }}</option>
-                            @endforeach
-                        </select>
+                        
+                        {{-- Select Dropdown --}}
+                        <div x-show="!isCustom">
+                            <select 
+                                x-model="categoryValue" 
+                                x-on:change="if(categoryValue === 'lainnya') { isCustom = true; categoryValue = ''; }"
+                                :name="!isCustom ? 'category' : ''" 
+                                :required="!isCustom"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium"
+                            >
+                                <option value="">Pilih Kategori...</option>
+                                <option value="akademik">Akademik</option>
+                                <option value="disiplin">Disiplin</option>
+                                <option value="keluarga">Keluarga</option>
+                                <option value="pertemanan">Pertemanan</option>
+                                <option value="bullying">Bullying</option>
+                                <option value="karier">Karier</option>
+                                <option value="pribadi">Pribadi</option>
+                                <option value="lainnya">Lainnya (Isi Manual...)</option>
+                            </select>
+                        </div>
+
+                        {{-- Text Input for Custom Category --}}
+                        <div x-show="isCustom" x-cloak class="flex gap-2">
+                            <div class="relative flex-grow">
+                                <input 
+                                    type="text" 
+                                    x-model="categoryValue"
+                                    :name="isCustom ? 'category' : ''" 
+                                    :required="isCustom"
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-4 pr-16 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" 
+                                    placeholder="Tulis kategori masalah secara manual..."
+                                >
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <span class="text-[8px] font-black text-primary/70 uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded">Manual</span>
+                                </div>
+                            </div>
+                            <button 
+                                type="button" 
+                                x-on:click="isCustom = false; categoryValue = '';" 
+                                class="px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-700 transition flex items-center justify-center shadow-sm"
+                                title="Kembali ke pilihan"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <div>
