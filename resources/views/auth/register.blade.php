@@ -7,13 +7,14 @@
     {{-- Left Column: Register Form --}}
     <div class="w-full md:w-[45%] flex items-center justify-center p-6 md:p-10 overflow-y-auto custom-scrollbar bg-white">
         <div class="w-full max-w-sm">
-            {{-- Branding for Mobile --}}
-            <div class="mb-6 md:hidden text-center">
-                <h1 class="text-2xl font-black text-slate-900 leading-none">SIMBEKA.</h1>
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-1.5">Pendaftaran Akun Baru</p>
+            {{-- Branding Logo --}}
+            <div class="mb-8 flex justify-center md:justify-start">
+                <a href="{{ url('/') }}" class="block">
+                    <img src="{{ asset('assets/images/logo_simbeka_teks.svg') }}" alt="Logo SIMBEKA" class="h-18 w-auto object-contain brightness-0">
+                </a>
             </div>
 
-            <div class="mb-6 hidden md:block">
+            <div class="mb-6">
                 <h1 class="text-2xl md:text-3xl font-black text-slate-900 mb-1 leading-tight tracking-tight">Registrasi Akun Baru</h1>
                 <p class="text-slate-400 text-xs font-semibold">Buat akun untuk mulai menggunakan layanan BK.</p>
             </div>

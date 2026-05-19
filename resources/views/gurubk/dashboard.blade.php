@@ -259,9 +259,15 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 transition active:scale-[0.98]">
-                        Ambil & Tangani Kasus
-                    </button>
+                    @if($myInProgressReports->count() >= 5)
+                        <div class="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-600 text-xs font-bold leading-relaxed text-center">
+                            Batas maksimal penanganan kasus aktif adalah 5. Selesaikan kasus yang sedang Anda tangani saat ini sebelum mengambil kasus baru.
+                        </div>
+                    @else
+                        <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 transition active:scale-[0.98]">
+                            Ambil & Tangani Kasus
+                        </button>
+                    @endif
                 </form>
             </div>
         </div>

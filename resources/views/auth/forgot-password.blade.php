@@ -7,13 +7,14 @@
     {{-- Left Column: Recovery Form --}}
     <div class="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 overflow-y-auto custom-scrollbar bg-white">
         <div class="w-full max-w-sm" x-data="{ tab: 'recovery_code' }">
-            {{-- Branding for Mobile --}}
-            <div class="mb-8 md:hidden text-center">
-                <h1 class="text-3xl font-black text-slate-900 leading-none">SIMBEKA.</h1>
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-2">Pemulihan Akses Akun</p>
+            {{-- Branding Logo --}}
+            <div class="mb-8 flex justify-center md:justify-start">
+                <a href="{{ url('/') }}" class="block">
+                    <img src="{{ asset('assets/images/logo_simbeka_teks.svg') }}" alt="Logo SIMBEKA" class="h-18 w-auto object-contain brightness-0">
+                </a>
             </div>
 
-            <div class="mb-8 hidden md:block">
+            <div class="mb-8">
                 <h1 class="text-4xl font-black text-slate-900 mb-2 leading-tight">Pemulihan <br> Akun Siswa.</h1>
                 <p class="text-slate-500 font-medium">Pilih metode pemulihan di bawah ini.</p>
             </div>

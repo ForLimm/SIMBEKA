@@ -83,6 +83,15 @@ class DashboardController extends Controller
             return back()->with('error', 'Kasus ini sudah diambil oleh guru lain.');
         }
 
+        // Batasi maksimal 5 kasus aktif (gabungan laporan dan konsultasi) per Guru BK
+        $activeCasesCount = Report::where('handled_by', Auth::id())
+            ->where('status', 'in-progress')
+            ->count();
+
+        if ($activeCasesCount >= 5) {
+            return back()->with('error', 'Batas maksimal penanganan kasus aktif adalah 5. Selesaikan kasus yang sedang ditangani sebelum mengambil kasus baru.');
+        }
+
         $request->validate([
             'priority' => 'required|in:low,medium,high',
         ]);

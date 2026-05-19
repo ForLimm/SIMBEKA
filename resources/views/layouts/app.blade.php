@@ -57,6 +57,17 @@
         $isGuestPage = request()->is('/') || 
                        request()->is('login') || 
                        request()->is('register');
+
+        $dashboardUrl = '#';
+        if (auth()->check()) {
+            if (auth()->user()->role === 'siswa') {
+                $dashboardUrl = route('siswa.dashboard');
+            } elseif (auth()->user()->role === 'admin') {
+                $dashboardUrl = route('admin.dashboard');
+            } else {
+                $dashboardUrl = route('gurubk.dashboard');
+            }
+        }
     @endphp
 
     <div class="flex min-h-screen">
@@ -68,12 +79,10 @@
             @if(!$isGuestPage)
                 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'" class="w-72 bg-[#1e1e2d] flex flex-col fixed h-full z-50 transition-all duration-300 ease-in-out transform lg:translate-x-0">
                     {{-- Logo Section --}}
-                    <div class="p-8 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-primary/20">S</div>
-                        <div class="flex flex-col">
-                            <span class="font-black text-white tracking-tighter text-lg leading-none">SIMBEKA</span>
-                            <span class="text-[8px] font-bold text-[#565674] uppercase tracking-widest mt-1">Sistem Informasi Manajemen BK</span>
-                        </div>
+                    <div class="py-6 px-4 flex items-center justify-center">
+                        <a href="{{ $dashboardUrl }}" class="block transition-transform hover:scale-95 active:scale-90">
+                            <img src="{{ asset('assets/images/logo_simbeka_teks.svg') }}" alt="Logo SIMBEKA" class="h-18 w-auto object-contain max-w-full">
+                        </a>
                     </div>
 
 
