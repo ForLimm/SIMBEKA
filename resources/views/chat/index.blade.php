@@ -20,11 +20,11 @@
             @endif
             <div class="h-10 w-px bg-slate-200 mx-1"></div>
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-primary text-white rounded-2xl flex items-center justify-center font-black shadow-lg shadow-primary/20 text-lg">
+                <div class="w-12 h-12 bg-primary text-white rounded-lg flex items-center justify-center font-semibold shadow-sm text-lg">
                     {{ substr($report->reporter->name ?? 'S', 0, 1) }}
                 </div>
                 <div>
-                    <h3 class="font-black text-slate-800 tracking-tight text-lg leading-tight">
+                    <h3 class="font-semibold text-slate-800 tracking-tight text-lg leading-tight">
                         {{ auth()->user()->role === 'guru_bk' ? ($report->reporter->name ?? 'Siswa') : 'Guru BK' }}
                     </h3>
                     <div class="flex items-center gap-2 mt-0.5">
@@ -32,7 +32,7 @@
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sesi Aktif</span>
+                        <span class="text-[10px] font-bold text-slate-400 font-medium">Sesi Aktif</span>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
 
         <div class="hidden md:flex items-center gap-6">
             <div class="text-right">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Topik</div>
+                <div class="text-[10px] font-semibold text-slate-400 font-medium mb-0.5">Topik</div>
                 <div class="text-sm font-bold text-slate-700 truncate max-w-[200px]">{{ $report->title }}</div>
             </div>
         </div>
@@ -51,11 +51,11 @@
         {{-- Notice --}}
         <div class="max-w-2xl mx-auto mb-10">
             <div class="bg-amber-50/80 backdrop-blur border border-amber-200/50 p-6 rounded-[2rem] flex items-start gap-4 shadow-sm">
-                <div class="w-10 h-10 bg-amber-100 rounded-2xl flex items-center justify-center shrink-0 text-amber-600">
+                <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center shrink-0 text-amber-600">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-sm font-black text-amber-900 uppercase tracking-tight">Mode Self-Destruct Aktif</h4>
+                    <h4 class="text-sm font-semibold text-amber-900 uppercase tracking-tight">Mode Self-Destruct Aktif</h4>
                     <p class="text-xs text-amber-700 font-medium leading-relaxed mt-1">Seluruh riwayat percakapan ini akan otomatis terhapus selamanya begitu Guru BK menekan tombol <strong>"Selesaikan Kasus"</strong>.</p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                 </div>
                 <div class="text-center">
-                    <p class="font-black uppercase tracking-[0.3em] text-sm text-slate-800">Mulai Percakapan</p>
+                    <p class="font-semibold uppercase tracking-[0.3em] text-sm text-slate-800">Mulai Percakapan</p>
                 </div>
             </div>
         </template>
@@ -76,7 +76,7 @@
             <div class="flex" :class="msg.is_mine ? 'justify-end' : 'justify-start'">
                 <div class="max-w-[85%] md:max-w-[65%] group relative">
                     <template x-if="!msg.is_mine">
-                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-4" x-text="msg.sender_name"></span>
+                        <span class="block text-[10px] font-semibold text-slate-400 font-medium mb-1.5 ml-4" x-text="msg.sender_name"></span>
                     </template>
 
                     <div class="relative px-6 py-4 shadow-md break-words overflow-hidden" :class="msg.is_mine 
@@ -86,7 +86,7 @@
                         <p class="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words" x-text="msg.message"></p>
                         
                         <div class="mt-2 flex items-center gap-2" :class="msg.is_mine ? 'justify-end' : 'justify-start'">
-                            <span class="text-[9px] font-bold opacity-50 uppercase tracking-widest" x-text="msg.time"></span>
+                            <span class="text-[9px] font-bold opacity-50 font-medium" x-text="msg.time"></span>
                             <template x-if="msg.is_mine">
                                 <svg class="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </template>
@@ -114,8 +114,8 @@
             </button>
         </form>
         @else
-        <div class="max-w-2xl mx-auto text-center py-4 px-8 bg-slate-100 rounded-2xl border border-slate-200">
-            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Sesi Konsultasi Telah Selesai & Diarsipkan</p>
+        <div class="max-w-2xl mx-auto text-center py-4 px-8 bg-slate-100 rounded-lg border border-slate-200">
+            <p class="text-sm font-bold text-slate-500 font-medium">Sesi Konsultasi Telah Selesai & Diarsipkan</p>
         </div>
         @endif
     </div>

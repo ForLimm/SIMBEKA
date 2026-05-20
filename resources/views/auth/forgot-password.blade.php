@@ -15,7 +15,7 @@
             </div>
 
             <div class="mb-8">
-                <h1 class="text-4xl font-black text-slate-900 mb-2 leading-tight">Pemulihan <br> Akun Siswa.</h1>
+                <h1 class="text-4xl font-semibold text-slate-900 mb-2 leading-tight">Pemulihan <br> Akun Siswa.</h1>
                 <p class="text-slate-500 font-medium">Pilih metode pemulihan di bawah ini.</p>
             </div>
 
@@ -23,19 +23,19 @@
             @if($errors->any() || session('success') || session('error'))
                 <div class="mb-6 space-y-2">
                     @if(session('success'))
-                        <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 px-4 py-3 rounded-xl text-[11px] font-bold shadow-sm flex items-center gap-2">
+                        <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 px-4 py-3 rounded-lg text-[11px] font-bold shadow-sm flex items-center gap-2">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>{{ session('success') }}</span>
                         </div>
                     @endif
                     @if(session('error'))
-                        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-xl text-[11px] font-bold shadow-sm flex items-center gap-2">
+                        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-lg text-[11px] font-bold shadow-sm flex items-center gap-2">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>{{ session('error') }}</span>
                         </div>
                     @endif
                     @if($errors->any())
-                        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-xl text-[11px] font-bold shadow-sm">
+                        <div class="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-lg text-[11px] font-bold shadow-sm">
                             <ul class="list-disc ml-4 space-y-1">
                                 @foreach($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -47,11 +47,11 @@
             @endif
 
             {{-- Tab Switcher --}}
-            <div class="flex bg-slate-100 p-1 rounded-2xl mb-8">
-                <button @click="tab = 'recovery_code'" :class="tab === 'recovery_code' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300">
+            <div class="flex bg-slate-100 p-1 rounded-lg mb-8">
+                <button @click="tab = 'recovery_code'" :class="tab === 'recovery_code' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'" class="flex-1 py-3 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-all duration-300">
                     Kode Pemulihan
                 </button>
-                <button @click="tab = 'security_question'" :class="tab === 'security_question' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300">
+                <button @click="tab = 'security_question'" :class="tab === 'security_question' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'" class="flex-1 py-3 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-all duration-300">
                     Pertanyaan Keamanan
                 </button>
             </div>
@@ -62,15 +62,15 @@
                     @csrf
                     <div class="space-y-4">
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Username</label>
-                            <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Username akun Anda">
+                            <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Username</label>
+                            <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Username akun Anda">
                         </div>
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kode Pemulihan (Recovery Code)</label>
-                            <input type="text" name="recovery_code" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-black uppercase tracking-[0.2em]" placeholder="ABCD-1234">
+                            <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Kode Pemulihan (Recovery Code)</label>
+                            <input type="text" name="recovery_code" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-semibold " placeholder="ABCD-1234">
                         </div>
                     </div>
-                    <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-black py-4 rounded-xl shadow-xl transition-all active:scale-[0.98] text-sm uppercase tracking-widest mt-4">
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-4 rounded-lg shadow-xl transition-all active:scale-[0.98] text-sm font-medium mt-4">
                         Masuk Sekarang
                     </button>
                 </form>
@@ -82,12 +82,12 @@
                     @csrf
                     <div class="space-y-4">
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Username</label>
-                            <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Username Anda">
+                            <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Username</label>
+                            <input type="text" name="username" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Username Anda">
                         </div>
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Pertanyaan Keamanan</label>
-                            <select name="security_question" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Pertanyaan Keamanan</label>
+                            <select name="security_question" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
                                 <option value="">Pilih pertanyaan Anda</option>
                                 <option value="Apa nama hewan peliharaan pertama Anda?">Nama hewan peliharaan pertama?</option>
                                 <option value="Nama sekolah dasar Anda?">Nama sekolah dasar Anda?</option>
@@ -96,28 +96,28 @@
                             </select>
                         </div>
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Jawaban</label>
-                            <input type="text" name="security_answer" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Jawaban rahasia">
+                            <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Jawaban</label>
+                            <input type="text" name="security_answer" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Jawaban rahasia">
                         </div>
                         <div class="grid grid-cols-2 gap-3 pt-2">
                             <div class="space-y-1.5">
-                                <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Password Baru</label>
-                                <input type="password" name="new_password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
+                                <label class="text-[9px] font-semibold text-slate-400 font-medium ml-1">Password Baru</label>
+                                <input type="password" name="new_password" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
                             </div>
                             <div class="space-y-1.5">
-                                <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Konfirmasi</label>
-                                <input type="password" name="new_password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
+                                <label class="text-[9px] font-semibold text-slate-400 font-medium ml-1">Konfirmasi</label>
+                                <input type="password" name="new_password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-xl shadow-xl shadow-primary/20 transition-all active:scale-[0.98] text-sm uppercase tracking-widest mt-4">
+                    <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-lg shadow-xl shadow-primary/20 transition-all active:scale-[0.98] text-sm font-medium mt-4">
                         Reset & Masuk
                     </button>
                 </form>
             </div>
 
             <div class="mt-10 pt-8 border-t border-slate-100 text-center">
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-primary transition">
+                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 text-[10px] font-semibold text-slate-400 font-medium hover:text-primary transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     Kembali ke Login
                 </a>
@@ -131,17 +131,17 @@
         <div class="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[120px]"></div>
         
         <div class="relative z-10 w-full max-w-lg">
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[10px] font-black uppercase tracking-[0.2em] mb-12 ml-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[10px] font-semibold  mb-12 ml-auto">
                 Account Recovery
             </div>
-            <h2 class="text-6xl font-black text-white leading-[1.1] mb-8">Pemulihan <br> Akses <span class="text-primary text-7xl italic">Mandiri.</span></h2>
+            <h2 class="text-6xl font-semibold text-white leading-[1.1] mb-8">Pemulihan <br> Akses <span class="text-primary text-7xl italic">Mandiri.</span></h2>
             <div class="h-1.5 w-32 bg-primary mb-8 rounded-full ml-auto"></div>
             <p class="text-slate-400 text-lg leading-relaxed mb-12 font-medium">Lupa kredensial masuk? Gunakan kode pemulihan atau pertanyaan keamanan Anda untuk kembali mengakses workspace.</p>
             
             <div class="flex items-center gap-4 justify-end">
-                <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-primary border border-white/10 italic font-black text-xl italic font-serif">?</div>
+                <div class="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center text-primary border border-white/10 italic font-semibold text-xl italic font-serif">?</div>
                 <div class="text-left">
-                    <p class="text-white text-xs font-black uppercase tracking-widest leading-none">Butuh Bantuan?</p>
+                    <p class="text-white text-xs font-medium leading-none">Butuh Bantuan?</p>
                     <p class="text-slate-500 text-[10px] font-bold mt-1 uppercase tracking-tight">Hubungi Admin Sekolah</p>
                 </div>
             </div>

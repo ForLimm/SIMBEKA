@@ -5,10 +5,10 @@
 @section('content')
 <div class="w-full space-y-4">
     {{-- Header --}}
-    <div class="flex items-center justify-between bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+    <div class="flex items-center justify-between bg-white p-6 rounded-lg border border-slate-100 shadow-sm">
         <div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Pengaturan Akun</h2>
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">Ubah Kata Sandi & Manajemen Keamanan Akun</p>
+            <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Pengaturan Akun</h2>
+            <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">Ubah Kata Sandi & Manajemen Keamanan Akun</p>
         </div>
     </div>
     <form action="{{ route('profile.password.update') }}" method="POST" class="grid grid-cols-1 xl:grid-cols-12 gap-6"
@@ -54,31 +54,31 @@
         
         {{-- Left: Ubah Kata Sandi (8/12) --}}
         <div class="xl:col-span-8 space-y-4">
-            <div class="card-premium overflow-hidden bg-white">
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden bg-white">
                 <div class="bg-slate-50 px-8 py-4 border-b border-slate-100">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Formulir Pengubahan Sandi</h3>
+                    <h3 class="text-[10px] font-semibold text-slate-400 ">Formulir Pengubahan Sandi</h3>
                 </div>
                 
                 <div class="p-8 space-y-5">
                     <div>
                         @if(auth()->user()->is_guest)
-                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kata Sandi Saat Ini / Kode Pemulihan <span class="text-rose-500">*</span></label>
-                            <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini atau kode pemulihan">
+                            <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Kata Sandi Saat Ini / Kode Pemulihan <span class="text-rose-500">*</span></label>
+                            <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini atau kode pemulihan">
                         @else
-                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kata Sandi Saat Ini <span class="text-rose-500">*</span></label>
-                            <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini">
+                            <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Kata Sandi Saat Ini <span class="text-rose-500">*</span></label>
+                            <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini">
                         @endif
                     </div>
 
                     <div>
-                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kata Sandi Baru <span class="text-rose-500">*</span></label>
-                        <input type="password" name="new_password" required x-model="password" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi baru">
+                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Kata Sandi Baru <span class="text-rose-500">*</span></label>
+                        <input type="password" name="new_password" required x-model="password" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi baru">
                         
                         {{-- Password Strength Meter --}}
                         <div class="mt-3 space-y-2.5">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Kekuatan Sandi:</span>
-                                <span class="text-[10px] font-black uppercase tracking-wider transition-colors" :class="strengthTextColorClass" x-text="strengthText"></span>
+                                <span class="text-[9px] font-semibold text-slate-400 font-medium">Kekuatan Sandi:</span>
+                                <span class="text-[10px] font-semibold uppercase tracking-wider transition-colors" :class="strengthTextColorClass" x-text="strengthText"></span>
                             </div>
                             
                             {{-- Color segments --}}
@@ -127,8 +127,8 @@
                     </div>
 
                     <div>
-                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Konfirmasi Kata Sandi Baru <span class="text-rose-500">*</span></label>
-                        <input type="password" name="new_password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Ulangi kata sandi baru">
+                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Konfirmasi Kata Sandi Baru <span class="text-rose-500">*</span></label>
+                        <input type="password" name="new_password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Ulangi kata sandi baru">
                     </div>
                 </div>
             </div>
@@ -136,22 +136,22 @@
 
         {{-- Right: Submit & Security Card (4/12) --}}
         <div class="xl:col-span-4">
-            <div class="card-premium bg-[#1e1e2d] border-none p-8 flex flex-col justify-center items-center text-center text-white relative overflow-hidden group">
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm bg-[#1e1e2d] border-none p-8 flex flex-col justify-center items-center text-center text-white relative overflow-hidden group">
                 {{-- Decor --}}
-                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
                 
-                <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10 group-hover:border-primary/50 transition-colors">
+                
+                <div class="w-16 h-16 bg-white/5 rounded-lg flex items-center justify-center mb-6 border border-white/10 group-hover:border-primary/50 transition-colors">
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 </div>
                 
-                <h4 class="text-xl font-black mb-2 relative z-10">Konfirmasi Sandi</h4>
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-8 relative z-10">Pastikan sandi Anda sulit ditebak demi keamanan akun Anda.</p>
+                <h4 class="text-xl font-semibold mb-2 relative z-10">Konfirmasi Sandi</h4>
+                <p class="text-slate-500 text-xs text-slate-500 font-medium mb-8 relative z-10">Pastikan sandi Anda sulit ditebak demi keamanan akun Anda.</p>
                 
                 <div class="w-full space-y-3 relative z-10">
-                    <button type="submit" :disabled="score < 5" :class="score < 5 ? 'opacity-50 cursor-not-allowed bg-slate-700 text-slate-400' : 'bg-primary hover:bg-secondary text-white hover:scale-[1.02] active:scale-[0.95]'" class="w-full font-black py-4 rounded-2xl shadow-xl transition-all text-sm uppercase tracking-widest">
+                    <button type="submit" :disabled="score < 5" :class="score < 5 ? 'opacity-50 cursor-not-allowed bg-slate-700 text-slate-400' : 'bg-primary hover:bg-secondary text-white hover:scale-[1.02] active:scale-[0.95]'" class="w-full font-semibold py-4 rounded-lg shadow-xl transition-all text-sm font-medium">
                         Simpan Sandi Baru
                     </button>
-                    <button type="reset" @click="password = ''" class="w-full bg-white/5 hover:bg-white/10 text-slate-500 font-bold py-3 rounded-2xl transition text-[9px] uppercase tracking-[0.2em]">
+                    <button type="reset" @click="password = ''" class="w-full bg-white/5 hover:bg-white/10 text-slate-500 font-bold py-3 rounded-lg transition text-[9px] ">
                         Reset Formulir
                     </button>
                 </div>

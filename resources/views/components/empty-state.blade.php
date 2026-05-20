@@ -14,7 +14,7 @@
 @endphp
 
 <div class="flex flex-col items-center justify-center py-16 px-4">
-    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+    <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-6">
         @if($icon === 'search')
             <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>

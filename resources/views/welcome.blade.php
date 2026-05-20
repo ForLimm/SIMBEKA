@@ -9,12 +9,12 @@
 
 <div class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
     <div class="max-w-4xl space-y-8 relative z-20">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-4">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold font-medium mb-4">
             <span class="w-2 h-2 bg-accent rounded-full animate-ping"></span>
             Sistem Informasi Manajemen Bimbingan & Konseling
         </div>
         
-        <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter leading-none">
+        <h1 class="text-5xl md:text-8xl font-semibold text-white tracking-tighter leading-none">
             Solusi Digital <br>
             <span class="text-blue-400">Bimbingan Siswa</span>
         </h1>
@@ -25,14 +25,14 @@
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
             @auth
-                <a href="{{ auth()->user()->role === 'siswa' ? route('siswa.dashboard') : route('gurubk.dashboard') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg">
+                <a href="{{ auth()->user()->role === 'siswa' ? route('siswa.dashboard') : route('gurubk.dashboard') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-semibold px-12 py-5 rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 text-lg">
                     Buka Dashboard
                 </a>
             @else
-                <a href="{{ route('login') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-black px-12 py-5 rounded-2xl shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 text-lg">
+                <a href="{{ route('login') }}" class="w-full sm:w-auto bg-primary hover:bg-secondary text-white font-semibold px-12 py-5 rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 text-lg">
                     Mulai Sekarang
                 </a>
-                <a href="{{ route('register') }}" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold px-12 py-5 rounded-2xl border border-white/30 transition-all text-lg">
+                <a href="{{ route('register') }}" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold px-12 py-5 rounded-lg border border-white/30 transition-all text-lg">
                     Daftar Akun
                 </a>
             @endauth
@@ -40,19 +40,19 @@
 
         <div class="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60">
             <div class="text-white text-center">
-                <div class="text-2xl font-black">100%</div>
+                <div class="text-2xl font-semibold">100%</div>
                 <div class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Rahasia</div>
             </div>
             <div class="text-white text-center">
-                <div class="text-2xl font-black">24/7</div>
+                <div class="text-2xl font-semibold">24/7</div>
                 <div class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Akses</div>
             </div>
             <div class="text-white text-center">
-                <div class="text-2xl font-black">Daring</div>
+                <div class="text-2xl font-semibold">Daring</div>
                 <div class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Konsultasi</div>
             </div>
             <div class="text-white text-center">
-                <div class="text-2xl font-black">Mudah</div>
+                <div class="text-2xl font-semibold">Mudah</div>
                 <div class="text-[10px] uppercase font-bold tracking-widest text-slate-300">Pelaporan</div>
             </div>
         </div>

@@ -19,118 +19,108 @@
         {{-- Consolidated Premium Stats Grid --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {{-- Student Overview --}}
-            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
-                <div class="absolute -right-4 -top-4 opacity-5">
-                    <svg class="w-24 h-24 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                </div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <div class="bg-white border border-slate-200 border-t-4 border-t-blue-500 rounded-lg p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-medium text-slate-500 mb-1">Total Siswa</div>
+                        <div class="text-2xl font-bold text-slate-800">{{ $totalStudents }}</div>
+                        <div class="text-xs text-slate-400 mt-1">Tersebar di {{ $classStats->count() }} Kelas</div>
                     </div>
-                </div>
-                <div>
-                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ $totalStudents }} Siswa</div>
-                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Pendidikan di {{ $classStats->count() }} Kelas</div>
+                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
                 </div>
             </div>
 
             {{-- Counseling Overview --}}
-            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
-                <div class="absolute -right-4 -top-4 opacity-5">
-                    <svg class="w-24 h-24 text-purple-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                </div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <div class="bg-white border border-slate-200 border-t-4 border-t-purple-500 rounded-lg p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-medium text-slate-500 mb-1">Sesi Konseling</div>
+                        <div class="text-2xl font-bold text-slate-800">{{ $totalSessions }}</div>
+                        <div class="text-xs text-slate-400 mt-1">{{ $counseledStudentsCount }} Siswa Terbantu</div>
                     </div>
-                </div>
-                <div>
-                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ $totalSessions }} Sesi</div>
-                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{{ $counseledStudentsCount }} Siswa Terbantu</div>
+                    <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
                 </div>
             </div>
 
             {{-- Active Cases Overview --}}
-            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
-                <div class="absolute -right-4 -top-4 opacity-5">
-                    <svg class="w-24 h-24 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                </div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <div class="bg-white border border-slate-200 border-t-4 border-t-amber-500 rounded-lg p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-medium text-slate-500 mb-1">Kasus Aktif</div>
+                        <div class="text-2xl font-bold text-slate-800">{{ $pendingReports->count() + $myInProgressReports->count() }}</div>
+                        <div class="text-xs text-slate-400 mt-1">{{ $pendingReports->count() }} Antrean | {{ $myInProgressReports->count() }} Proses</div>
                     </div>
-                </div>
-                <div>
-                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ $pendingReports->count() + $myInProgressReports->count() }} Kasus Aktif</div>
-                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{{ $pendingReports->count() }} Antrean | {{ $myInProgressReports->count() }} Proses</div>
+                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
                 </div>
             </div>
 
             {{-- Resolved Cases Overview --}}
-            <div class="card-premium p-6 flex flex-col justify-between transition-all hover:shadow-lg relative overflow-hidden bg-white">
-                <div class="absolute -right-4 -top-4 opacity-5">
-                    <svg class="w-24 h-24 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div class="bg-white border border-slate-200 border-t-4 border-t-emerald-500 rounded-lg p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-medium text-slate-500 mb-1">Kasus Selesai</div>
+                        <div class="text-2xl font-bold text-slate-800">{{ \App\Models\Report::where('status', 'resolved')->count() }}</div>
+                        <div class="text-xs text-slate-400 mt-1">{{ $activeFollowUps }} Tindak Lanjut</div>
                     </div>
-                </div>
-                <div>
-                    <div class="text-xl lg:text-2xl font-black text-slate-900 leading-none mb-1.5">{{ \App\Models\Report::where('status', 'resolved')->count() }} Selesai</div>
-                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{{ $activeFollowUps }} Tindak Lanjut Aktif</div>
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
                 </div>
             </div>
         </div>
 
         {{-- Pending Reports --}}
-        <div class="card-premium overflow-hidden">
-            <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <h3 class="font-bold text-slate-900 flex items-center gap-2">
+        <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
+                <h3 class="font-semibold text-slate-800 flex items-center gap-2">
                     <span class="w-2 h-2 bg-amber-500 rounded-full animate-ping"></span>
                     Antrean Kasus Masuk
                 </h3>
-                <span class="bg-amber-100 text-amber-700 text-[10px] px-2 py-0.5 rounded-md font-black uppercase tracking-widest">Baru</span>
+                <span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded font-medium">Baru</span>
             </div>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto overflow-y-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-sm text-left">
-                    <thead class="text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-50/30">
+                    <thead class="text-sm font-semibold text-slate-600 bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
                         <tr>
-                            <th class="px-8 py-4">Perihal / Topik</th>
-                            <th class="px-6 py-4">Pelapor</th>
-                            <th class="px-6 py-4">Tipe</th>
-                            <th class="px-8 py-4 text-center">Aksi</th>
+                            <th class="px-6 py-3">Perihal / Topik</th>
+                            <th class="px-6 py-3">Pelapor</th>
+                            <th class="px-6 py-3">Tipe</th>
+                            <th class="px-6 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($pendingReports as $report)
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-8 py-5">
-                                    <div class="font-bold text-slate-900">{{ $report->title }}</div>
-                                    <div class="text-[10px] text-slate-400 mt-0.5">{{ $report->created_at->diffForHumans() }}</div>
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-slate-900">{{ $report->title }}</div>
+                                    <div class="text-xs text-slate-400 mt-1">{{ $report->created_at->diffForHumans() }}</div>
                                 </td>
-                                <td class="px-6 py-5">
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-bold text-slate-700">{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}</span>
-                                    </div>
+                                <td class="px-6 py-4">
+                                    <div class="text-slate-700">{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}</div>
                                 </td>
-                                <td class="px-6 py-5">
-                                    <span class="text-[10px] font-black uppercase tracking-tighter {{ $report->type === 'konsultasi' ? 'text-blue-500' : 'text-rose-500' }}">
-                                        {{ $report->type }}
+                                <td class="px-6 py-4">
+                                    <span class="text-xs font-medium px-2 py-1 rounded {{ $report->type === 'konsultasi' ? 'bg-blue-50 text-blue-600' : 'bg-rose-50 text-rose-600' }}">
+                                        {{ ucfirst($report->type) }}
                                     </span>
                                 </td>
-                                <td class="px-8 py-5 text-center">
+                                <td class="px-6 py-4 text-center">
                                     <button 
                                         @click="showDetail = true; selectedReport = {
                                             id: {{ $report->id }},
                                             title: '{{ addslashes($report->title) }}',
                                             content: '{{ addslashes(str_replace(["\r", "\n"], ' ', $report->content)) }}',
-                                            type: '{{ $report->type }}',
+                                            type: '{{ ucfirst($report->type) }}',
                                             reporter: '{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}',
                                             is_anonymous: {{ $report->is_anonymous ? 'true' : 'false' }},
                                             created_at: '{{ $report->created_at->diffForHumans() }}'
                                         }"
-                                        class="bg-primary hover:bg-secondary text-white text-xs font-bold px-5 py-2 rounded-xl transition shadow-lg shadow-primary/20 active:scale-95"
+                                        class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium px-4 py-1.5 rounded transition"
                                     >
                                         Detail Kasus
                                     </button>
@@ -138,7 +128,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-8 py-12 text-center text-slate-400 italic font-medium">Tidak ada antrean kasus saat ini.</td>
+                                <td colspan="4" class="px-6 py-10 text-center text-slate-500">Tidak ada antrean kasus saat ini.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -147,49 +137,49 @@
         </div>
 
         {{-- My Tasks --}}
-        <div class="card-premium overflow-hidden">
-            <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <h3 class="font-bold text-slate-900">Kasus Yang Saya Tangani</h3>
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ $myInProgressReports->count() }} Aktif</span>
+        <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
+                <h3 class="font-semibold text-slate-800">Kasus Yang Saya Tangani</h3>
+                <span class="text-xs font-medium text-slate-500">{{ $myInProgressReports->count() }} Aktif</span>
             </div>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto overflow-y-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-sm text-left">
-                    <thead class="text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-50/30">
+                    <thead class="text-sm font-semibold text-slate-600 bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
                         <tr>
-                            <th class="px-8 py-4">Perihal</th>
-                            <th class="px-6 py-4">Pelapor</th>
-                            <th class="px-6 py-4">Tipe</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-8 py-4 text-center">Aksi</th>
+                            <th class="px-6 py-3">Perihal</th>
+                            <th class="px-6 py-3">Pelapor</th>
+                            <th class="px-6 py-3">Tipe</th>
+                            <th class="px-6 py-3">Status</th>
+                            <th class="px-6 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($myInProgressReports as $report)
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-8 py-5 font-bold text-slate-900">{{ $report->title }}</td>
-                                <td class="px-6 py-5 font-bold text-slate-700">
+                                <td class="px-6 py-4 font-medium text-slate-900">{{ $report->title }}</td>
+                                <td class="px-6 py-4 text-slate-700">
                                     {{ $report->reporter->username ?? $report->reporter->name ?? '-' }}
                                 </td>
-                                <td class="px-6 py-5">
-                                    <span class="text-[10px] font-black uppercase {{ $report->type === 'konsultasi' ? 'text-blue-500' : 'text-rose-500' }}">
-                                        {{ $report->type }}
+                                <td class="px-6 py-4">
+                                    <span class="text-xs font-medium px-2 py-1 rounded {{ $report->type === 'konsultasi' ? 'bg-blue-50 text-blue-600' : 'bg-rose-50 text-rose-600' }}">
+                                        {{ ucfirst($report->type) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-5">
-                                    <span class="flex items-center gap-1.5 text-primary font-bold text-xs">
-                                        <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+                                <td class="px-6 py-4">
+                                    <span class="flex items-center gap-1.5 text-blue-600 text-sm">
+                                        <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
                                         Dalam Proses
                                     </span>
                                 </td>
-                                <td class="px-8 py-5 text-center">
-                                    <a href="{{ route('gurubk.report.show', $report->id) }}" class="inline-block bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2 rounded-xl transition shadow-lg shadow-slate-900/10 active:scale-95">
+                                <td class="px-6 py-4 text-center">
+                                    <a href="{{ route('gurubk.report.show', $report->id) }}" class="inline-block bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium px-4 py-1.5 rounded transition">
                                         Detail
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-8 py-12 text-center text-slate-400 italic font-medium">Anda belum menangani kasus apa pun.</td>
+                                <td colspan="5" class="px-6 py-10 text-center text-slate-500">Anda belum menangani kasus apa pun.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -200,7 +190,7 @@
 
     {{-- Detail Modal --}}
     <div x-show="showDetail" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-        <div @click.away="showDetail = false" class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div @click.away="showDetail = false" class="bg-white rounded-lg shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-300">
             <div class="bg-primary px-8 py-6 text-white flex justify-between items-center">
                 <h3 class="text-xl font-bold">Detail Kasus</h3>
                 <button @click="showDetail = false" class="text-white/80 hover:text-white transition">
@@ -210,26 +200,26 @@
             <div class="p-8 space-y-6">
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perihal</label>
+                        <label class="text-[10px] font-medium text-slate-400">Perihal</label>
                         <div class="text-lg font-bold text-slate-900" x-text="selectedReport.title"></div>
                     </div>
                     <div class="flex gap-8">
                         <div>
-                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Tipe</label>
+                            <label class="text-[10px] font-medium text-slate-400">Tipe</label>
                             <div class="mt-1">
-                                <span class="text-[10px] font-black uppercase px-2 py-1 rounded-md bg-blue-50 text-blue-600" x-text="selectedReport.type"></span>
+                                <span class="text-[10px] font-semibold uppercase px-2 py-1 rounded-md bg-blue-50 text-blue-600" x-text="selectedReport.type"></span>
                             </div>
                         </div>
                         <div>
-                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Pelapor</label>
+                            <label class="text-[10px] font-medium text-slate-400">Pelapor</label>
                             <div class="text-sm font-bold text-slate-700 flex items-center gap-2">
                                 <span x-text="selectedReport.reporter"></span>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Isi Laporan / Konsultasi</label>
-                        <div class="mt-2 text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100" x-text="selectedReport.content"></div>
+                        <label class="text-[10px] font-medium text-slate-400">Isi Laporan / Konsultasi</label>
+                        <div class="mt-2 text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100" x-text="selectedReport.content"></div>
                     </div>
                 </div>
 
@@ -240,31 +230,31 @@
                         <div class="grid grid-cols-3 gap-3">
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="priority" value="low" class="peer sr-only" required>
-                                <div class="px-4 py-3 rounded-xl border-2 border-slate-100 text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition group-hover:bg-slate-50">
-                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-emerald-700 uppercase tracking-wider">Rendah</span>
+                                <div class="px-4 py-3 rounded-lg border-2 border-slate-100 text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition group-hover:bg-slate-50">
+                                    <span class="block text-[10px] font-semibold text-slate-600 peer-checked:text-emerald-700 uppercase tracking-wider">Rendah</span>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="priority" value="medium" class="peer sr-only">
-                                <div class="px-4 py-3 rounded-xl border-2 border-slate-100 text-center peer-checked:border-amber-500 peer-checked:bg-amber-50 transition group-hover:bg-slate-50">
-                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-amber-700 uppercase tracking-wider">Sedang</span>
+                                <div class="px-4 py-3 rounded-lg border-2 border-slate-100 text-center peer-checked:border-amber-500 peer-checked:bg-amber-50 transition group-hover:bg-slate-50">
+                                    <span class="block text-[10px] font-semibold text-slate-600 peer-checked:text-amber-700 uppercase tracking-wider">Sedang</span>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="priority" value="high" class="peer sr-only">
-                                <div class="px-4 py-3 rounded-xl border-2 border-slate-100 text-center peer-checked:border-rose-500 peer-checked:bg-rose-50 transition group-hover:bg-slate-50">
-                                    <span class="block text-[10px] font-black text-slate-600 peer-checked:text-rose-700 uppercase tracking-wider">Tinggi</span>
+                                <div class="px-4 py-3 rounded-lg border-2 border-slate-100 text-center peer-checked:border-rose-500 peer-checked:bg-rose-50 transition group-hover:bg-slate-50">
+                                    <span class="block text-[10px] font-semibold text-slate-600 peer-checked:text-rose-700 uppercase tracking-wider">Tinggi</span>
                                 </div>
                             </label>
                         </div>
                     </div>
 
                     @if($myInProgressReports->count() >= 5)
-                        <div class="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-600 text-xs font-bold leading-relaxed text-center">
+                        <div class="p-4 bg-rose-50 border border-rose-100 rounded-lg text-rose-600 text-xs font-bold leading-relaxed text-center">
                             Batas maksimal penanganan kasus aktif adalah 5. Selesaikan kasus yang sedang Anda tangani saat ini sebelum mengambil kasus baru.
                         </div>
                     @else
-                        <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 transition active:scale-[0.98]">
+                        <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-lg shadow-xl shadow-primary/20 transition active:scale-[0.98]">
                             Ambil & Tangani Kasus
                         </button>
                     @endif
