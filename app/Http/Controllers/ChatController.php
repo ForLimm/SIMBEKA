@@ -69,7 +69,7 @@ class ChatController extends Controller
         ChatMessage::create([
             'report_id' => $report->id,
             'sender_id' => $user->id,
-            'message' => $request->message,
+            'message' => strip_tags($request->message),
         ]);
 
         return back()->with('success', 'Pesan terkirim.');

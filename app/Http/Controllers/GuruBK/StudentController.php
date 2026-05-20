@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StudentRules;
 
 class StudentController extends Controller
 {
@@ -68,32 +69,7 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'nisn' => 'required|string|digits:10|unique:students,nisn',
-            'class' => 'required|string',
-            'gender' => 'required|string|in:Laki-laki,Perempuan',
-            'religion' => 'nullable|string|in:Islam,Kristen,Katolik,Hindu,Buddha,Khonghucu',
-            'birth_place' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'birth_date' => 'nullable|date|before:today',
-            'living_status' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:1000',
-            'phone' => 'nullable|string|digits_between:10,15',
-            'father_name' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'mother_name' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'parents_job' => 'nullable|string|max:255',
-            'parents_phone' => 'nullable|string|digits_between:10,15',
-            'parents_address' => 'nullable|string|max:1000',
-        ], [
-            'name.regex' => 'Nama siswa hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
-            'nisn.digits' => 'NISN harus berupa 10 digit angka.',
-            'phone.digits_between' => 'Nomor HP siswa harus berupa angka antara 10 sampai 15 digit.',
-            'father_name.regex' => 'Nama ayah hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
-            'mother_name.regex' => 'Nama ibu hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
-            'parents_phone.digits_between' => 'Nomor HP orang tua harus berupa angka antara 10 sampai 15 digit.',
-            'birth_place.regex' => 'Tempat lahir hanya boleh berisi huruf dan spasi.',
-            'birth_date.before' => 'Tanggal lahir harus sebelum hari ini.',
-        ]);
+        $request->validate(StudentRules::storeRules(), StudentRules::messages());
 
         $teacher = Auth::user()->teacher;
 
@@ -103,7 +79,10 @@ class StudentController extends Controller
             return redirect()->route('gurubk.students.index')->with('error', 'Kuota siswa bimbingan Anda sudah penuh (' . $teacher->max_quota . ').');
         }
 
-        Student::create(array_merge($request->all(), ['teacher_id' => $teacher->id]));
+        Student::create(array_merge(
+            $request->only(StudentRules::safeFields()),
+            ['teacher_id' => $teacher->id]
+        ));
 
         return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil ditambahkan.');
     }
@@ -124,34 +103,9 @@ class StudentController extends Controller
             return redirect()->route('gurubk.students.index')->with('error', 'Akses ditolak.');
         }
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'nisn' => 'required|string|digits:10|unique:students,nisn,' . $student->id,
-            'class' => 'required|string',
-            'gender' => 'required|string|in:Laki-laki,Perempuan',
-            'religion' => 'nullable|string|in:Islam,Kristen,Katolik,Hindu,Buddha,Khonghucu',
-            'birth_place' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'birth_date' => 'nullable|date|before:today',
-            'living_status' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:1000',
-            'phone' => 'nullable|string|digits_between:10,15',
-            'father_name' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'mother_name' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-            'parents_job' => 'nullable|string|max:255',
-            'parents_phone' => 'nullable|string|digits_between:10,15',
-            'parents_address' => 'nullable|string|max:1000',
-        ], [
-            'name.regex' => 'Nama siswa hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
-            'nisn.digits' => 'NISN harus berupa 10 digit angka.',
-            'phone.digits_between' => 'Nomor HP siswa harus berupa angka antara 10 sampai 15 digit.',
-            'father_name.regex' => 'Nama ayah hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
-            'mother_name.regex' => 'Nama ibu hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
-            'parents_phone.digits_between' => 'Nomor HP orang tua harus berupa angka antara 10 sampai 15 digit.',
-            'birth_place.regex' => 'Tempat lahir hanya boleh berisi huruf dan spasi.',
-            'birth_date.before' => 'Tanggal lahir harus sebelum hari ini.',
-        ]);
+        $request->validate(StudentRules::updateRules($student->id), StudentRules::messages());
 
-        $student->update($request->all());
+        $student->update($request->only(StudentRules::safeFields()));
 
         return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }

@@ -24,8 +24,8 @@ class ReportController extends Controller
         ]);
 
         Report::create([
-            'title' => $request->title,
-            'content' => $request->content,
+            'title' => strip_tags($request->title),
+            'content' => strip_tags($request->content),
             'type' => $request->type,
             'priority' => $request->priority,
             'is_anonymous' => auth()->user()->is_guest ? true : false,

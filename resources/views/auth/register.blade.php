@@ -100,9 +100,9 @@
         
         <div class="relative z-10 w-full max-w-lg">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[9px] font-black uppercase tracking-[0.2em] mb-8 ml-auto">
-                Secure Registration
+                Hai, Kamu..
             </div>
-            <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">Satu Langkah Menuju <span class="text-primary italic block mt-1">Konsultasi.</span></h2>
+            <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">Data Kamu Selalu <span class="text-primary italic block mt-1">Anonim.</span></h2>
             <div class="h-1 w-24 bg-primary mb-6 rounded-full ml-auto"></div>
             <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Seluruh proses pendaftaran dirancang untuk melindungi identitas Anda. Username Anda adalah satu-satunya identitas yang diperlukan.</p>
             

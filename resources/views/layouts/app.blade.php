@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="SIMBEKA — Sistem Informasi Manajemen Bimbingan dan Konseling">
     <title>@yield('title', 'SIMBEKA - Sistem Informasi Manajemen Bimbingan & Konseling')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -95,31 +97,25 @@
                             <div class="space-y-1">
                                 @if(auth()->user()->role === 'siswa')
                                     {{-- Dashboard --}}
-                                    <a href="{{ route('siswa.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('siswa.dashboard') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
-                                        <div class="p-2 rounded-lg {{ request()->routeIs('siswa.dashboard') ? 'bg-white/20' : 'bg-slate-800 group-hover:bg-slate-700' }}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                                        </div>
-                                        <span class="text-sm font-bold tracking-wide">Menu Utama</span>
+                                    <a href="{{ route('siswa.dashboard') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('siswa.dashboard') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                        <svg class="w-5 h-5 {{ request()->routeIs('siswa.dashboard') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                                        <span class="font-bold text-sm">Menu Utama</span>
                                     </a>
 
                                     <div class="pt-6 pb-2 px-4">
-                                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Aktivitas Saya</span>
+                                        <span class="text-[10px] font-black text-[#565674] uppercase tracking-[0.2em]">Aktivitas Saya</span>
                                     </div>
 
                                     {{-- Riwayat Konsultasi --}}
-                                    <a href="{{ route('siswa.history.konsultasi') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('siswa.history.konsultasi') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
-                                        <div class="p-2 rounded-lg {{ request()->routeIs('siswa.history.konsultasi') ? 'bg-white/20' : 'bg-slate-800 group-hover:bg-slate-700' }}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                        </div>
-                                        <span class="text-sm font-bold tracking-wide">Riwayat Konsultasi</span>
+                                    <a href="{{ route('siswa.history.konsultasi') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('siswa.history.konsultasi') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                        <svg class="w-5 h-5 {{ request()->routeIs('siswa.history.konsultasi') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                        <span class="font-bold text-sm">Riwayat Konsultasi</span>
                                     </a>
 
                                     {{-- Riwayat Pelaporan --}}
-                                    <a href="{{ route('siswa.history.pelaporan') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('siswa.history.pelaporan') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
-                                        <div class="p-2 rounded-lg {{ request()->routeIs('siswa.history.pelaporan') ? 'bg-white/20' : 'bg-slate-800 group-hover:bg-slate-700' }}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                        </div>
-                                        <span class="text-sm font-bold tracking-wide">Riwayat Pelaporan</span>
+                                    <a href="{{ route('siswa.history.pelaporan') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('siswa.history.pelaporan') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                        <svg class="w-5 h-5 {{ request()->routeIs('siswa.history.pelaporan') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                        <span class="font-bold text-sm">Riwayat Pelaporan</span>
                                     </a>
                                 @endif
 
@@ -132,23 +128,19 @@
 
                                 @if(auth()->user()->role === 'admin')
                                     {{-- Dashboard --}}
-                                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.dashboard') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
-                                        <div class="p-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-white/20' : 'bg-slate-800 group-hover:bg-slate-700' }}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                                        </div>
-                                        <span class="text-sm font-bold tracking-wide">Dashboard</span>
+                                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('admin.dashboard') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                        <svg class="w-5 h-5 {{ request()->routeIs('admin.dashboard') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                                        <span class="font-bold text-sm">Dashboard</span>
                                     </a>
 
                                     <div class="pt-6 pb-2 px-4">
-                                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Master Data</span>
+                                        <span class="text-[10px] font-black text-[#565674] uppercase tracking-[0.2em]">Master Data</span>
                                     </div>
 
                                     {{-- Data Guru BK --}}
-                                    <a href="{{ route('admin.teachers.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('admin.teachers.*') ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
-                                        <div class="p-2 rounded-lg {{ request()->routeIs('admin.teachers.*') ? 'bg-white/20' : 'bg-slate-800 group-hover:bg-slate-700' }}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                        </div>
-                                        <span class="text-sm font-bold tracking-wide">Master Guru BK</span>
+                                    <a href="{{ route('admin.teachers.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group {{ request()->routeIs('admin.teachers.*') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
+                                        <svg class="w-5 h-5 {{ request()->routeIs('admin.teachers.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                        <span class="font-bold text-sm">Master Guru BK</span>
                                     </a>
                                 @endif
                             </div>
@@ -358,5 +350,49 @@
         </div>
     </div>
     @endif
+
+    {{-- Global Form Loading State --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            // Auto-add loading state to all forms with data-loading attribute
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Global: prevent double submission on all forms
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const btn = form.querySelector('button[type="submit"], input[type="submit"]');
+                    if (!btn) return;
+                    
+                    // Skip if already submitting
+                    if (form.dataset.submitting === 'true') {
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    form.dataset.submitting = 'true';
+                    
+                    const originalText = btn.innerHTML;
+                    btn.disabled = true;
+                    btn.style.opacity = '0.7';
+                    btn.innerHTML = `
+                        <svg class="animate-spin inline-block w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Memproses...
+                    `;
+                    
+                    // Reset after 10s in case of network timeout
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        btn.innerHTML = originalText;
+                        form.dataset.submitting = 'false';
+                    }, 10000);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -48,7 +48,7 @@
 
             {{-- Guest Access Section (COMPACT & HORIZONTAL) --}}
             <div class="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-100/80">
-                <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Akses Cepat (Tanpa Akun)</h4>
+                <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Akses Cepat (Akun Guest)</h4>
                 <div class="grid grid-cols-2 gap-3">
                     <form action="{{ route('guest.login') }}" method="POST">
                         @csrf
@@ -123,11 +123,11 @@
         
         <div class="relative z-10 w-full max-w-lg">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-white/50 text-[9px] font-black uppercase tracking-[0.2em] mb-8 ml-auto">
-                Official SIMBEKA Platform
+                Selamat Datang!
             </div>
-            <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">Manajemen Bimbingan & <span class="text-primary italic block mt-1">Konseling.</span></h2>
+            <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">Sistem Informasi Manajemen <span class="text-primary italic block mt-1">Bimbingan & Konseling</span></h2>
             <div class="h-1 w-24 bg-primary mb-6 rounded-full ml-auto"></div>
-            <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Sistem informasi bimbingan konseling terpadu yang memprioritaskan privasi dan kemudahan akses siswa.</p>
+            <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Sistem Informasi yang memprioritaskan privasi dan kemudahan akses siswa.</p>
             
             <div class="flex items-center gap-10 justify-end">
                 <div>

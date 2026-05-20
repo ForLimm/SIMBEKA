@@ -69,10 +69,13 @@ class CounselingSessionController extends Controller
             return back()->with('error', 'Akses ditolak.');
         }
 
-        CounselingSession::create(array_merge($request->all(), [
-            'teacher_id' => $teacher->id,
-            'completed_at' => $request->status === 'selesai' ? now() : null
-        ]));
+        CounselingSession::create(array_merge(
+            $request->only(['student_id', 'title', 'counseling_date', 'category', 'summary', 'follow_up', 'status']),
+            [
+                'teacher_id' => $teacher->id,
+                'completed_at' => $request->status === 'selesai' ? now() : null
+            ]
+        ));
 
         if ($request->status === 'selesai') {
             return redirect()->route('gurubk.archives.index', ['type' => 'konseling'])->with('success', 'Catatan bimbingan berhasil diselesaikan dan diarsipkan.');
@@ -131,9 +134,10 @@ class CounselingSessionController extends Controller
             'status' => 'required|in:selesai,monitoring,tindak_lanjut',
         ]);
 
-        $session->update(array_merge($request->all(), [
-            'completed_at' => $request->status === 'selesai' ? ($session->completed_at ?? now()) : null
-        ]));
+        $session->update(array_merge(
+            $request->only(['student_id', 'title', 'counseling_date', 'category', 'summary', 'follow_up', 'status']),
+            ['completed_at' => $request->status === 'selesai' ? ($session->completed_at ?? now()) : null]
+        ));
 
         if ($request->status === 'selesai') {
             return redirect()->route('gurubk.archives.index', ['type' => 'konseling'])->with('success', 'Catatan konseling diselesaikan dan dipindahkan ke arsip.');

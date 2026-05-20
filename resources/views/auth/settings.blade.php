@@ -61,8 +61,13 @@
                 
                 <div class="p-8 space-y-5">
                     <div>
-                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kata Sandi Saat Ini <span class="text-rose-500">*</span></label>
-                        <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini">
+                        @if(auth()->user()->is_guest)
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kata Sandi Saat Ini / Kode Pemulihan <span class="text-rose-500">*</span></label>
+                            <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini atau kode pemulihan">
+                        @else
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Kata Sandi Saat Ini <span class="text-rose-500">*</span></label>
+                            <input type="password" name="current_password" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan kata sandi saat ini">
+                        @endif
                     </div>
 
                     <div>

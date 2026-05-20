@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ChatController;
 
@@ -10,17 +12,17 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/register', [LoginController::class, 'register'])->name('register');
-Route::post('/register', [LoginController::class, 'registerPost'])->name('register.post');
+Route::get('/register', [RegisterController::class, 'register'])->name('register');
+Route::post('/register', [RegisterController::class, 'registerPost'])->name('register.post')->middleware('throttle:3,1');
 
-Route::post('/login', [LoginController::class, 'manualLogin'])->name('login.post');
-Route::post('/guest-login', [LoginController::class, 'guestLogin'])->name('guest.login');
+Route::post('/login', [LoginController::class, 'manualLogin'])->name('login.post')->middleware('throttle:5,1');
+Route::post('/guest-login', [RegisterController::class, 'guestLogin'])->name('guest.login')->middleware('throttle:10,1');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Recovery routes
-Route::get('/forgot-password', [LoginController::class, 'forgotPassword'])->name('password.request');
-Route::post('/recovery-login', [LoginController::class, 'recoveryLogin'])->name('recovery.login');
-Route::post('/reset-password', [LoginController::class, 'resetWithSecurity'])->name('password.update');
+Route::get('/forgot-password', [PasswordController::class, 'forgotPassword'])->name('password.request');
+Route::post('/recovery-login', [PasswordController::class, 'recoveryLogin'])->name('recovery.login')->middleware('throttle:5,1');
+Route::post('/reset-password', [PasswordController::class, 'resetWithSecurity'])->name('password.update')->middleware('throttle:5,1');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/siswa/dashboard', [App\Http\Controllers\Siswa\DashboardController::class, 'index'])->name('siswa.dashboard');
@@ -38,15 +40,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{report}/poll', [ChatController::class, 'poll'])->name('chat.poll');
 
     // Profile & settings routes
-    Route::get('/settings', [LoginController::class, 'showSettings'])->name('profile.settings');
-    Route::post('/settings/password', [LoginController::class, 'updatePassword'])->name('profile.password.update');
+    Route::get('/settings', [PasswordController::class, 'showSettings'])->name('profile.settings');
+    Route::post('/settings/password', [PasswordController::class, 'updatePassword'])->name('profile.password.update');
 });
 
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('teachers', [TeacherController::class, 'index'])->name('teachers.index');
     Route::get('teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
@@ -56,10 +58,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     
     Route::get('students/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('students', [StudentController::class, 'store'])->name('students.store');
-    Route::get('students', function() { return 'Daftar Siswa'; })->name('students.index');
+    Route::get('students', function() { return redirect()->route('admin.dashboard'); })->name('students.index');
 });
 
-Route::prefix('gurubk')->name('gurubk.')->group(function () {
+Route::prefix('gurubk')->name('gurubk.')->middleware(['auth', 'role:guru_bk'])->group(function () {
     Route::get('dashboard', [App\Http\Controllers\GuruBK\DashboardController::class, 'index'])->name('dashboard');
     Route::post('claim/{report}', [App\Http\Controllers\GuruBK\DashboardController::class, 'claim'])->name('report.take');
     Route::get('report/{report}', [App\Http\Controllers\GuruBK\DashboardController::class, 'show'])->name('report.show');

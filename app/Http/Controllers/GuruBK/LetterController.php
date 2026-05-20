@@ -33,59 +33,26 @@ class LetterController extends Controller
         ]);
 
         $teacher = Auth::user()->teacher;
-        $student = Student::with('user')->findOrFail($request->student_id);
+        $student = $this->resolveStudent($request->student_id, $teacher);
 
-        if ($student->teacher_id !== $teacher->id) {
-            abort(403, 'Unauthorized access to student.');
-        }
-
-        // Safe name resolution
-        $studentName = $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama');
-
-        $fullLetterNumber = '421.7 / ' . trim($request->letter_number) . ' / SMP.06 / ' . date('Y');
-
-        $data = [
-            'student_name' => $studentName,
-            'nisn' => $student->nisn,
-            'class' => $student->class,
-            'gender' => $student->gender,
-            'father_name' => $student->father_name,
-            'mother_name' => $student->mother_name,
-            'parents_address' => $student->parents_address ?? $student->address,
+        $data = $this->buildLetterData($student, $teacher, $request->letter_number, [
             'date' => $request->date,
             'time' => $request->time ?? '09:00',
             'reason' => $request->reason,
-            'teacher_name' => $teacher->user->name,
-            'nip' => $teacher->nip,
-            'letter_number' => $fullLetterNumber,
-        ];
-
-        $pdf = Pdf::loadView('gurubk.letters.pdf', $data);
-        
-        $fileName = 'surat_panggilan_' . Str::slug($studentName) . '_' . time() . '.pdf';
-        $filePath = 'letters/' . $fileName;
-        
-        \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $pdf->output());
-
-        $letter = Letter::create([
-            'student_id' => $student->id,
-            'teacher_id' => $teacher->id,
-            'type' => 'panggilan',
-            'file_path' => $filePath,
-            'content_json' => $data,
         ]);
 
-        Archive::create([
-            'student_id' => $student->id,
-            'teacher_id' => $teacher->id,
-            'guidance_notes' => 'Surat Panggilan Orang Tua: ' . $request->reason,
-            'completed_date' => now(),
-            'attachment_path' => $filePath,
-        ]);
+        $this->generateAndArchiveLetter(
+            student: $student,
+            teacher: $teacher,
+            type: 'panggilan',
+            viewName: 'gurubk.letters.pdf',
+            filePrefix: 'surat_panggilan',
+            archiveNote: 'Surat Panggilan Orang Tua: ' . $request->reason,
+            data: $data
+        );
 
         return redirect()->route('gurubk.archives.index', ['type' => 'surat'])
-            ->with('success', 'Surat panggilan berhasil dibuat dan diarsipkan.')
-            ->with('download_pdf_path', asset('storage/' . $filePath));
+            ->with('success', 'Surat panggilan berhasil dibuat dan diarsipkan.');
     }
 
     public function createSkorsing(Request $request)
@@ -108,59 +75,27 @@ class LetterController extends Controller
         ]);
 
         $teacher = Auth::user()->teacher;
-        $student = Student::with('user')->findOrFail($request->student_id);
+        $student = $this->resolveStudent($request->student_id, $teacher);
 
-        if ($student->teacher_id !== $teacher->id) {
-            abort(403, 'Unauthorized access to student.');
-        }
-
-        $studentName = $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama');
-
-        $fullLetterNumber = '421.7 / ' . trim($request->letter_number) . ' / SMP.06 / ' . date('Y');
-
-        $data = [
-            'student_name' => $studentName,
-            'nisn' => $student->nisn,
-            'class' => $student->class,
-            'gender' => $student->gender,
-            'father_name' => $student->father_name,
-            'mother_name' => $student->mother_name,
-            'parents_address' => $student->parents_address ?? $student->address,
+        $data = $this->buildLetterData($student, $teacher, $request->letter_number, [
             'reason' => $request->reason,
             'duration' => $request->duration,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'teacher_name' => $teacher->user->name,
-            'nip' => $teacher->nip,
-            'letter_number' => $fullLetterNumber,
-        ];
-
-        $pdf = Pdf::loadView('gurubk.letters.skorsing_pdf', $data);
-        
-        $fileName = 'surat_skorsing_' . Str::slug($studentName) . '_' . time() . '.pdf';
-        $filePath = 'letters/' . $fileName;
-        
-        \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $pdf->output());
-
-        $letter = Letter::create([
-            'student_id' => $student->id,
-            'teacher_id' => $teacher->id,
-            'type' => 'skorsing',
-            'file_path' => $filePath,
-            'content_json' => $data,
         ]);
 
-        Archive::create([
-            'student_id' => $student->id,
-            'teacher_id' => $teacher->id,
-            'guidance_notes' => 'Surat Pemberitahuan Skorsing: ' . $request->reason . ' (' . $request->duration . ' hari)',
-            'completed_date' => now(),
-            'attachment_path' => $filePath,
-        ]);
+        $this->generateAndArchiveLetter(
+            student: $student,
+            teacher: $teacher,
+            type: 'skorsing',
+            viewName: 'gurubk.letters.skorsing_pdf',
+            filePrefix: 'surat_skorsing',
+            archiveNote: 'Surat Pemberitahuan Skorsing: ' . $request->reason . ' (' . $request->duration . ' hari)',
+            data: $data
+        );
 
         return redirect()->route('gurubk.archives.index', ['type' => 'surat'])
-            ->with('success', 'Surat skorsing berhasil dibuat dan diarsipkan.')
-            ->with('download_pdf_path', asset('storage/' . $filePath));
+            ->with('success', 'Surat skorsing berhasil dibuat dan diarsipkan.');
     }
 
     public function createSp1(Request $request)
@@ -180,56 +115,24 @@ class LetterController extends Controller
         ]);
 
         $teacher = Auth::user()->teacher;
-        $student = Student::with('user')->findOrFail($request->student_id);
+        $student = $this->resolveStudent($request->student_id, $teacher);
 
-        if ($student->teacher_id !== $teacher->id) {
-            abort(403, 'Unauthorized access to student.');
-        }
-
-        $studentName = $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama');
-
-        $fullLetterNumber = '421.7 / ' . trim($request->letter_number) . ' / SMP.06 / ' . date('Y');
-
-        $data = [
-            'student_name' => $studentName,
-            'nisn' => $student->nisn,
-            'class' => $student->class,
-            'gender' => $student->gender,
-            'father_name' => $student->father_name,
-            'mother_name' => $student->mother_name,
-            'parents_address' => $student->parents_address ?? $student->address,
+        $data = $this->buildLetterData($student, $teacher, $request->letter_number, [
             'reason' => $request->reason,
-            'teacher_name' => $teacher->user->name,
-            'nip' => $teacher->nip,
-            'letter_number' => $fullLetterNumber,
-        ];
-
-        $pdf = Pdf::loadView('gurubk.letters.sp1_pdf', $data);
-        
-        $fileName = 'surat_sp1_' . Str::slug($studentName) . '_' . time() . '.pdf';
-        $filePath = 'letters/' . $fileName;
-        
-        \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $pdf->output());
-
-        $letter = Letter::create([
-            'student_id' => $student->id,
-            'teacher_id' => $teacher->id,
-            'type' => 'sp1',
-            'file_path' => $filePath,
-            'content_json' => $data,
         ]);
 
-        Archive::create([
-            'student_id' => $student->id,
-            'teacher_id' => $teacher->id,
-            'guidance_notes' => 'Surat Peringatan Pertama (SP1): ' . $request->reason,
-            'completed_date' => now(),
-            'attachment_path' => $filePath,
-        ]);
+        $this->generateAndArchiveLetter(
+            student: $student,
+            teacher: $teacher,
+            type: 'sp1',
+            viewName: 'gurubk.letters.sp1_pdf',
+            filePrefix: 'surat_sp1',
+            archiveNote: 'Surat Peringatan Pertama (SP1): ' . $request->reason,
+            data: $data
+        );
 
         return redirect()->route('gurubk.archives.index', ['type' => 'surat'])
-            ->with('success', 'Surat SP1 berhasil dibuat dan diarsipkan.')
-            ->with('download_pdf_path', asset('storage/' . $filePath));
+            ->with('success', 'Surat SP1 berhasil dibuat dan diarsipkan.');
     }
 
     public function createSp2(Request $request)
@@ -249,17 +152,53 @@ class LetterController extends Controller
         ]);
 
         $teacher = Auth::user()->teacher;
-        $student = Student::with('user')->findOrFail($request->student_id);
+        $student = $this->resolveStudent($request->student_id, $teacher);
+
+        $data = $this->buildLetterData($student, $teacher, $request->letter_number, [
+            'reason' => $request->reason,
+        ]);
+
+        $this->generateAndArchiveLetter(
+            student: $student,
+            teacher: $teacher,
+            type: 'sp2',
+            viewName: 'gurubk.letters.sp2_pdf',
+            filePrefix: 'surat_sp2',
+            archiveNote: 'Surat Peringatan Kedua (SP2): ' . $request->reason,
+            data: $data
+        );
+
+        return redirect()->route('gurubk.archives.index', ['type' => 'surat'])
+            ->with('success', 'Surat SP2 berhasil dibuat dan diarsipkan.');
+    }
+
+    // =========================================================================
+    // Private Helper Methods (DRY extraction)
+    // =========================================================================
+
+    /**
+     * Resolve and authorize student ownership.
+     */
+    private function resolveStudent(int $studentId, $teacher): Student
+    {
+        $student = Student::with('user')->findOrFail($studentId);
 
         if ($student->teacher_id !== $teacher->id) {
             abort(403, 'Unauthorized access to student.');
         }
 
+        return $student;
+    }
+
+    /**
+     * Build common letter data array with student and teacher information.
+     */
+    private function buildLetterData(Student $student, $teacher, string $letterNumber, array $extra = []): array
+    {
         $studentName = $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama');
+        $fullLetterNumber = '421.7 / ' . trim($letterNumber) . ' / SMP.06 / ' . date('Y');
 
-        $fullLetterNumber = '421.7 / ' . trim($request->letter_number) . ' / SMP.06 / ' . date('Y');
-
-        $data = [
+        return array_merge([
             'student_name' => $studentName,
             'nisn' => $student->nisn,
             'class' => $student->class,
@@ -267,23 +206,37 @@ class LetterController extends Controller
             'father_name' => $student->father_name,
             'mother_name' => $student->mother_name,
             'parents_address' => $student->parents_address ?? $student->address,
-            'reason' => $request->reason,
             'teacher_name' => $teacher->user->name,
             'nip' => $teacher->nip,
             'letter_number' => $fullLetterNumber,
-        ];
+        ], $extra);
+    }
 
-        $pdf = Pdf::loadView('gurubk.letters.sp2_pdf', $data);
+    /**
+     * Generate PDF, save to storage, create Letter & Archive records.
+     */
+    private function generateAndArchiveLetter(
+        Student $student,
+        $teacher,
+        string $type,
+        string $viewName,
+        string $filePrefix,
+        string $archiveNote,
+        array $data
+    ): void {
+        $studentName = $data['student_name'];
+
+        $pdf = Pdf::loadView($viewName, $data);
         
-        $fileName = 'surat_sp2_' . Str::slug($studentName) . '_' . time() . '.pdf';
+        $fileName = $filePrefix . '_' . Str::slug($studentName) . '_' . time() . '.pdf';
         $filePath = 'letters/' . $fileName;
         
         \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $pdf->output());
 
-        $letter = Letter::create([
+        Letter::create([
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
-            'type' => 'sp2',
+            'type' => $type,
             'file_path' => $filePath,
             'content_json' => $data,
         ]);
@@ -291,13 +244,9 @@ class LetterController extends Controller
         Archive::create([
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
-            'guidance_notes' => 'Surat Peringatan Kedua (SP2): ' . $request->reason,
+            'guidance_notes' => $archiveNote,
             'completed_date' => now(),
             'attachment_path' => $filePath,
         ]);
-
-        return redirect()->route('gurubk.archives.index', ['type' => 'surat'])
-            ->with('success', 'Surat SP2 berhasil dibuat dan diarsipkan.')
-            ->with('download_pdf_path', asset('storage/' . $filePath));
     }
 }

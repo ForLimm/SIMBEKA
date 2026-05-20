@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Archive extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['student_id', 'teacher_id', 'report_id', 'guidance_notes', 'completed_date', 'attachment_path'];
 
     protected function casts(): array

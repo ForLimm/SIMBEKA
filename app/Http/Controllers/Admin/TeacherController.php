@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\PasswordRules;
 
 class TeacherController extends Controller
 {
@@ -24,25 +25,15 @@ class TeacherController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $request->validate(array_merge([
             'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
             'email' => 'required|email|unique:users,email',
-            'password' => [
-                'required',
-                'min:8',
-                'regex:/[a-z]/',      // must contain at least one lowercase letter
-                'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                'regex:/[0-9]/',      // must contain at least one digit
-                'regex:/[@$!%*?&]/',  // must contain at least one special character
-            ],
             'nip' => 'nullable|string|digits:18|unique:teachers,nip',
             'max_quota' => 'required|integer|min:1',
-        ], [
+        ], PasswordRules::rules('password', true, false)), array_merge([
             'name.regex' => 'Nama guru hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
             'nip.digits' => 'NIP harus berisi tepat 18 digit angka.',
-            'password.min' => 'Password minimal harus 8 karakter.',
-            'password.regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@$!%*?&).',
-        ]);
+        ], PasswordRules::messages('password')));
 
         $user = User::create([
             'name' => $request->name,
@@ -68,25 +59,15 @@ class TeacherController extends Controller
 
     public function update(Request $request, Teacher $teacher)
     {
-        $request->validate([
+        $request->validate(array_merge([
             'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
             'email' => 'required|email|unique:users,email,' . $teacher->user_id,
-            'password' => [
-                'nullable',
-                'min:8',
-                'regex:/[a-z]/',      // must contain at least one lowercase letter
-                'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                'regex:/[0-9]/',      // must contain at least one digit
-                'regex:/[@$!%*?&]/',  // must contain at least one special character
-            ],
             'nip' => 'nullable|string|digits:18|unique:teachers,nip,' . $teacher->id,
             'max_quota' => 'required|integer|min:1',
-        ], [
+        ], PasswordRules::rules('password', false, false)), array_merge([
             'name.regex' => 'Nama guru hanya boleh berisi huruf, spasi, titik, koma, atau tanda kutip.',
             'nip.digits' => 'NIP harus berisi tepat 18 digit angka.',
-            'password.min' => 'Password minimal harus 8 karakter.',
-            'password.regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@$!%*?&).',
-        ]);
+        ], PasswordRules::messages('password')));
 
         $user = $teacher->user;
         $userData = [
