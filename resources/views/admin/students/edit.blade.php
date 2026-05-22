@@ -133,20 +133,12 @@
 
         {{-- Right Column (4/12) --}}
         <div class="xl:col-span-4 space-y-6">
-            {{-- Kredensial Akun & Guru BK --}}
+            {{-- Penempatan Guru BK --}}
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden bg-white">
                 <div class="bg-slate-50 px-6 py-4 border-b border-slate-100">
-                    <h4 class="text-xs font-bold text-slate-600 uppercase tracking-wider">Akun & Penempatan</h4>
+                    <h4 class="text-xs font-bold text-slate-600 uppercase tracking-wider">Penempatan Guru BK</h4>
                 </div>
                 <div class="p-6 space-y-4">
-                    <div>
-                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Email Siswa <span class="text-rose-500">*</span></label>
-                        <input type="email" name="email" required value="{{ old('email', $student->user?->email) }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="siswa@sekolah.sch.id">
-                    </div>
-                    <div>
-                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Ubah Password</label>
-                        <input type="password" name="password" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Kosongkan jika tidak diubah">
-                    </div>
                     <div>
                         <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Guru BK Pembimbing</label>
                         <div class="relative">

@@ -181,9 +181,9 @@
                         <p>Format file harus berupa <strong>CSV</strong> (koma atau titik koma sebagai pemisah).</p>
                         <p>Baris pertama file CSV harus berupa nama kolom persis seperti berikut:</p>
                         <code class="block bg-slate-100 p-2 rounded text-[10px] border border-slate-200 font-mono text-slate-800 whitespace-nowrap overflow-x-auto">
-                            name,email,password,class,nisn,gender,religion,phone,address,father_name,mother_name
+                            name,class,nisn,gender,religion,phone,address,father_name,mother_name
                         </code>
-                        <div class="text-rose-500 font-bold">* Kolom name, email, password, dan class wajib diisi.</div>
+                        <div class="text-rose-500 font-bold">* Kolom name, class, dan nisn wajib diisi. (Akun login email/password akan dibuat secara otomatis dari NISN)</div>
                     </div>
 
                     <div>

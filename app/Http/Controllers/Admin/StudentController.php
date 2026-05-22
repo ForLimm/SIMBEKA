@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\User;
 use App\Models\Student;
 use App\Models\Teacher;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Models\User;
 use App\Http\Requests\StudentRules;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -31,18 +31,17 @@ class StudentController extends Controller
         }
 
         if ($request->filled('teacher_id')) {
-            if ($request->teacher_id == 'unassigned') {
+            if ($request->teacher_id === 'unassigned') {
                 $query->whereNull('teacher_id');
             } else {
                 $query->where('teacher_id', $request->teacher_id);
             }
         }
 
-        $students = $query->latest()->paginate(15);
-        $classes = Student::whereNotNull('class')->distinct()->pluck('class');
+        $students = $query->latest()->paginate(15)->withQueryString();
         $teachers = Teacher::with('user')->get();
 
-        return view('admin.students.index', compact('students', 'classes', 'teachers'));
+        return view('admin.students.index', compact('students', 'teachers'));
     }
 
     public function create()
@@ -54,22 +53,22 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->validate(array_merge(StudentRules::storeRules(), [
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
             'teacher_id' => 'nullable|exists:teachers,id',
         ]), StudentRules::messages());
 
-        // Generate username from email
-        $username = strstr($request->email, '@', true);
-        if (!$username || User::where('username', $username)->exists()) {
-            $username = $username . '_' . Str::random(4);
+        $email = $request->nisn . '@siswa.simbeka.id';
+        $username = 'siswa_' . $request->nisn;
+
+        // Check if email or username is already taken
+        if (User::where('email', $email)->exists() || User::where('username', $username)->exists()) {
+            return back()->withInput()->withErrors(['nisn' => 'Email atau Username yang dihasilkan dari NISN ini sudah terdaftar.']);
         }
 
         $user = User::create([
             'name' => $request->name,
             'username' => $username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'email' => $email,
+            'password' => Hash::make($request->nisn),
             'role' => 'siswa',
         ]);
 
@@ -96,20 +95,24 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $request->validate(array_merge(StudentRules::updateRules($student->id), [
-            'email' => 'required|email|unique:users,email,' . $student->user_id,
-            'password' => 'nullable|min:6',
             'teacher_id' => 'nullable|exists:teachers,id',
         ]), StudentRules::messages());
 
         $user = $student->user;
-        $userData = [
-            'name' => $request->name,
-            'email' => $request->email,
-        ];
-        if ($request->filled('password')) {
-            $userData['password'] = Hash::make($request->password);
+        $email = $request->nisn . '@siswa.simbeka.id';
+        $username = 'siswa_' . $request->nisn;
+
+        // Check if email or username is taken by a different user
+        if (User::where('email', $email)->where('id', '!=', $user->id)->exists() || 
+            User::where('username', $username)->where('id', '!=', $user->id)->exists()) {
+            return back()->withInput()->withErrors(['nisn' => 'Email atau Username yang dihasilkan dari NISN ini sudah terdaftar untuk siswa lain.']);
         }
-        $user->update($userData);
+
+        $user->update([
+            'name' => $request->name,
+            'username' => $username,
+            'email' => $email,
+        ]);
 
         $data = $request->only(StudentRules::safeFields());
         $data['teacher_id'] = $request->teacher_id;
@@ -191,36 +194,38 @@ class StudentController extends Controller
             }
 
             $name = $data['name'] ?? null;
-            $email = $data['email'] ?? null;
-            $password = $data['password'] ?? null;
             $class = $data['class'] ?? null;
             $nisn = $data['nisn'] ?? null;
 
-            if (!$name || !$email || !$password || !$class) {
-                $errors[] = "Baris #{$rowCount}: Kolom name, email, password, dan class wajib diisi.";
+            if (!$name || !$nisn || !$class) {
+                $errors[] = "Baris #{$rowCount}: Kolom name, nisn, dan class wajib diisi.";
                 continue;
             }
 
-            if (User::where('email', $email)->exists()) {
-                $errors[] = "Baris #{$rowCount}: Email '{$email}' sudah digunakan oleh pengguna lain.";
+            // NISN validation length check
+            if (strlen($nisn) !== 10 || !is_numeric($nisn)) {
+                $errors[] = "Baris #{$rowCount}: NISN '{$nisn}' tidak valid (harus 10 digit angka).";
                 continue;
             }
 
-            if ($nisn && Student::where('nisn', $nisn)->exists()) {
-                $errors[] = "Baris #{$rowCount}: NISN '{$nisn}' sudah terdaftar.";
+            $email = $nisn . '@siswa.simbeka.id';
+            $username = 'siswa_' . $nisn;
+
+            if (User::where('email', $email)->exists() || User::where('username', $username)->exists()) {
+                $errors[] = "Baris #{$rowCount}: Siswa dengan NISN '{$nisn}' sudah terdaftar (Email/Username terpakai).";
                 continue;
             }
 
-            $username = strstr($email, '@', true);
-            if (!$username || User::where('username', $username)->exists()) {
-                $username = $username . '_' . Str::random(4);
+            if (Student::where('nisn', $nisn)->exists()) {
+                $errors[] = "Baris #{$rowCount}: NISN '{$nisn}' sudah terdaftar di database.";
+                continue;
             }
 
             $user = User::create([
                 'name' => $name,
                 'username' => $username,
                 'email' => $email,
-                'password' => Hash::make($password),
+                'password' => Hash::make($nisn),
                 'role' => 'siswa',
             ]);
 
