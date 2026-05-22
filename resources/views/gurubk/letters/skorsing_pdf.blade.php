@@ -110,7 +110,6 @@
         }
         .sig-name {
             font-weight: bold;
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -145,10 +144,10 @@
             </td>
             <td class="meta-right">
                 Kepada :<br/>
-                Yth. Bapak/Ibu Orang Tua/Wali<br/>
-                <strong>{{ $father_name ?? $mother_name ?? '' }}</strong><br/>
+                Yth. Bpk/Ibu Orang Tua/Wali<br/>
+                An. <strong>{{ $student_name }}</strong><br/>
                 Di -<br/>
-                <span style="padding-left: 20px; font-style: italic;">Tempat</span>
+                <span style="padding-left: 20px;">Tempat</span>
             </td>
         </tr>
     </table>
@@ -172,13 +171,14 @@
             <tr>
                 <td class="label">Pelanggaran</td>
                 <td class="colon">:</td>
-                <td style="font-weight: bold;">{!! nl2br(e($reason)) !!}</td>
+                <td>{!! nl2br(e($reason)) !!}</td>
             </tr>
         </table>
 
-        <p class="no-indent" style="margin-top: 15px;">Maka pihak sekolah memberikan tindakan disiplin berupa skorsing kepada siswa tersebut selama <strong>{{ $duration }}</strong> hari, mulai tanggal <strong>{{ \Carbon\Carbon::parse($start_date)->locale('id')->isoFormat('D MMMM Y') }}</strong> sampai dengan tanggal <strong>{{ \Carbon\Carbon::parse($end_date)->locale('id')->isoFormat('D MMMM Y') }}</strong>.</p>
-        
-        <p class="no-indent">Selama masa skorsing, siswa tersebut dilarang masuk ke sekolah dan diwajibkan untuk mengerjakan tugas yang diberikan guru untuk diselesaikan di rumah.</p>
+        <p class="no-indent" style="margin-top: 15px;">Maka kami pihak sekolah memberikan tindakan disiplin berupa skorsing kepada siswa tersebut 
+selama <strong>{{ $duration }}</strong> hari, mulai tanggal <strong>{{ \Carbon\Carbon::parse($start_date)->locale('id')->isoFormat('D MMMM Y') }}</strong> sampai dengan tanggal <strong>{{ \Carbon\Carbon::parse($end_date)->locale('id')->isoFormat('D MMMM Y') }}</strong>. Selama masa 
+skorsing siswa tersebut dilarang masuk ke sekolah dan akan diberikan tugas yang harus diselesaikan 
+di rumah.</p>
         
         <p class="no-indent" style="margin-top: 15px;">Demikian surat pemberitahuan ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
     </div>
@@ -191,7 +191,7 @@
                 <div class="sig-image-container">
                     <img class="sig-image" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/cap_signature.png'))) }}" />
                 </div>
-                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</p>
+                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::now('Asia/Makassar')->locale('id')->isoFormat('D MMMM Y') }}</p>
                 <p style="margin-top: 5px; margin-bottom: 0; position: relative; z-index: 2;">Mengetahui,<br/>Kepala Sekolah,</p>
                 <div class="sig-space"></div>
                 <p class="sig-name" style="margin-top: 0; margin-bottom: 0; position: relative; z-index: 2;">Hartadi Gatot, S.Pd., M.P.Mat.</p>

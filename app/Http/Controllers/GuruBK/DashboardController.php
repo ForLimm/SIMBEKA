@@ -128,6 +128,7 @@ class DashboardController extends Controller
         \App\Models\Archive::create([
             'student_id' => $student ? $student->id : null,
             'teacher_id' => $teacher->id,
+            'handler_name' => $teacher->user->name ?? 'Guru BK',
             'report_id' => $report->id,
             'guidance_notes' => '[' . ucfirst($report->type) . '] ' . $report->title . ': ' . $report->content,
             'completed_date' => now(),

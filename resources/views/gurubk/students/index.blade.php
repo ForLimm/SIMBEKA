@@ -3,7 +3,7 @@
 @section('title_display', 'Data Siswa')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-8" x-data="{ showExport: false, exportMode: 'all', selectedStudents: [], selectAll: false, toggleAll() { if(this.selectAll) { this.selectedStudents = [{!! $students->pluck('id')->map(fn($id) => '\'' . $id . '\'')->join(',') !!}]; } else { this.selectedStudents = []; } } }">
+<div class="max-w-6xl mx-auto space-y-8" x-data="{ showExport: false, exportMode: 'all', selectedStudents: [], selectAll: false, toggleAll() { if(this.selectAll) { this.selectedStudents = [{!! $students->pluck('id')->map(fn($id) => '\'' . $id . '\'')->join(',') !!}]; } else { this.selectedStudents = []; } }, exportPeriod: 'semester', exportYear: '', exportSemester: '' }">
     {{-- Header --}}
     <div class="flex items-center justify-between mb-8">
         <div>
@@ -41,65 +41,55 @@
                 <template x-if="exportMode === 'selected'">
                     <input type="hidden" name="student_ids" :value="selectedStudents.join(',')">
                 </template>
+                <input type="hidden" name="format" value="pdf">
                 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="text-[10px] font-semibold text-slate-400 font-medium block mb-4 ml-1">Periode Laporan</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <label class="relative">
-                                <input type="radio" name="period" value="month" class="peer sr-only">
-                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Bulan Ini</span>
-                                </div>
-                            </label>
-                            <label class="relative">
-                                <input type="radio" name="period" value="semester" class="peer sr-only">
-                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semester Ini</span>
-                                </div>
-                            </label>
-                            <label class="relative">
-                                <input type="radio" name="period" value="year" class="peer sr-only">
-                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Tahun Ini</span>
-                                </div>
-                            </label>
-                            <label class="relative">
-                                <input type="radio" name="period" value="all" checked class="peer sr-only">
-                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semua Data</span>
-                                </div>
-                            </label>
+                <div class="space-y-4">
+                    <label class="text-[10px] font-semibold text-slate-400 font-medium block mb-2 ml-1">Periode Laporan</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="relative">
+                            <input type="radio" name="period" value="semester" x-model="exportPeriod" @change="exportYear = ''; exportSemester = ''" class="peer sr-only">
+                            <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semester Ini</span>
+                            </div>
+                        </label>
+                        <label class="relative">
+                            <input type="radio" name="period" value="all" x-model="exportPeriod" @change="exportYear = ''; exportSemester = ''" class="peer sr-only">
+                            <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semua Data</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="text-[10px] font-semibold text-slate-400 font-medium block mb-1 ml-1">Pilih Semester / Tahun Ajaran Lain (Opsional)</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="relative">
+                            <select name="academic_year" x-model="exportYear" @change="exportPeriod = ''" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 outline-none transition appearance-none font-medium text-slate-700 pr-8">
+                                <option value="">Semua Tahun Ajaran</option>
+                                @foreach($academicYears as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <select name="semester" x-model="exportSemester" @change="exportPeriod = ''" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 outline-none transition appearance-none font-medium text-slate-700 pr-8">
+                                <option value="">Semua Semester</option>
+                                <option value="1">Semester 1 (Ganjil)</option>
+                                <option value="2">Semester 2 (Genap)</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3">
-                    <label class="relative col-span-3">
-                        <span class="text-[10px] font-semibold text-slate-400 font-medium block mb-4 ml-1">Format Dokumen</span>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="word" checked class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Word</span>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="pdf" class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">PDF</span>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="excel" class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Excel</span>
-                        </div>
-                    </label>
-                </div>
-
                 <div class="pt-4">
-                    <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-[1.5rem] shadow-xl shadow-indigo-600/20 transition-all active:scale-[0.95] font-medium text-xs flex items-center justify-center gap-3">
+                    <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-lg shadow-xl shadow-indigo-600/20 transition-all active:scale-[0.95] font-medium text-xs flex items-center justify-center gap-3">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                         Unduh Laporan
                     </button>

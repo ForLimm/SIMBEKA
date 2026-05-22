@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <form action="{{ route('gurubk.students.update', $student->id) }}" method="POST" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+    <form action="{{ route('gurubk.students.update', $student->id) }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
         @csrf
         @method('PUT')
         
@@ -98,6 +98,24 @@
                     <div class="md:col-span-2">
                         <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">No. HP Siswa</label>
                         <input type="text" name="phone" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{ old('phone', $student->phone) }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Maks 15 Digit Angka">
+                    </div>
+
+                    <div class="md:col-span-6">
+                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Foto Siswa (4x6)</label>
+                        @if($student->photo)
+                            <div class="mb-3 flex items-center gap-4">
+                                <img src="{{ asset('storage/' . $student->photo) }}" alt="Foto Siswa" class="w-16 h-24 object-cover rounded-lg border border-slate-200 shadow-sm">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-700">Foto Saat Ini</p>
+                                    <label class="inline-flex items-center gap-1.5 mt-1.5 text-xs text-red-500 hover:text-red-700 cursor-pointer font-bold">
+                                        <input type="checkbox" name="remove_photo" value="1" class="rounded border-slate-300 text-red-600 focus:ring-red-500">
+                                        Hapus foto saat ini
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        <input type="file" name="photo" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-xs focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium">
+                        <p class="text-[9px] text-slate-400 mt-1 font-medium ml-1">Format: JPG, JPEG, PNG. Maksimal ukuran file: 2MB. (Opsional)</p>
                     </div>
                 </div>
             </div>

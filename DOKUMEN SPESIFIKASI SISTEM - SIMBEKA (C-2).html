@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Dokumen Spesifikasi Sistem (C-2) - SIMBEKA</title>
+<style>
+@page{size:A4;margin:2.5cm 2cm}
+body{font-family:'Times New Roman',serif;font-size:12pt;line-height:1.6;color:#000;max-width:21cm;margin:0 auto;padding:2cm}
+h1{font-size:16pt;text-align:center;margin-bottom:5px}
+h2{font-size:14pt;margin-top:30px;page-break-after:avoid}
+h3{font-size:12pt;margin-top:20px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10pt}
+th,td{border:1px solid #000;padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#d9e2f3;font-weight:bold;text-align:center}
+.cover{text-align:center;page-break-after:always;padding-top:100px}
+.cover h1{font-size:20pt;margin-bottom:10px}
+.cover h2{font-size:16pt;margin-top:5px}
+.cover .info{margin-top:80px;font-size:12pt}
+.page-break{page-break-before:always}
+.toc{page-break-after:always}
+.toc a{text-decoration:none;color:#000}
+.center{text-align:center}
+.bold{font-weight:bold}
+p{text-align:justify;margin:8px 0}
+ol,ul{margin:5px 0 5px 20px}
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+<br><br><br>
+<h1>SYSTEM SPECIFICATION (C2)</h1>
+<h2>DOKUMEN SPESIFIKASI SISTEM</h2>
+<br>
+<h1>SISTEM INFORMASI MANAJEMEN<br>BIMBINGAN &amp; KONSELING</h1>
+<h2>SMP NEGERI 6 PALU</h2>
+<br><br>
+<p style="text-align:center;font-size:14pt;font-weight:bold">SIMBEKA</p>
+<br>
+<div class="info">
+<table style="width:60%;margin:0 auto;border:none">
+<tr><td style="border:none;width:40%">Disusun Oleh:</td><td style="border:none"></td></tr>
+<tr><td style="border:none">F52123027</td><td style="border:none">Aditya Zaldy</td></tr>
+<tr><td style="border:none">F52123028</td><td style="border:none">Sapto Mart Saputra Wicaksono</td></tr>
+<tr><td style="border:none">F52123029</td><td style="border:none">Andi Moh. Rafli</td></tr>
+<tr><td style="border:none">F55123011</td><td style="border:none">Zaky Putra Safandra</td></tr>
+<tr><td style="border:none">F55123031</td><td style="border:none">Fahril Antonio Hande</td></tr>
+<tr><td style="border:none">F55123044</td><td style="border:none">I Wayan Arigayu Saputra</td></tr>
+</table>
+</div>
+<br><br><br>
+<p style="text-align:center;font-weight:bold">JURUSAN TEKNOLOGI INFORMASI<br>FAKULTAS TEKNIK<br>UNIVERSITAS TADULAKO<br>2026</p>
+</div>
+
+<!-- DAFTAR ISI -->
+<div class="toc">
+<h2 style="text-align:center">DAFTAR ISI</h2>
+<br>
+<p><b>HALAMAN JUDUL</b> ..... i</p>
+<p><b>DAFTAR ISI</b> ..... ii</p>
+<p><b>BAB I PENDAHULUAN</b> ..... 1</p>
+<p>&nbsp;&nbsp;&nbsp;1.1 Tujuan Dokumen ..... 1</p>
+<p>&nbsp;&nbsp;&nbsp;1.2 Ruang Lingkup Sistem ..... 1</p>
+<p>&nbsp;&nbsp;&nbsp;1.3 Definisi dan Singkatan ..... 2</p>
+<p>&nbsp;&nbsp;&nbsp;1.4 Karakteristik dan Kebutuhan Pengguna ..... 3</p>
+<p><b>BAB II SPESIFIKASI FUNGSIONAL</b> ..... 5</p>
+<p>&nbsp;&nbsp;&nbsp;2.1 Ringkasan Spesifikasi Fungsional ..... 5</p>
+<p>&nbsp;&nbsp;&nbsp;2.2 Deskripsi Detail Spesifikasi Fungsional ..... 6</p>
+<p><b>BAB III SPESIFIKASI NON-FUNGSIONAL</b> ..... 10</p>
+<p>&nbsp;&nbsp;&nbsp;3.1 Ringkasan Spesifikasi Non-Fungsional ..... 10</p>
+<p>&nbsp;&nbsp;&nbsp;3.2 Penjelasan Aspek Non-Fungsional Kritis ..... 12</p>
+<p><b>BAB IV MATRIKS KETERLUSURAN</b> ..... 13</p>
+<p>&nbsp;&nbsp;&nbsp;4.1 Matriks Keterlusuran Spesifikasi ..... 13</p>
+<p><b>BAB V VERIFIKASI DAN KRITERIA PENGUJIAN</b> ..... 14</p>
+<p>&nbsp;&nbsp;&nbsp;5.1 Daftar Metrik dan Kriteria Pengujian ..... 14</p>
+<p><b>DAFTAR PUSTAKA</b> ..... 16</p>
+</div>
+
+<!-- BAB I -->
+<h2>BAB I<br>PENDAHULUAN</h2>
+
+<h3>1.1 Tujuan Dokumen</h3>
+<p>Dokumen ini merupakan Dokumen Spesifikasi Sistem (C-2) untuk proyek pengembangan website <b>Sistem Informasi Manajemen Bimbingan &amp; Konseling (SIMBEKA)</b> SMP Negeri 6 Palu. Dokumen ini menerjemahkan kebutuhan yang telah diidentifikasi pada tahap perumusan masalah (C-1) menjadi spesifikasi fungsi dan kinerja yang terukur, tidak ambigu, dan dapat diverifikasi.</p>
+
+<h3>1.2 Ruang Lingkup Sistem</h3>
+<p>Sistem yang dispesifikasikan adalah aplikasi web berbasis <i>framework</i> Laravel 11.x yang melayani tiga kelompok pengguna utama, yaitu <b>Admin Sekolah</b>, <b>Guru BK (Bimbingan Konseling)</b>, dan <b>Siswa/Tamu</b>. Sistem ini mencakup tujuh domain fungsional utama:</p>
+<ol>
+<li>Manajemen akun pengguna dan autentikasi multi-role (Admin, Guru BK, Siswa, Tamu)</li>
+<li>Pengelolaan data Guru BK oleh Admin (CRUD, pengaturan kuota siswa bimbingan)</li>
+<li>Pengelolaan data siswa bimbingan oleh Guru BK (CRUD lengkap dengan data wali/orang tua)</li>
+<li>Sistem pelaporan &amp; konsultasi siswa dengan mekanisme anonimitas dan prioritas</li>
+<li>Fitur live chat konsultasi real-time antara siswa dan Guru BK dengan mekanisme self-destruct</li>
+<li>Pencatatan sesi konseling formal (bimbingan tatap muka) oleh Guru BK</li>
+<li>Sistem arsip, pembuatan surat keputusan (SP1/SP2/Skorsing/Panggilan Orang Tua), dan ekspor laporan anekdot (PDF/Word/Excel)</li>
+</ol>
+
+<h3>1.3 Definisi dan Singkatan</h3>
+<table>
+<tr><th>Istilah/Singkatan</th><th>Definisi</th></tr>
+<tr><td>SIMBEKA</td><td>Sistem Informasi Manajemen Bimbingan &amp; Konseling — nama resmi aplikasi</td></tr>
+<tr><td>BK</td><td>Bimbingan Konseling</td></tr>
+<tr><td>Guru BK</td><td>Guru Bimbingan Konseling yang bertugas menangani konsultasi dan pelaporan siswa</td></tr>
+<tr><td>Admin</td><td>Pengguna dari pihak sekolah yang memiliki hak akses penuh untuk mengelola data Guru BK</td></tr>
+<tr><td>Siswa</td><td>Pengguna terdaftar yang dapat mengakses fitur konsultasi dan pelaporan</td></tr>
+<tr><td>Guest/Tamu</td><td>Pengguna anonim yang masuk tanpa mendaftar akun permanen, otomatis digenerate username acak</td></tr>
+<tr><td>RBAC</td><td>Role-Based Access Control — mekanisme pembatasan akses berdasarkan peran pengguna</td></tr>
+<tr><td>Self-Destruct</td><td>Mekanisme penghapusan otomatis riwayat chat saat kasus diselesaikan untuk menjaga privasi</td></tr>
+<tr><td>SP1</td><td>Surat Peringatan Pertama</td></tr>
+<tr><td>SP2</td><td>Surat Peringatan Kedua</td></tr>
+<tr><td>NISN</td><td>Nomor Induk Siswa Nasional</td></tr>
+<tr><td>NIP</td><td>Nomor Induk Pegawai — identitas unik 18 digit untuk Guru BK</td></tr>
+<tr><td>Recovery Code</td><td>Kode pemulihan alfanumerik 8 karakter (format XXXX-XXXX) untuk login darurat</td></tr>
+<tr><td>SF</td><td>Spesifikasi Fungsional</td></tr>
+<tr><td>SNF</td><td>Spesifikasi Non-Fungsional</td></tr>
+<tr><td>HTTPS</td><td>HyperText Transfer Protocol Secure — protokol komunikasi terenkripsi</td></tr>
+</table>
+
+<h3>1.4 Karakteristik dan Kebutuhan Pengguna</h3>
+<p>Berikut adalah pemetaan karakteristik dan kebutuhan dasar dari aktor utama yang akan menggunakan sistem ini:</p>
+
+<p><b>A. Admin Sekolah</b></p>
+<p><b>Karakteristik:</b> Staf administrasi sekolah yang memerlukan antarmuka dashboard sederhana untuk mengelola pengguna sistem tanpa memahami pemrograman.</p>
+<p><b>Kebutuhan Utama:</b></p>
+<ul>
+<li>Membutuhkan dashboard statistik yang menampilkan jumlah Guru BK, siswa terdaftar, dan akun tamu.</li>
+<li>Membutuhkan sarana untuk menambah, mengedit, dan mengelola akun Guru BK beserta kuota siswa bimbingannya.</li>
+<li>Membutuhkan kemampuan mendaftarkan siswa ke dalam sistem secara langsung.</li>
+</ul>
+
+<p><b>B. Guru BK (Bimbingan Konseling)</b></p>
+<p><b>Karakteristik:</b> Guru profesional yang memerlukan alat digital untuk mendokumentasikan kegiatan konseling, menangani laporan siswa, dan membuat surat keputusan.</p>
+<p><b>Kebutuhan Utama:</b></p>
+<ul>
+<li>Membutuhkan dashboard holistik yang menampilkan antrean kasus masuk (pelaporan/konsultasi), kasus aktif, dan statistik siswa bimbingan.</li>
+<li>Membutuhkan fitur pengambilan kasus (claim) dengan pembatasan beban kerja maksimal 5 kasus aktif.</li>
+<li>Membutuhkan sarana pencatatan sesi konseling formal (kategori: akademik, disiplin, keluarga, pertemanan, bullying, karier, pribadi).</li>
+<li>Membutuhkan kemudahan dalam membuat surat keputusan (Panggilan Orang Tua, SP1, SP2, Skorsing) dalam format PDF otomatis.</li>
+<li>Membutuhkan fasilitas arsip dan ekspor laporan anekdot siswa dalam berbagai format (PDF, Word, Excel).</li>
+<li>Membutuhkan manajemen data siswa bimbingan yang komprehensif (data pribadi, wali, alamat).</li>
+</ul>
+
+<p><b>C. Siswa (Terdaftar &amp; Tamu/Guest)</b></p>
+<p><b>Karakteristik:</b> Siswa SMP dengan tingkat literasi digital yang beragam, mengakses sistem melalui perangkat smartphone atau komputer sekolah.</p>
+<p><b>Kebutuhan Utama:</b></p>
+<ul>
+<li>Membutuhkan media untuk melaporkan permasalahan (bullying, keluhan, dll.) atau meminta konsultasi secara aman.</li>
+<li>Membutuhkan opsi pelaporan anonim (melalui mode Guest) tanpa harus mendaftar akun.</li>
+<li>Membutuhkan fitur live chat untuk berkonsultasi langsung dengan Guru BK pendamping.</li>
+<li>Membutuhkan jaminan privasi bahwa riwayat chat akan dihapus secara permanen setelah kasus selesai (Self-Destruct).</li>
+<li>Membutuhkan riwayat pelaporan dan konsultasi yang dapat dilihat dan dihapus dari tampilan pribadi.</li>
+<li>Membutuhkan mekanisme pemulihan akun jika lupa password (recovery code atau pertanyaan keamanan).</li>
+</ul>
+
+<!-- BAB II -->
+<div class="page-break"></div>
+<h2>BAB II<br>SPESIFIKASI FUNGSIONAL</h2>
+
+<h3>2.1 Ringkasan Spesifikasi Fungsional</h3>
+<p>Spesifikasi fungsional mendefinisikan seluruh fungsi dan perilaku yang harus dimiliki sistem. Setiap spesifikasi dirancang agar dapat diuji secara langsung dengan metode dan metrik yang terukur.</p>
+
+<table>
+<tr><th>ID</th><th>Spesifikasi</th><th>Deskripsi</th><th>Metode Pengujian</th><th>Metrik/Nilai Uji</th></tr>
+<tr><td>SF-01</td><td>Autentikasi Multi-Role</td><td>Sistem mendukung 3 role (Admin, Guru BK, Siswa) dengan login berbasis username/email dan password. Siswa memiliki opsi masuk sebagai Tamu (guest) tanpa registrasi manual.</td><td>Uji login dengan kredensial valid/tidak valid untuk setiap role; uji akses guest</td><td>Login berhasil &lt; 3 detik; Akses tak sah menghasilkan 403; Guest mendapat username acak otomatis</td></tr>
+<tr><td>SF-02</td><td>Pemulihan Akun</td><td>Siswa dapat memulihkan akses akun melalui Recovery Code (8 karakter) atau Pertanyaan Keamanan. Guest dapat login kembali menggunakan Recovery Code.</td><td>Uji pemulihan dengan kode valid/tidak valid; uji reset password via pertanyaan keamanan</td><td>Login recovery berhasil &lt; 3 detik; Kode salah menghasilkan error yang jelas</td></tr>
+<tr><td>SF-03</td><td>Manajemen Guru BK (Admin)</td><td>Admin dapat menambah dan mengedit data Guru BK (Nama, Email, NIP 18 digit, Password, Kuota Siswa). Akun Guru BK otomatis dibuat di tabel users.</td><td>Uji CRUD Guru BK; uji validasi NIP 18 digit; uji email unik</td><td>Data tersimpan tanpa error; NIP non-18 digit ditolak; Email duplikat ditolak</td></tr>
+<tr><td>SF-04</td><td>Dashboard Admin</td><td>Admin melihat statistik ringkasan: total Guru BK, total siswa terdaftar, dan total akun guest.</td><td>Uji keakuratan data dashboard vs data database</td><td>Nilai statistik dashboard cocok 100% dengan data aktual di database</td></tr>
+<tr><td>SF-05</td><td>Manajemen Data Siswa (Guru BK)</td><td>Guru BK dapat menambah, mengedit, melihat detail, dan menghapus siswa bimbingan. Data mencakup: Nama, NISN, Kelas, Tempat/Tanggal Lahir, Jenis Kelamin, Agama, Alamat, Telepon, Data Orang Tua. Kuota siswa dibatasi per guru (max_quota).</td><td>Uji CRUD siswa; uji kuota; uji bulk delete</td><td>Penambahan ditolak jika kuota penuh; Data tersimpan lengkap; Bulk delete berfungsi</td></tr>
+<tr><td>SF-06</td><td>Sistem Pelaporan &amp; Konsultasi</td><td>Siswa/Guest dapat mengirim laporan (pelaporan/konsultasi) dengan judul, isi, tipe, dan prioritas (low/medium/high). Guest otomatis ditandai anonim. Input disanitasi (strip_tags).</td><td>Uji submit laporan oleh siswa terdaftar dan guest; uji sanitasi XSS</td><td>Laporan tersimpan; Guest ditandai is_anonymous=true; Tag HTML di-strip otomatis</td></tr>
+<tr><td>SF-07</td><td>Pengambilan &amp; Penyelesaian Kasus (Guru BK)</td><td>Guru BK dapat mengambil (claim) kasus pending dengan menetapkan prioritas. Batas maksimal 5 kasus aktif per guru. Saat resolve: chat di-destroy, arsip otomatis dibuat.</td><td>Uji claim kasus; uji batas 5 kasus; uji resolve dan self-destruct chat</td><td>Kasus ke-6 ditolak; Resolve menghapus semua chat; Arsip tercipta otomatis</td></tr>
+<tr><td>SF-08</td><td>Live Chat Konsultasi</td><td>Chat real-time (polling) antara siswa dan Guru BK. Pesan ditandai read saat dibuka. Hanya reporter dan handler yang dapat mengakses. Pesan dibatasi maks 2000 karakter.</td><td>Uji kirim/terima pesan; uji akses pihak ketiga; uji polling</td><td>Pesan tampil &lt; 3 detik; Pihak ketiga mendapat 403; Polling mengembalikan data JSON valid</td></tr>
+<tr><td>SF-09</td><td>Pencatatan Sesi Konseling</td><td>Guru BK mencatat sesi konseling formal: judul, tanggal, kategori (8 kategori), ringkasan, tindak lanjut, status (selesai/monitoring/tindak_lanjut). CRUD lengkap dengan filter dan paginasi.</td><td>Uji CRUD sesi; uji filter kategori/status/tanggal; uji paginasi</td><td>Data tersimpan akurat; Filter mengembalikan hasil yang benar; Paginasi 10 item/halaman</td></tr>
+<tr><td>SF-10</td><td>Pembuatan Surat Keputusan</td><td>Guru BK membuat surat otomatis (Panggilan Orang Tua, SP1, SP2, Skorsing) dalam format PDF. Data siswa otomatis terisi. Surat otomatis diarsipkan.</td><td>Uji generate PDF setiap tipe surat; uji kelengkapan data di PDF; uji arsip</td><td>PDF tergenerate &lt; 5 detik; Data siswa lengkap; Arsip tercatat dengan attachment</td></tr>
+<tr><td>SF-11</td><td>Sistem Arsip &amp; Rekap</td><td>Arsip menampilkan 3 kategori terpisah: arsip laporan, arsip konseling selesai, arsip surat. Filter berdasarkan nama dan tanggal. Ekspor ke PDF/Word/Excel.</td><td>Uji filter arsip; uji ekspor 3 format; uji pemisahan kategori</td><td>Data terfilter akurat; File ekspor berhasil diunduh dan berisi data yang benar</td></tr>
+<tr><td>SF-12</td><td>Laporan Anekdot</td><td>Ekspor laporan anekdot siswa (catatan konseling per siswa). Filter periode: bulan, semester, tahun ajaran. Ekspor individual, terpilih, atau keseluruhan.</td><td>Uji ekspor per periode; uji ekspor individu vs batch</td><td>Data sesuai periode; Semua format (PDF/Word/Excel) berhasil diunduh</td></tr>
+<tr><td>SF-13</td><td>Dashboard Guru BK</td><td>Menampilkan: antrean kasus pending, kasus aktif, statistik siswa per kelas, jumlah siswa terkonseling, jumlah pelanggaran, total sesi konseling, kategori terbanyak, tindak lanjut aktif.</td><td>Uji keakuratan setiap statistik terhadap database</td><td>Seluruh nilai statistik cocok 100% dengan data aktual</td></tr>
+<tr><td>SF-14</td><td>Portal Siswa</td><td>Siswa melihat dashboard, riwayat konsultasi, dan riwayat pelaporan. Siswa dapat menyembunyikan (hide) laporan dari tampilannya. Pengaturan ubah password tersedia.</td><td>Uji tampilan dashboard; uji hide laporan; uji ubah password</td><td>Laporan hidden tidak tampil; Password berhasil diubah</td></tr>
+</table>
+
+<h3>2.2 Deskripsi Detail Spesifikasi Fungsional</h3>
+
+<p><b>SF-01: Autentikasi Multi-Role</b></p>
+<p>Sistem mengimplementasikan autentikasi berbasis sesi Laravel dengan tiga role utama yang didefinisikan dalam enum database: <i>admin</i>, <i>guru_bk</i>, dan <i>siswa</i>. Setiap role dialihkan ke dashboard masing-masing setelah login berhasil. Siswa dapat mendaftar secara mandiri melalui form register (memerlukan username, password, pertanyaan keamanan), atau menggunakan mode Tamu (Guest) yang secara otomatis menghasilkan username acak dari kombinasi nama buah/sayur dan angka (contoh: Mangga247, Bayam518). Login mendukung input berupa username atau email. Rate limiting diterapkan: 5 percobaan/menit untuk login manual, 3 percobaan/menit untuk registrasi, 10 percobaan/menit untuk guest login.</p>
+
+<p><b>SF-02: Pemulihan Akun</b></p>
+<p>Dua mekanisme pemulihan disediakan: (1) Login menggunakan Recovery Code alfanumerik 8 karakter dengan format XXXX-XXXX yang digenerate saat registrasi; (2) Reset password melalui Pertanyaan Keamanan yang dijawab saat registrasi. Jawaban keamanan di-hash menggunakan bcrypt (case-insensitive). Akun Guest dapat login kembali menggunakan Recovery Code dan juga dapat menggunakan Recovery Code sebagai pengganti "password lama" saat mengubah password di halaman pengaturan.</p>
+
+<p><b>SF-03: Manajemen Guru BK (Admin)</b></p>
+<p>Admin mengelola data Guru BK melalui modul CRUD. Setiap penambahan Guru BK otomatis membuat record di tabel <i>users</i> (role: guru_bk) dan tabel <i>teachers</i> (NIP, max_quota). Validasi: nama hanya alfabet dan tanda baca dasar; NIP harus tepat 18 digit; email harus unik; password mengikuti aturan keamanan standar. Kuota siswa (max_quota) menentukan jumlah maksimal siswa yang dapat dibimbing oleh satu Guru BK.</p>
+
+<p><b>SF-05: Manajemen Data Siswa (Guru BK)</b></p>
+<p>Guru BK mengelola data siswa bimbingan secara lengkap mencakup 16 field: nama, NISN, kelas, tempat lahir, tanggal lahir, jenis kelamin, agama, alamat, telepon, nama ayah, nama ibu, pekerjaan orang tua, telepon orang tua, alamat orang tua, dan status tempat tinggal. Penambahan siswa dicek terhadap kuota guru. Fitur pencarian (nama/NISN) dan filter kelas tersedia. Penghapusan mendukung mode individual dan bulk (multi-select). Soft Deletes diterapkan untuk mencegah kehilangan data permanen.</p>
+
+<p><b>SF-07: Pengambilan &amp; Penyelesaian Kasus (Guru BK)</b></p>
+<p>Alur penanganan kasus mengikuti state machine: <i>pending</i> → <i>in-progress</i> → <i>resolved</i>. Saat mengambil kasus, Guru BK wajib menetapkan prioritas (low/medium/high). Sistem memberlakukan batas beban kerja: maksimal 5 kasus berstatus in-progress per Guru BK. Saat menyelesaikan kasus (resolve), sistem secara otomatis: (1) menandai seluruh pesan chat sebagai "destroyed" (Self-Destruct); (2) membuat record Archive yang mencatat catatan bimbingan dan tanggal penyelesaian.</p>
+
+<p><b>SF-08: Live Chat Konsultasi</b></p>
+<p>Fitur chat menggunakan mekanisme polling HTTP (AJAX) untuk mengambil pesan baru secara berkala. Pesan disanitasi menggunakan strip_tags() untuk mencegah XSS. Sistem menandai pesan sebagai "dibaca" (read_at) ketika penerima membuka halaman chat. Akses dibatasi hanya untuk pelapor (reported_by) dan penangan (handled_by) menggunakan pengecekan authorization di controller. Pesan yang telah di-destroy (is_destroyed=true) disembunyikan melalui Eloquent scope "visible".</p>
+
+<p><b>SF-10: Pembuatan Surat Keputusan</b></p>
+<p>Empat jenis surat didukung: (1) Surat Panggilan Orang Tua — memerlukan tanggal, waktu, dan alasan; (2) Surat Peringatan Pertama (SP1) — memerlukan alasan; (3) Surat Peringatan Kedua (SP2) — memerlukan alasan; (4) Surat Skorsing — memerlukan alasan, durasi hari, tanggal mulai dan selesai. Format nomor surat mengikuti standar: <i>421.7 / [nomor] / SMP.06 / [tahun]</i>. PDF dihasilkan menggunakan library Barryvdh DomPDF dan disimpan di storage publik. Setiap surat otomatis membuat record di tabel <i>letters</i> dan <i>archives</i>.</p>
+
+<p><b>SF-12: Laporan Anekdot</b></p>
+<p>Ekspor laporan anekdot mendukung 3 filter periode: (1) Bulan ini; (2) Semester (Ganjil: Juli–Desember, Genap: Januari–Juni); (3) Tahun Ajaran (Juli tahun N – Juni tahun N+1). Ekspor dapat dilakukan per individu siswa, batch siswa terpilih, atau keseluruhan siswa bimbingan. Output tersedia dalam 3 format: PDF (via DomPDF), Word (.doc), dan Excel (.xls) menggunakan HTML rendering.</p>
+
+<!-- BAB III -->
+<div class="page-break"></div>
+<h2>BAB III<br>SPESIFIKASI NON-FUNGSIONAL</h2>
+
+<h3>3.1 Ringkasan Spesifikasi Non-Fungsional</h3>
+<p>Spesifikasi non-fungsional mendefinisikan atribut kualitas sistem yang menjamin keandalan, keamanan, dan pengalaman pengguna yang optimal.</p>
+
+<table>
+<tr><th>ID</th><th>Aspek</th><th>Spesifikasi</th><th>Metode Pengujian</th><th>Kriteria Lulus</th></tr>
+<tr><td>SNF-01</td><td>Kinerja &amp; Responsivitas</td><td>Halaman utama harus termuat dalam waktu maksimal 3 detik pada koneksi broadband standar.</td><td>Load testing menggunakan Google Lighthouse dan browser DevTools</td><td>Page load &le; 3 detik; TTFB &le; 1 detik</td></tr>
+<tr><td>SNF-02</td><td>Keamanan Autentikasi</td><td>Sistem menerapkan rate limiting pada semua endpoint autentikasi untuk mencegah brute-force attack. Password di-hash menggunakan bcrypt.</td><td>Manual brute-force test; inspeksi database</td><td>Blokir setelah 5 gagal login/menit; Password ter-hash di database; Tidak ada plain-text password</td></tr>
+<tr><td>SNF-03</td><td>Enkripsi &amp; Transport</td><td>Seluruh password di-hash menggunakan bcrypt. Sistem siap mendukung HTTPS (TLS 1.2+) pada deployment produksi.</td><td>Inspeksi database; Pemeriksaan konfigurasi server</td><td>Password ter-hash; HTTPS aktif di produksi</td></tr>
+<tr><td>SNF-04</td><td>RBAC (Role-Based Access Control)</td><td>Tiga level akses (admin, guru_bk, siswa) diimplementasikan via middleware. Setiap endpoint dilindungi berdasarkan role.</td><td>Uji akses URL admin/gurubk dari sesi siswa menggunakan Postman</td><td>100% endpoint terproteksi: akses tak sah menghasilkan 403</td></tr>
+<tr><td>SNF-05</td><td>Security Headers</td><td>Sistem menambahkan security headers pada setiap respons: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy.</td><td>Inspeksi respons HTTP menggunakan browser DevTools</td><td>Seluruh 5 security headers terpasang pada setiap respons</td></tr>
+<tr><td>SNF-06</td><td>Responsivitas Multi-Perangkat</td><td>Antarmuka harus berfungsi dengan baik pada perangkat desktop dan mobile (smartphone/tablet).</td><td>Uji menggunakan Chrome DevTools Responsive Mode pada berbagai resolusi</td><td>Layout konsisten pada resolusi &ge; 320px; Seluruh fitur dapat diakses</td></tr>
+<tr><td>SNF-07</td><td>Sanitasi Input</td><td>Seluruh input pengguna disanitasi menggunakan strip_tags() dan validasi Laravel untuk mencegah XSS dan SQL Injection.</td><td>Uji input berbahaya (script tags, SQL injection strings)</td><td>Input berbahaya disanitasi; Tidak ada eksekusi kode berbahaya</td></tr>
+<tr><td>SNF-08</td><td>Privasi Data (Self-Destruct)</td><td>Riwayat chat konsultasi dihapus secara permanen (ditandai destroyed) ketika kasus diselesaikan oleh Guru BK.</td><td>Uji resolve kasus dan verifikasi data chat di database</td><td>Seluruh pesan chat bertanda is_destroyed=true setelah resolve; Pesan tidak tampil di UI</td></tr>
+<tr><td>SNF-09</td><td>Integritas Data (Soft Deletes)</td><td>Tabel kritis (students, reports, archives, counseling_sessions) menerapkan Soft Deletes untuk mencegah kehilangan data permanen.</td><td>Uji hapus data dan verifikasi kolom deleted_at di database</td><td>Data terhapus memiliki timestamp deleted_at; Data tidak hilang dari database</td></tr>
+<tr><td>SNF-10</td><td>Indeks Performa Database</td><td>Indeks database diterapkan pada kolom-kolom yang sering digunakan untuk query (foreign keys, status, role) untuk optimasi performa.</td><td>Inspeksi skema database dan pengujian query performance</td><td>Query utama berjalan &lt; 100ms pada dataset 1000+ records</td></tr>
+<tr><td>SNF-11</td><td>Kompatibilitas Browser</td><td>Sistem harus berjalan pada browser modern: Chrome, Firefox, Edge, Safari versi terbaru.</td><td>Uji fungsionalitas pada 4 browser target</td><td>Seluruh fitur berjalan tanpa error kritis; Tampilan konsisten</td></tr>
+<tr><td>SNF-12</td><td>Pembatasan Beban Kerja</td><td>Guru BK dibatasi maksimal 5 kasus aktif dan kuota siswa bimbingan sesuai pengaturan admin (max_quota) untuk menjaga kualitas layanan.</td><td>Uji claim kasus melebihi batas; Uji tambah siswa melebihi kuota</td><td>Sistem menolak dengan pesan error yang jelas ketika batas terlampaui</td></tr>
+</table>
+
+<h3>3.2 Penjelasan Aspek Non-Fungsional Kritis</h3>
+
+<p><b>Aspek Keamanan &amp; Privasi</b></p>
+<p>Empat lapis perlindungan diterapkan: (1) Autentikasi berbasis sesi Laravel dengan password bcrypt-hashed; (2) RBAC via middleware RoleMiddleware yang memvalidasi role pengguna pada setiap request; (3) Security Headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy) yang ditambahkan pada setiap respons HTTP melalui middleware SecurityHeaders; (4) Rate limiting pada endpoint sensitif (login: 5x/menit, register: 3x/menit). Secara khusus, mekanisme Self-Destruct pada fitur chat menjamin bahwa data konseling yang bersifat sensitif dan rahasia tidak tersimpan permanen dalam database setelah kasus selesai ditangani.</p>
+
+<p><b>Aspek Privasi Siswa</b></p>
+<p>Sistem menyediakan opsi pelaporan anonim melalui mode Guest yang menghasilkan username acak (kombinasi nama buah/sayur + angka), sehingga identitas asli pelapor terlindungi. Fitur "hide report" memungkinkan siswa menghapus laporan dari tampilannya tanpa menghapus data dari database. Kombinasi anonimitas dan self-destruct chat memberikan jaminan kerahasiaan yang komprehensif bagi siswa.</p>
+
+<p><b>Aspek Integritas Data</b></p>
+<p>Penerapan Soft Deletes pada tabel-tabel kritis (students, reports, archives, counseling_sessions) memastikan bahwa data yang dihapus tidak hilang secara permanen dari database. Data hanya ditandai dengan timestamp deleted_at dan dapat dipulihkan jika diperlukan. Performance indexes diterapkan pada kolom-kolom yang sering diquery untuk menjaga responsivitas sistem pada skala data yang besar.</p>
+
+<!-- BAB IV -->
+<div class="page-break"></div>
+<h2>BAB IV<br>MATRIKS KETERLUSURAN</h2>
+
+<h3>4.1 Matriks Keterlusuran Spesifikasi</h3>
+<p>Matriks ketertelusuran (<i>traceability matrix</i>) berikut menunjukkan hubungan antara setiap spesifikasi dengan rumusan masalah dan tujuan sistem yang ditetapkan pada dokumen C-1, memastikan seluruh kebutuhan tertutupi oleh spesifikasi.</p>
+
+<table>
+<tr><th>ID Spesifikasi</th><th>Jenis</th><th>Rumusan Masalah (C-1)</th><th>Tujuan Sistem (C-1)</th></tr>
+<tr><td>SF-01, SF-02</td><td>Fungsional</td><td>RM-1: Kebutuhan autentikasi multi-role yang aman dan fleksibel</td><td>Tujuan 1: Sistem login aman dengan opsi akses guest anonim</td></tr>
+<tr><td>SF-03, SF-04</td><td>Fungsional</td><td>RM-2: Pengelolaan data Guru BK oleh Admin</td><td>Tujuan 2: Dashboard admin terpusat untuk manajemen pengguna</td></tr>
+<tr><td>SF-05</td><td>Fungsional</td><td>RM-3: Manajemen data siswa bimbingan</td><td>Tujuan 3: CRUD data siswa dengan kuota dan data lengkap orang tua</td></tr>
+<tr><td>SF-06, SF-07</td><td>Fungsional</td><td>RM-4: Pelaporan dan penanganan masalah siswa</td><td>Tujuan 4: Sistem pelaporan dengan alur claim-resolve dan pembatasan beban kerja</td></tr>
+<tr><td>SF-08</td><td>Fungsional</td><td>RM-5: Konsultasi langsung siswa-guru</td><td>Tujuan 5: Live chat real-time dengan privasi self-destruct</td></tr>
+<tr><td>SF-09</td><td>Fungsional</td><td>RM-6: Dokumentasi sesi konseling formal</td><td>Tujuan 6: Pencatatan konseling terstruktur dengan 8 kategori</td></tr>
+<tr><td>SF-10</td><td>Fungsional</td><td>RM-7: Pembuatan surat keputusan administratif</td><td>Tujuan 7: Generasi surat otomatis (SP1/SP2/Skorsing/Panggilan) dalam PDF</td></tr>
+<tr><td>SF-11, SF-12</td><td>Fungsional</td><td>RM-8: Arsip dan rekap kegiatan BK</td><td>Tujuan 8: Arsip terpusat dengan ekspor multi-format</td></tr>
+<tr><td>SF-13</td><td>Fungsional</td><td>RM-4 &amp; RM-6: Monitoring kegiatan BK</td><td>Tujuan 4 &amp; 6: Dashboard holistik Guru BK</td></tr>
+<tr><td>SF-14</td><td>Fungsional</td><td>RM-5: Transparansi proses konseling bagi siswa</td><td>Tujuan 5: Portal siswa dengan riwayat dan pengaturan akun</td></tr>
+<tr><td>SNF-01, SNF-06, SNF-11</td><td>Non-Fungsional</td><td>Kendala: Akses multi-perangkat dan koneksi bervariasi</td><td>Semua tujuan: Aksesibilitas dan responsivitas</td></tr>
+<tr><td>SNF-02, SNF-03, SNF-04, SNF-05</td><td>Non-Fungsional</td><td>Kendala: Keamanan data sensitif siswa</td><td>Semua tujuan: Perlindungan 4 lapis keamanan</td></tr>
+<tr><td>SNF-07, SNF-08</td><td>Non-Fungsional</td><td>RM-5: Privasi dan kerahasiaan data konseling</td><td>Tujuan 5: Sanitasi input dan self-destruct chat</td></tr>
+<tr><td>SNF-09, SNF-10</td><td>Non-Fungsional</td><td>Kendala: Integritas dan performa database</td><td>Semua tujuan: Soft deletes dan optimasi query</td></tr>
+<tr><td>SNF-12</td><td>Non-Fungsional</td><td>RM-4: Kualitas layanan Guru BK</td><td>Tujuan 4: Pembatasan beban kerja demi kualitas</td></tr>
+</table>
+
+<!-- BAB V -->
+<div class="page-break"></div>
+<h2>BAB V<br>VERIFIKASI DAN KRITERIA PENGUJIAN</h2>
+
+<h3>5.1 Daftar Metrik dan Kriteria Pengujian</h3>
+<p>Bagian ini merangkum seluruh metrik pengujian dari spesifikasi fungsional dan non-fungsional dalam satu tabel referensi yang dapat digunakan pada tahap pengujian sistem.</p>
+
+<table>
+<tr><th>ID</th><th>Metode Pengujian</th><th>Alat/Tools</th><th>Kriteria Lulus (Pass Criteria)</th></tr>
+<tr><td>SF-01</td><td>Uji login 3 role; uji guest auto-generate username</td><td>Manual testing, Browser</td><td>Login &lt; 3 detik; Role-redirect tepat; Guest username unik tergenerate</td></tr>
+<tr><td>SF-02</td><td>Uji recovery code valid/invalid; uji reset via pertanyaan keamanan</td><td>Manual testing</td><td>Login berhasil dengan kode valid; Error jelas pada kode salah; Password berhasil direset</td></tr>
+<tr><td>SF-03</td><td>Uji CRUD Guru BK; uji validasi NIP dan email</td><td>Manual testing, Postman</td><td>CRUD sukses tanpa error; NIP non-18 digit ditolak; Email duplikat ditolak</td></tr>
+<tr><td>SF-04</td><td>Verifikasi data dashboard admin vs query database langsung</td><td>Manual testing, DB inspection</td><td>Statistik cocok 100% dengan database</td></tr>
+<tr><td>SF-05</td><td>Uji CRUD siswa; uji kuota melebihi batas; uji bulk delete</td><td>Manual testing</td><td>Kuota terlampaui → ditolak dengan pesan; Bulk delete memproses semua ID terpilih</td></tr>
+<tr><td>SF-06</td><td>Uji submit laporan oleh siswa terdaftar dan guest; uji sanitasi XSS</td><td>Manual testing, OWASP ZAP</td><td>Laporan tersimpan; Guest is_anonymous=true; Script tags di-strip</td></tr>
+<tr><td>SF-07</td><td>Uji claim kasus; uji batas 5 kasus aktif; uji resolve + self-destruct</td><td>Manual testing, DB inspection</td><td>Kasus ke-6 ditolak; Chat is_destroyed=true post-resolve; Archive tercipta</td></tr>
+<tr><td>SF-08</td><td>Uji kirim/terima pesan; uji akses unauthorized; uji polling endpoint</td><td>Manual testing, Postman</td><td>Pesan tampil &lt; 3 detik; 403 untuk pihak ketiga; JSON response valid</td></tr>
+<tr><td>SF-09</td><td>Uji CRUD sesi konseling; uji filter; uji proteksi edit sesi selesai</td><td>Manual testing</td><td>Data akurat; Filter benar; Sesi selesai tidak bisa diedit/hapus</td></tr>
+<tr><td>SF-10</td><td>Uji generate 4 tipe surat PDF; verifikasi data siswa di output</td><td>Manual testing, PDF viewer</td><td>PDF tergenerate &lt; 5 detik; Data lengkap; File tersimpan di storage</td></tr>
+<tr><td>SF-11</td><td>Uji filter arsip per kategori; uji ekspor 3 format</td><td>Manual testing</td><td>Filter akurat; PDF/Word/Excel berhasil diunduh</td></tr>
+<tr><td>SF-12</td><td>Uji ekspor anekdot per periode (bulan/semester/tahun ajaran)</td><td>Manual testing</td><td>Data sesuai periode; Semua format berhasil</td></tr>
+<tr><td>SF-13</td><td>Verifikasi setiap statistik dashboard Guru BK terhadap database</td><td>Manual testing, DB inspection</td><td>Seluruh statistik cocok 100%</td></tr>
+<tr><td>SF-14</td><td>Uji hide laporan; uji ubah password siswa</td><td>Manual testing</td><td>Laporan hidden tidak tampil; Password berhasil diubah</td></tr>
+<tr><td>SNF-01</td><td>Load testing halaman utama</td><td>Google Lighthouse, GTmetrix</td><td>Page load &le; 3 detik; TTFB &le; 1 detik</td></tr>
+<tr><td>SNF-02</td><td>Brute-force login testing</td><td>Manual testing, curl scripting</td><td>Blokir setelah 5 percobaan/menit; Response 429</td></tr>
+<tr><td>SNF-03</td><td>Pemeriksaan enkripsi password di database</td><td>DB inspection (HeidiSQL/phpMyAdmin)</td><td>Password ter-hash bcrypt; Tidak ada plain-text</td></tr>
+<tr><td>SNF-04</td><td>Uji akses URL admin/gurubk dari sesi siswa</td><td>Manual testing, Postman</td><td>100% endpoint: 403 tanpa role yang sesuai</td></tr>
+<tr><td>SNF-05</td><td>Inspeksi HTTP response headers</td><td>Browser DevTools Network tab</td><td>5 security headers terpasang pada setiap respons</td></tr>
+<tr><td>SNF-06</td><td>Uji responsivitas tampilan</td><td>Chrome DevTools Responsive Mode</td><td>Layout OK &ge; 320px; Semua fitur terakses</td></tr>
+<tr><td>SNF-07</td><td>Uji input XSS dan SQL injection</td><td>OWASP ZAP, manual testing</td><td>Input disanitasi; Tidak ada eksekusi berbahaya</td></tr>
+<tr><td>SNF-08</td><td>Uji self-destruct chat post-resolve</td><td>DB inspection setelah resolve</td><td>Semua chat is_destroyed=true; UI kosong</td></tr>
+<tr><td>SNF-09</td><td>Uji soft delete pada tabel kritis</td><td>DB inspection setelah delete</td><td>deleted_at terisi; Data masih ada di DB</td></tr>
+<tr><td>SNF-10</td><td>Query performance testing</td><td>Laravel Debugbar, EXPLAIN query</td><td>Query utama &lt; 100ms pada 1000+ records</td></tr>
+<tr><td>SNF-11</td><td>Uji kompatibilitas 4 browser</td><td>Chrome, Firefox, Edge, Safari</td><td>Tidak ada error kritis; Tampilan konsisten</td></tr>
+<tr><td>SNF-12</td><td>Uji batas beban kerja guru</td><td>Manual testing</td><td>Kasus ke-6 dan siswa melebihi kuota ditolak</td></tr>
+</table>
+
+<!-- DAFTAR PUSTAKA -->
+<div class="page-break"></div>
+<h2>DAFTAR PUSTAKA</h2>
+<ol>
+<li>Laravel Documentation, "Authentication," <i>laravel.com/docs/11.x/authentication</i>, 2026.</li>
+<li>Laravel Documentation, "Middleware," <i>laravel.com/docs/11.x/middleware</i>, 2026.</li>
+<li>Laravel Documentation, "Eloquent ORM - Soft Deleting," <i>laravel.com/docs/11.x/eloquent#soft-deleting</i>, 2026.</li>
+<li>Barryvdh, "laravel-dompdf - A DOMPDF Wrapper for Laravel," <i>github.com/barryvdh/laravel-dompdf</i>, 2026.</li>
+<li>OWASP Foundation, "OWASP Top Ten Web Application Security Risks," <i>owasp.org/www-project-top-ten</i>, 2025.</li>
+<li>Tailwind CSS Documentation, "Responsive Design," <i>tailwindcss.com/docs</i>, 2026.</li>
+<li>Alpine.js Documentation, "Reactivity," <i>alpinejs.dev</i>, 2026.</li>
+<li>IEEE Std 830-1998, "IEEE Recommended Practice for Software Requirements Specifications," IEEE, 1998.</li>
+</ol>
+
+</body>
+</html>

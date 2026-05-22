@@ -35,7 +35,14 @@ class StudentController extends Controller
         }
 
         $students = $query->latest()->get();
-        return view('gurubk.students.index', compact('students', 'teacher'));
+        
+        $currentYear = date('Y');
+        $academicYears = [];
+        for ($y = 2024; $y <= $currentYear + 1; $y++) {
+            $academicYears[] = $y . '/' . ($y + 1);
+        }
+        
+        return view('gurubk.students.index', compact('students', 'teacher', 'academicYears'));
     }
 
     public function show(Student $student)
@@ -79,8 +86,13 @@ class StudentController extends Controller
             return redirect()->route('gurubk.students.index')->with('error', 'Kuota siswa bimbingan Anda sudah penuh (' . $teacher->max_quota . ').');
         }
 
+        $data = $request->only(StudentRules::safeFields());
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('student-photos', 'public');
+        }
+
         Student::create(array_merge(
-            $request->only(StudentRules::safeFields()),
+            $data,
             ['teacher_id' => $teacher->id]
         ));
 
@@ -105,7 +117,25 @@ class StudentController extends Controller
 
         $request->validate(StudentRules::updateRules($student->id), StudentRules::messages());
 
-        $student->update($request->only(StudentRules::safeFields()));
+        $data = $request->only(StudentRules::safeFields());
+
+        // Handle photo removal
+        if ($request->has('remove_photo') && $request->remove_photo == '1') {
+            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
+                @unlink(public_path('storage/' . $student->photo));
+            }
+            $data['photo'] = null;
+        }
+
+        // Handle new photo upload
+        if ($request->hasFile('photo')) {
+            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
+                @unlink(public_path('storage/' . $student->photo));
+            }
+            $data['photo'] = $request->file('photo')->store('student-photos', 'public');
+        }
+
+        $student->update($data);
 
         return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }

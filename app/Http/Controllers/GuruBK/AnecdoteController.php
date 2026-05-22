@@ -23,24 +23,51 @@ class AnecdoteController extends Controller
             $q->where('teacher_id', $teacher->id)
               ->orderBy('counseling_date', 'asc');
               
-            if ($request->period === 'month') {
-                $q->whereMonth('counseling_date', Carbon::now()->month)
-                  ->whereYear('counseling_date', Carbon::now()->year);
-            } elseif ($request->period === 'semester') {
-                $month = Carbon::now()->month;
-                $year = Carbon::now()->year;
-                if ($month >= 7 && $month <= 12) {
-                    // Ganjil
-                    $q->whereMonth('counseling_date', '>=', 7)
-                      ->whereYear('counseling_date', $year);
-                } else {
-                    // Genap
-                    $q->whereMonth('counseling_date', '<=', 6)
-                      ->whereYear('counseling_date', $year);
+            if ($request->filled('academic_year') || $request->filled('semester')) {
+                if ($request->filled('academic_year')) {
+                    $yearParts = explode('/', $request->academic_year);
+                    if (count($yearParts) === 2) {
+                        $startYear = $yearParts[0];
+                        $endYear = $yearParts[1];
+                        
+                        if ($request->filled('semester')) {
+                            $sem = $request->semester;
+                            if ($sem == '1') {
+                                $q->whereBetween('counseling_date', ["$startYear-07-01 00:00:00", "$startYear-12-31 23:59:59"]);
+                            } elseif ($sem == '2') {
+                                $q->whereBetween('counseling_date', ["$endYear-01-01 00:00:00", "$endYear-06-30 23:59:59"]);
+                            }
+                        } else {
+                            $q->whereBetween('counseling_date', ["$startYear-07-01 00:00:00", "$endYear-06-30 23:59:59"]);
+                        }
+                    }
+                } elseif ($request->filled('semester')) {
+                    $sem = $request->semester;
+                    if ($sem == '1') {
+                        $q->whereMonth('counseling_date', '>=', 7)
+                          ->whereMonth('counseling_date', '<=', 12);
+                    } elseif ($sem == '2') {
+                        $q->whereMonth('counseling_date', '>=', 1)
+                          ->whereMonth('counseling_date', '<=', 6);
+                    }
                 }
-            } elseif ($request->period === 'year') {
-                [$start, $end] = $this->academicYearRange(Carbon::now());
-                $q->whereBetween('counseling_date', [$start, $end]);
+            } else {
+                $period = $request->period ?? 'semester';
+                
+                if ($period === 'month') {
+                    $q->whereMonth('counseling_date', Carbon::now()->month)
+                      ->whereYear('counseling_date', Carbon::now()->year);
+                } elseif ($period === 'semester') {
+                    $now = Carbon::now();
+                    if ($now->month >= 7 && $now->month <= 12) {
+                        $q->whereBetween('counseling_date', ["{$now->year}-07-01 00:00:00", "{$now->year}-12-31 23:59:59"]);
+                    } else {
+                        $q->whereBetween('counseling_date', ["{$now->year}-01-01 00:00:00", "{$now->year}-06-30 23:59:59"]);
+                    }
+                } elseif ($period === 'year') {
+                    [$start, $end] = $this->academicYearRange(Carbon::now());
+                    $q->whereBetween('counseling_date', [$start, $end]);
+                }
             }
         }])->where('teacher_id', $teacher->id);
         
@@ -50,12 +77,11 @@ class AnecdoteController extends Controller
         } elseif ($request->has('student_ids')) {
             $ids = explode(',', $request->student_ids);
             $totalTeacherStudents = Student::where('teacher_id', $teacher->id)->count();
-
+ 
             if (count($ids) == 1) {
                 $query->where('id', $ids[0]);
                 $filenamePrefix = 'Laporan_Anekdot_Individu_';
             } elseif (count($ids) == $totalTeacherStudents) {
-                // Treats as Keseluruhan, no need for whereIn filter
                 $filenamePrefix = 'Laporan_Anekdot_Keseluruhan_';
             } else {
                 $query->whereIn('id', $ids);
@@ -67,56 +93,41 @@ class AnecdoteController extends Controller
         
         $students = $query->get();
         
-        $period = $request->period ?? 'all';
-
+        $period = $request->period ?? 'semester';
+ 
         $data = [
             'students' => $students,
             'teacher' => $teacher,
             'period' => $period,
-            'periodLabel' => $this->resolvePeriodLabel($period),
+            'periodLabel' => $this->resolvePeriodLabel($request),
         ];
         
         $filename = $filenamePrefix . now()->format('Ymd');
-
-        if ($request->format === 'word') {
-            return $this->downloadHtmlAs(
-                $data,
-                $filename . '.doc',
-                'application/msword'
-            );
-        }
-
-        if ($request->format === 'excel') {
-            return $this->downloadHtmlAs(
-                $data,
-                $filename . '.xls',
-                'application/vnd.ms-excel'
-            );
-        }
-
-        if ($request->format === 'pdf') {
-            return Pdf::loadView('gurubk.exports.anecdote', $data)
-                ->download($filename . '.pdf');
-        }
-
-        return back()->with('error', 'Format ekspor tidak valid.');
+ 
+        return Pdf::loadView('gurubk.exports.anecdote', $data)
+            ->download($filename . '.pdf');
     }
-
-    private function downloadHtmlAs(array $data, string $filename, string $contentType)
+ 
+    private function resolvePeriodLabel(Request $request): string
     {
-        $html = view('gurubk.exports.anecdote', $data)->render();
+        if ($request->filled('academic_year') || $request->filled('semester')) {
+            $label = '';
+            if ($request->filled('semester')) {
+                $label .= 'Semester ' . $request->semester;
+            }
+            if ($request->filled('academic_year')) {
+                if ($label) {
+                    $label .= ' (TA ' . $request->academic_year . ')';
+                } else {
+                    $label .= 'Tahun Ajaran ' . $request->academic_year;
+                }
+            }
+            return $label;
+        }
 
-        return response()->streamDownload(
-            fn () => print($html),
-            $filename,
-            ['Content-Type' => $contentType]
-        );
-    }
-
-    private function resolvePeriodLabel(string $period): string
-    {
         $now = Carbon::now();
-
+        $period = $request->period ?? 'semester';
+ 
         return match ($period) {
             'month' => $now->translatedFormat('F Y'),
             'semester' => $this->semesterLabel($now),
@@ -124,26 +135,25 @@ class AnecdoteController extends Controller
             default => 'Seluruh Data',
         };
     }
-
+ 
     private function semesterLabel(Carbon $date): string
     {
-        // Semester 1 (ganjil): Juli–Desember | Semester 2 (genap): Januari–Juni
         if ($date->month >= 7) {
             return 'Semester 1 ' . $date->year;
         }
-
+ 
         return 'Semester 2 ' . $date->year;
     }
-
+ 
     private function academicYearLabel(Carbon $date): string
     {
         if ($date->month >= 7) {
             return 'Tahun Ajaran ' . $date->year . '/' . ($date->year + 1);
         }
-
+ 
         return 'Tahun Ajaran ' . ($date->year - 1) . '/' . $date->year;
     }
-
+ 
     /**
      * @return array{0: Carbon, 1: Carbon}
      */
@@ -156,7 +166,7 @@ class AnecdoteController extends Controller
             $start = $date->copy()->subYear()->month(7)->day(1)->startOfDay();
             $end = $date->copy()->month(6)->day(30)->endOfDay();
         }
-
+ 
         return [$start, $end];
     }
 }

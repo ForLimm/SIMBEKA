@@ -45,12 +45,8 @@
 
             <div>
                 <label class="block text-xs font-bold text-slate-400 font-medium mb-2 ml-1">Nomor Surat <span class="text-rose-500">*</span></label>
-                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 focus-within:ring-4 focus-within:ring-primary/10 focus-within:border-primary transition max-w-sm">
-                    <span class="text-sm font-bold text-slate-500">421.7 /</span>
-                    <input type="text" name="letter_number" maxlength="3" placeholder="001" class="w-16 bg-transparent border-b-2 border-slate-300 font-bold text-center text-sm outline-none focus:border-primary transition" required>
-                    <span class="text-sm font-bold text-slate-500">/ SMP.06 / {{ date('Y') }}</span>
-                </div>
-                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight ml-1 italic">* Masukkan 3 digit nomor urut surat (contoh: 001, 012).</p>
+                <input type="text" name="letter_number" placeholder="Contoh: 421.7 / 001 / SMP.06 / {{ date('Y') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" required>
+                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight ml-1 italic">* Masukkan nomor surat secara lengkap.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -65,8 +61,22 @@
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-400 font-medium mb-2 ml-1">Alasan Panggilan / Keterangan <span class="text-rose-500">*</span></label>
-                <textarea name="reason" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition resize-none font-medium" placeholder="Contoh: Terkait ketidakhadiran berturut-turut selama 5 hari..." required></textarea>
+                <label class="block text-xs font-bold text-slate-400 font-medium mb-2 ml-1">Pilih Ruangan <span class="text-rose-500">*</span></label>
+                <div class="relative">
+                    <select name="room_select" id="room_select" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium" required>
+                        <option value="Ruang Bimbingan Konseling (BK) SMP Negeri 6 Palu">Ruang Bimbingan Konseling (BK)</option>
+                        <option value="Ruang Kepala Sekolah SMP Negeri 6 Palu">Ruang Kepala Sekolah</option>
+                        <option value="Lainnya">Lainnya (Isi Manual)</option>
+                    </select>
+                    <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div id="manual_room_container" class="hidden">
+                <label class="block text-xs font-bold text-slate-400 font-medium mb-2 ml-1">Nama Ruangan Manual <span class="text-rose-500">*</span></label>
+                <input type="text" name="room_manual" id="room_manual" placeholder="Contoh: Ruang Rapat Guru" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium">
             </div>
 
             <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
@@ -78,4 +88,18 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('room_select').addEventListener('change', function() {
+        const manualContainer = document.getElementById('manual_room_container');
+        const manualInput = document.getElementById('room_manual');
+        if (this.value === 'Lainnya') {
+            manualContainer.classList.remove('hidden');
+            manualInput.setAttribute('required', 'required');
+        } else {
+            manualContainer.classList.add('hidden');
+            manualInput.removeAttribute('required');
+        }
+    });
+</script>
 @endsection

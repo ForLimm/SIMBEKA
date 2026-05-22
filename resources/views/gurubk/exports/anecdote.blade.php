@@ -90,47 +90,74 @@
             <img class="kop-img" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/kop_surat.png'))) }}" />
         </div>
 
-        {{-- METADATA SISWA --}}
-        <table class="student-info-table">
+        @php
+            $hasPhoto = false;
+            $photoBase64 = null;
+            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
+                try {
+                    $photoPath = public_path('storage/' . $student->photo);
+                    $photoData = file_get_contents($photoPath);
+                    $mimeType = mime_content_type($photoPath);
+                    $photoBase64 = 'data:' . $mimeType . ';base64,' . base64_encode($photoData);
+                    $hasPhoto = true;
+                } catch (\Exception $e) {
+                    $hasPhoto = false;
+                }
+            }
+        @endphp
+
+        {{-- METADATA SISWA & FOTO CONTAINER --}}
+        <table style="width: 100%; border: none; border-collapse: collapse; margin-top: 10px; margin-bottom: 25px;">
             <tr>
-                <td class="label">NAMA SISWA</td>
-                <td class="colon">:</td>
-                <td><strong>{{ strtoupper($student->name ?? ($student->user->name ?? '-')) }}</strong></td>
-            </tr>
-            <tr>
-                <td class="label">KELAS</td>
-                <td class="colon">:</td>
-                <td>{{ strtoupper($student->class ?? '-') }}</td>
-            </tr>
-            <tr>
-                <td class="label">NIS</td>
-                <td class="colon">:</td>
-                <td>{{ $student->nisn ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">ALAMAT</td>
-                <td class="colon">:</td>
-                <td>{{ $student->address ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">AGAMA</td>
-                <td class="colon">:</td>
-                <td>{{ strtoupper($student->religion ?? '-') }}</td>
-            </tr>
-            <tr>
-                <td class="label">NO HP</td>
-                <td class="colon">:</td>
-                <td>{{ $student->phone ?? '-' }}</td>
-            </tr>
-            <tr>
-                <td class="label">NAMA IBU</td>
-                <td class="colon">:</td>
-                <td>{{ strtoupper($student->mother_name ?? '-') }}</td>
-            </tr>
-            <tr>
-                <td class="label">NAMA AYAH</td>
-                <td class="colon">:</td>
-                <td>{{ strtoupper($student->father_name ?? '-') }}</td>
+                <td style="vertical-align: top; border: none; padding: 0;">
+                    <table class="student-info-table" style="margin: 0; width: 100%;">
+                        <tr>
+                            <td class="label">NAMA SISWA</td>
+                            <td class="colon">:</td>
+                            <td><strong>{{ strtoupper($student->name ?? ($student->user->name ?? '-')) }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="label">KELAS</td>
+                            <td class="colon">:</td>
+                            <td>{{ strtoupper($student->class ?? '-') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">NIS</td>
+                            <td class="colon">:</td>
+                            <td>{{ $student->nisn ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">ALAMAT</td>
+                            <td class="colon">:</td>
+                            <td>{{ $student->address ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">AGAMA</td>
+                            <td class="colon">:</td>
+                            <td>{{ strtoupper($student->religion ?? '-') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">NO HP</td>
+                            <td class="colon">:</td>
+                            <td>{{ $student->phone ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">NAMA IBU</td>
+                            <td class="colon">:</td>
+                            <td>{{ strtoupper($student->mother_name ?? '-') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">NAMA AYAH</td>
+                            <td class="colon">:</td>
+                            <td>{{ strtoupper($student->father_name ?? '-') }}</td>
+                        </tr>
+                    </table>
+                </td>
+                @if($hasPhoto)
+                <td style="vertical-align: top; text-align: right; width: 120pt; border: none; padding: 0 0 0 15px;">
+                    <img src="{{ $photoBase64 }}" style="width: 113.38pt; height: 170.07pt; object-fit: cover; border: 1px solid #000;" />
+                </td>
+                @endif
             </tr>
         </table>
 

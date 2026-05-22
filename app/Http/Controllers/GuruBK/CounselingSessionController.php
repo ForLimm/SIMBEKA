@@ -15,8 +15,7 @@ class CounselingSessionController extends Controller
         $teacher = Auth::user()->teacher;
         
         $query = CounselingSession::with('student')
-            ->where('teacher_id', $teacher->id)
-            ->where('status', '!=', 'selesai');
+            ->where('teacher_id', $teacher->id);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -73,6 +72,8 @@ class CounselingSessionController extends Controller
             $request->only(['student_id', 'title', 'counseling_date', 'category', 'summary', 'follow_up', 'status']),
             [
                 'teacher_id' => $teacher->id,
+                'teacher_name' => $teacher->user->name ?? 'Guru BK',
+                'teacher_nip' => $teacher->nip,
                 'completed_at' => $request->status === 'selesai' ? now() : null
             ]
         ));
@@ -136,7 +137,11 @@ class CounselingSessionController extends Controller
 
         $session->update(array_merge(
             $request->only(['student_id', 'title', 'counseling_date', 'category', 'summary', 'follow_up', 'status']),
-            ['completed_at' => $request->status === 'selesai' ? ($session->completed_at ?? now()) : null]
+            [
+                'teacher_name' => $teacher->user->name ?? 'Guru BK',
+                'teacher_nip' => $teacher->nip,
+                'completed_at' => $request->status === 'selesai' ? ($session->completed_at ?? now()) : null
+            ]
         ));
 
         if ($request->status === 'selesai') {

@@ -42,6 +42,7 @@
                     <option value="">Semua Status</option>
                     <option value="monitoring" {{ request('status') == 'monitoring' ? 'selected' : '' }}>Monitoring</option>
                     <option value="tindak_lanjut" {{ request('status') == 'tindak_lanjut' ? 'selected' : '' }}>Tindak Lanjut</option>
+                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                 </select>
             </div>
             
@@ -62,75 +63,90 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/50">
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100">Tanggal</th>
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100">Info Siswa</th>
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100">Topik & Kategori</th>
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100">Ringkasan</th>
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100 text-center">Status</th>
-                        <th class="px-8 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100 text-right">Aksi</th>
+                    <tr class="bg-slate-50/30">
+                        <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 font-medium border-b border-slate-50">Siswa</th>
+                        <th class="px-6 py-5 text-[10px] font-semibold text-slate-400 font-medium border-b border-slate-50">Topik & Kategori</th>
+                        <th class="px-6 py-5 text-[10px] font-semibold text-slate-400 font-medium border-b border-slate-50">Ringkasan Sesi</th>
+                        <th class="px-6 py-5 text-[10px] font-semibold text-slate-400 font-medium border-b border-slate-50">Waktu / Status</th>
+                        <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 font-medium border-b border-slate-50 text-right">Opsi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-50">
                     @forelse($sessions as $session)
                     <tr class="group hover:bg-slate-50/50 transition-colors">
-                        <td class="px-8 py-5">
-                            <span class="text-sm font-semibold text-slate-800">{{ $session->counseling_date->translatedFormat('d M Y') }}</span>
-                        </td>
-                        <td class="px-8 py-5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm border border-primary/20">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-11 h-11 bg-primary/10 text-primary rounded-lg flex items-center justify-center font-semibold border border-primary/20 transition-transform group-hover:scale-110 shadow-sm">
                                     {{ substr($session->student->name, 0, 1) }}
                                 </div>
                                 <div>
-                                    <a href="{{ route('gurubk.students.show', $session->student->id) }}" class="font-bold text-slate-800 leading-tight hover:text-primary hover:underline transition-all">{{ $session->student->name }}</a>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Kelas {{ $session->student->class }}</p>
+                                    <div class="font-bold text-slate-800 leading-none mb-1.5">
+                                        <a href="{{ route('gurubk.students.show', $session->student->id) }}" class="hover:text-primary transition-all">{{ $session->student->name }}</a>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] font-bold text-slate-400 font-medium">Siswa Binaan</span>
+                                        <span class="text-[9px] font-bold text-slate-300">•</span>
+                                        <span class="text-[9px] font-bold text-slate-400 font-medium">Kelas {{ $session->student->class }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-8 py-5">
+                        <td class="px-6 py-6">
                             <div class="font-bold text-slate-700 leading-snug max-w-xs">
                                 {{ $session->title ?? 'Sesi Bimbingan Tatap Muka' }}
                             </div>
                             <div class="flex items-center gap-2 mt-2">
-                                <span class="px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[9px] font-medium">{{ $session->category }}</span>
-                            </div>
-                        </td>
-                        <td class="px-8 py-5">
-                            <p class="text-xs text-slate-500 font-medium line-clamp-2 max-w-xs italic leading-relaxed">"{{ $session->summary }}"</p>
-                        </td>
-                        <td class="px-8 py-5">
-                            <div class="flex justify-center">
-                                @php
-                                    $statusColors = [
-                                        'selesai' => 'bg-emerald-50 text-emerald-600 border-emerald-100',
-                                        'monitoring' => 'bg-blue-50 text-blue-600 border-blue-100',
-                                        'tindak_lanjut' => 'bg-amber-50 text-amber-600 border-amber-100'
-                                    ];
-                                @endphp
-                                <span class="px-4 py-1.5 rounded-lg border {{ $statusColors[$session->status] }} text-[9px] font-medium whitespace-nowrap">
-                                    {{ str_replace('_', ' ', $session->status) }}
+                                <span class="text-[9px] font-semibold text-primary font-medium bg-primary/10 px-2.5 py-0.5 rounded-md">
+                                    Konseling
+                                </span>
+                                <span class="text-[9px] font-semibold text-slate-400 font-medium bg-slate-100 px-2 py-0.5 rounded-md">
+                                    {{ ucfirst($session->category) }}
                                 </span>
                             </div>
                         </td>
-                        <td class="px-8 py-5">
-                            <div class="flex items-center justify-end gap-2">
-                                <a href="{{ route('gurubk.counseling.edit', $session->id) }}" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <td class="px-6 py-6">
+                            <p class="text-xs text-slate-500 font-medium line-clamp-2 max-w-xs italic leading-relaxed">"{{ $session->summary }}"</p>
+                        </td>
+                        <td class="px-6 py-6">
+                            @php
+                                $sortDate = $session->completed_at ?? $session->counseling_date;
+                            @endphp
+                            <div class="font-bold text-slate-700 text-xs">{{ $sortDate->translatedFormat('d M Y') }}</div>
+                            <div class="text-[9px] text-slate-400 mt-1 font-bold">{{ $sortDate->translatedFormat('H:i') }} WITA</div>
+                            @if($session->status === 'selesai')
+                                <div class="text-[9px] text-emerald-600 mt-1.5 font-bold uppercase tracking-tighter bg-emerald-50 px-2 py-0.5 rounded-md inline-block">Selesai</div>
+                            @else
+                                <div class="text-[9px] mt-1.5 font-bold uppercase tracking-tighter px-2 py-0.5 rounded-md inline-block {{ $session->status === 'monitoring' ? 'text-blue-600 bg-blue-50' : 'text-amber-600 bg-amber-50' }}">
+                                    {{ str_replace('_', ' ', $session->status) }}
+                                </div>
+                            @endif
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            @if($session->status === 'selesai')
+                                <a href="{{ route('gurubk.counseling.show', $session->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
+                                    Detail Sesi
+                                    <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                                 </a>
-                                <form action="{{ route('gurubk.counseling.destroy', $session->id) }}" method="POST" onsubmit="return confirm('Hapus catatan ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                    </button>
-                                </form>
-                            </div>
+                            @else
+                                <div class="flex items-center justify-end gap-2">
+                                    <a href="{{ route('gurubk.counseling.edit', $session->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
+                                        Kelola Sesi
+                                        <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                                    </a>
+                                    <form action="{{ route('gurubk.counseling.destroy', $session->id) }}" method="POST" onsubmit="return confirm('Hapus catatan ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-slate-200 text-slate-400 hover:text-red-600 hover:bg-red-50 hover:border-red-100 transition-all shadow-sm" title="Hapus Sesi">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-8 py-20 text-center">
+                        <td colspan="5" class="px-8 py-20 text-center">
                             <div class="flex flex-col items-center justify-center space-y-3">
                                 <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center text-slate-200 mx-auto mb-4">
                                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>

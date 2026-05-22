@@ -14,6 +14,7 @@ class Student extends Model
         'teacher_id', 
         'name', 
         'nisn', 
+        'photo',
         'class',
         'birth_place', 
         'birth_date', 
