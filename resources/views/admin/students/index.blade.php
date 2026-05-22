@@ -178,11 +178,11 @@
                     <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs text-slate-600 space-y-2 leading-relaxed">
                         <div class="font-bold text-slate-700">Petunjuk Format File:</div>
                         <p>Format file harus berupa Excel (<strong>.xlsx</strong> / <strong>.xls</strong>) atau <strong>CSV</strong>.</p>
-                        <p>Baris pertama (Header) harus berupa nama kolom persis seperti berikut:</p>
+                        <p>Baris pertama (Header) harus berisi nama kolom seperti berikut:</p>
                         <code class="block bg-slate-100 p-2 rounded text-[10px] border border-slate-200 font-mono text-slate-800 whitespace-nowrap overflow-x-auto">
-                            name,nisn,class,gender,religion,phone,address,father_name,mother_name
+                            Nama Lengkap Siswa, NISN, Kelas, Jenis Kelamin, Agama, Tempat Lahir, Tanggal Lahir, Status Tinggal, Alamat Lengkap, No. HP Siswa, Nama Ayah, Nama Ibu
                         </code>
-                        <div class="text-rose-500 font-bold">* Hanya kolom name dan nisn yang wajib diisi.</div>
+                        <div class="text-rose-500 font-bold">* Hanya kolom Nama Lengkap Siswa dan NISN yang wajib diisi.</div>
                     </div>
 
                     <div>
