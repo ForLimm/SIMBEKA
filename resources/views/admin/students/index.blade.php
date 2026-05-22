@@ -106,7 +106,6 @@
                                     </div>
                                     <div>
                                         <div class="font-bold text-slate-800">{{ $student->name }}</div>
-                                        <div class="text-[10px] text-slate-400 mt-0.5">{{ $student->user?->email ?? '-' }}</div>
                                     </div>
                                 </div>
                             </td>
@@ -183,7 +182,7 @@
                         <code class="block bg-slate-100 p-2 rounded text-[10px] border border-slate-200 font-mono text-slate-800 whitespace-nowrap overflow-x-auto">
                             name,nisn,class,gender,religion,phone,address,father_name,mother_name
                         </code>
-                        <div class="text-rose-500 font-bold">* Hanya kolom name dan nisn yang wajib diisi. (Email & Password akan dibuat secara otomatis dari NISN)</div>
+                        <div class="text-rose-500 font-bold">* Hanya kolom name dan nisn yang wajib diisi.</div>
                     </div>
 
                     <div>
