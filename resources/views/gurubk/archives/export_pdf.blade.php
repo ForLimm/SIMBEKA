@@ -132,18 +132,20 @@
         <table class="data">
             <thead>
                 <tr>
-                    <th style="width: 6%;">No</th>
-                    <th style="width: 25%;">Siswa Binaan</th>
-                    <th style="width: 35%;">Topik / Kategori</th>
-                    <th style="width: 20%;">Tanggal Selesai</th>
-                    <th style="width: 14%;">Status</th>
+                    <th style="width: 5%;">No</th>
+                    <th style="width: 30%;">Siswa Binaan</th>
+                    <th style="width: 10%;">Kelas</th>
+                    <th style="width: 33%;">Topik / Kategori</th>
+                    <th style="width: 12%;">Tanggal Selesai</th>
+                    <th style="width: 10%;">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data['sessions'] as $index => $session)
                     <tr>
                         <td style="text-align: center;">{{ $index + 1 }}</td>
-                        <td>{{ $session->student->name }} (Kelas {{ $session->student->class }})</td>
+                        <td>{{ $session->student->name }}</td>
+                        <td style="text-align: center;">{{ $session->student->class }}</td>
                         <td>
                             <strong>{{ $session->title ?? 'Sesi Bimbingan Tatap Muka' }}</strong>
                             <br>
@@ -163,23 +165,35 @@
         <table class="data">
             <thead>
                 <tr>
-                    <th style="width: 6%;">No</th>
-                    <th style="width: 15%;">Jenis</th>
-                    <th style="width: 34%;">Judul / Perihal</th>
-                    <th style="width: 25%;">Siswa Binaan</th>
-                    <th style="width: 12%;">Tanggal</th>
-                    <th style="width: 8%;">Status</th>
+                    <th style="width: 5%;">No</th>
+                    <th style="width: 12%;">Jenis</th>
+                    <th style="width: 30%;">Judul / Perihal</th>
+                    <th style="width: 24%;">Siswa Binaan</th>
+                    <th style="width: 8%;">Kelas</th>
+                    <th style="width: 11%;">Tanggal</th>
+                    <th style="width: 10%;">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data['archives'] as $index => $archive)
+                    @php
+                        $statusMap = [
+                            'resolved' => 'Selesai',
+                            'pending' => 'Menunggu',
+                            'processed' => 'Diproses',
+                            'approved' => 'Disetujui',
+                            'rejected' => 'Ditolak'
+                        ];
+                        $statusIndo = $statusMap[strtolower($archive->report->status)] ?? $archive->report->status;
+                    @endphp
                     <tr>
                         <td style="text-align: center;">{{ $index + 1 }}</td>
-                        <td style="text-align: center;">{{ ucfirst($archive->report->type) }}</td>
+                        <td style="text-align: center;">{{ $archive->report->type === 'konsultasi' ? 'Konsultasi' : ($archive->report->type === 'pelaporan' ? 'Pelaporan' : ucfirst($archive->report->type)) }}</td>
                         <td>{{ $archive->report->title }}</td>
-                        <td>{{ $archive->student?->name ?? $archive->student?->user?->name ?? $archive->report?->reporter?->username ?? $archive->report?->reporter?->name ?? '-' }}</td>
+                        <td>{{ $archive->student?->name ?? $archive->student?->user?->name ?? $archive->report?->reporter?->name ?? $archive->report?->reporter?->username ?? '-' }}</td>
+                        <td style="text-align: center;">{{ $archive->student?->class ?? '-' }}</td>
                         <td style="text-align: center;">{{ $archive->completed_date->format('d/m/Y') }}</td>
-                        <td style="text-align: center;">{{ ucfirst($archive->report->status) }}</td>
+                        <td style="text-align: center;">{{ $statusIndo }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -192,19 +206,30 @@
         <table class="data">
             <thead>
                 <tr>
-                    <th style="width: 6%;">No</th>
+                    <th style="width: 5%;">No</th>
                     <th style="width: 20%;">Jenis Surat</th>
-                    <th style="width: 34%;">Siswa Penerima</th>
-                    <th style="width: 18%;">Tanggal Terbit</th>
-                    <th style="width: 22%;">Keterangan</th>
+                    <th style="width: 30%;">Siswa Penerima</th>
+                    <th style="width: 10%;">Kelas</th>
+                    <th style="width: 15%;">Tanggal Terbit</th>
+                    <th style="width: 20%;">Keterangan</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data['letters'] as $index => $letter)
+                    @php
+                        $typeMap = [
+                            'panggilan' => 'Surat Panggilan',
+                            'sp1' => 'Surat SP1',
+                            'sp2' => 'Surat SP2',
+                            'skorsing' => 'Surat Skorsing'
+                        ];
+                        $typeIndo = $typeMap[strtolower($letter->type)] ?? str_replace('_', ' ', strtoupper($letter->type));
+                    @endphp
                     <tr>
                         <td style="text-align: center;">{{ $index + 1 }}</td>
-                        <td style="text-align: center; font-weight: bold;">{{ str_replace('_', ' ', strtoupper($letter->type)) }}</td>
+                        <td style="text-align: center; font-weight: bold;">{{ $typeIndo }}</td>
                         <td>{{ $letter->student?->name ?? ($letter->student?->user?->name ?? 'Tanpa Nama') }}</td>
+                        <td style="text-align: center;">{{ $letter->student?->class ?? '-' }}</td>
                         <td style="text-align: center;">{{ $letter->created_at->format('d/m/Y') }}</td>
                         <td>Arsip Digital Terverifikasi</td>
                     </tr>
