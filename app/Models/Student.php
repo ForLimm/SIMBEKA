@@ -42,7 +42,7 @@ class Student extends Model
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'reported_by', 'user_id');
     }
 
     public function archives()
