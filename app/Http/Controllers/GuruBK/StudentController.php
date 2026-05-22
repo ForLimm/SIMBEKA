@@ -9,7 +9,6 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StudentRules;
 
 class StudentController extends Controller
 {
@@ -68,106 +67,97 @@ class StudentController extends Controller
         return view('gurubk.students.show', compact('student', 'teacher'));
     }
 
-    public function create()
+    public function claimClassesForm()
     {
         $teacher = Auth::user()->teacher;
-        return view('gurubk.students.create', compact('teacher'));
+        if (!$teacher) {
+            return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
+        }
+
+        // Get all unique classes and student counts per class
+        $classData = Student::select('class')
+            ->selectRaw('count(*) as total_students')
+            ->selectRaw('sum(case when teacher_id = ? then 1 else 0 end) as my_students', [$teacher->id])
+            ->selectRaw('sum(case when teacher_id is not null and teacher_id != ? then 1 else 0 end) as other_students', [$teacher->id])
+            ->groupBy('class')
+            ->orderBy('class')
+            ->get();
+
+        // For each class, find the current teacher(s) handling it if any
+        $classTeachers = [];
+        $studentsWithTeachers = Student::whereNotNull('class')
+            ->whereNotNull('teacher_id')
+            ->with('teacher.user')
+            ->get();
+
+        foreach ($studentsWithTeachers as $s) {
+            $classTeachers[$s->class][$s->teacher->user->name] = true;
+        }
+
+        $classHandlers = [];
+        foreach ($classTeachers as $cls => $names) {
+            $classHandlers[$cls] = implode(', ', array_keys($names));
+        }
+
+        return view('gurubk.students.claim_classes', compact('teacher', 'classData', 'classHandlers'));
+    }
+
+    public function claimClasses(Request $request)
+    {
+        $teacher = Auth::user()->teacher;
+        if (!$teacher) {
+            return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
+        }
+
+        $submittedClasses = $request->input('classes', []);
+
+        // Check if claiming these classes would exceed quota
+        $targetStudentsCount = Student::whereIn('class', $submittedClasses)->count();
+        if ($targetStudentsCount > $teacher->max_quota) {
+            return back()->with('error', "Jumlah siswa di kelas yang Anda pilih (total: {$targetStudentsCount}) melebihi kuota bimbingan Anda ({$teacher->max_quota}). Silakan kurangi pilihan kelas.");
+        }
+
+        // Release classes that were previously handled by this teacher but are not in the submitted list
+        Student::where('teacher_id', $teacher->id)
+            ->whereNotIn('class', $submittedClasses)
+            ->update(['teacher_id' => null]);
+
+        // Claim the new classes
+        if (!empty($submittedClasses)) {
+            Student::whereIn('class', $submittedClasses)
+                ->update(['teacher_id' => $teacher->id]);
+        }
+
+        return redirect()->route('gurubk.students.index')->with('success', 'Kelas bimbingan berhasil diperbarui.');
+    }
+
+    public function create()
+    {
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menambah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function store(Request $request)
     {
-        $request->validate(StudentRules::storeRules(), StudentRules::messages());
-
-        $teacher = Auth::user()->teacher;
-
-        // Check Quota
-        $currentCount = Student::where('teacher_id', $teacher->id)->count();
-        if ($currentCount >= $teacher->max_quota) {
-            return redirect()->route('gurubk.students.index')->with('error', 'Kuota siswa bimbingan Anda sudah penuh (' . $teacher->max_quota . ').');
-        }
-
-        $data = $request->only(StudentRules::safeFields());
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('student-photos', 'public');
-        }
-
-        Student::create(array_merge(
-            $data,
-            ['teacher_id' => $teacher->id]
-        ));
-
-        return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil ditambahkan.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menambah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function edit(Student $student)
     {
-        $teacher = Auth::user()->teacher;
-        if ($student->teacher_id !== $teacher->id) {
-            return redirect()->route('gurubk.students.index')->with('error', 'Akses ditolak.');
-        }
-        return view('gurubk.students.edit', compact('student', 'teacher'));
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas mengubah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function update(Request $request, Student $student)
     {
-        $teacher = Auth::user()->teacher;
-        if ($student->teacher_id !== $teacher->id) {
-            return redirect()->route('gurubk.students.index')->with('error', 'Akses ditolak.');
-        }
-
-        $request->validate(StudentRules::updateRules($student->id), StudentRules::messages());
-
-        $data = $request->only(StudentRules::safeFields());
-
-        // Handle photo removal
-        if ($request->has('remove_photo') && $request->remove_photo == '1') {
-            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
-                @unlink(public_path('storage/' . $student->photo));
-            }
-            $data['photo'] = null;
-        }
-
-        // Handle new photo upload
-        if ($request->hasFile('photo')) {
-            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
-                @unlink(public_path('storage/' . $student->photo));
-            }
-            $data['photo'] = $request->file('photo')->store('student-photos', 'public');
-        }
-
-        $student->update($data);
-
-        return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil diperbarui.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas mengubah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
+
     public function destroy(Student $student)
     {
-        $teacher = Auth::user()->teacher;
-        
-        if ($student->teacher_id !== $teacher->id) {
-            return back()->with('error', 'Anda tidak memiliki otoritas untuk menghapus siswa ini.');
-        }
-
-        $student->delete();
-
-        return back()->with('success', 'Data siswa berhasil dihapus.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menghapus data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function bulkDestroy(Request $request)
     {
-        $teacher = Auth::user()->teacher;
-        
-        if (!$request->has('student_ids')) {
-            return back()->with('error', 'Tidak ada siswa yang dipilih.');
-        }
-
-        $ids = explode(',', $request->student_ids);
-        
-        // Ensure the teacher only deletes their own students
-        $students = Student::whereIn('id', $ids)->where('teacher_id', $teacher->id)->get();
-        foreach ($students as $student) {
-            $student->delete();
-        }
-
-        return back()->with('success', 'Data siswa terpilih berhasil dihapus.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menghapus data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 }

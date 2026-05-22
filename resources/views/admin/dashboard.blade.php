@@ -100,6 +100,19 @@
                         </div>
                         <svg class="w-5 h-5 text-slate-300 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
+
+                    <a href="{{ route('admin.students.index') }}" class="flex items-center justify-between p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-primary hover:bg-white transition-all group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white rounded-lg shadow-sm flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-semibold text-slate-800">Master Data Siswa</h5>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Kelola Basis Data Siswa</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-300 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
                 </div>
             </div>
         </div>

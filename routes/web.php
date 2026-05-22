@@ -56,9 +56,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('teachers/{teacher}/edit', [TeacherController::class, 'edit'])->name('teachers.edit');
     Route::put('teachers/{teacher}', [TeacherController::class, 'update'])->name('teachers.update');
     
+    Route::get('students', [StudentController::class, 'index'])->name('students.index');
     Route::get('students/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('students', [StudentController::class, 'store'])->name('students.store');
-    Route::get('students', function() { return redirect()->route('admin.dashboard'); })->name('students.index');
+    Route::get('students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('students/{student}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+    Route::post('students/import', [StudentController::class, 'import'])->name('students.import');
 });
 
 Route::prefix('gurubk')->name('gurubk.')->middleware(['auth', 'role:guru_bk'])->group(function () {
@@ -85,6 +89,8 @@ Route::prefix('gurubk')->name('gurubk.')->middleware(['auth', 'role:guru_bk'])->
     Route::get('anecdotes/export', [App\Http\Controllers\GuruBK\AnecdoteController::class, 'export'])->name('anecdotes.export');
 
     Route::get('students', [App\Http\Controllers\GuruBK\StudentController::class, 'index'])->name('students.index');
+    Route::get('students/claim-classes', [App\Http\Controllers\GuruBK\StudentController::class, 'claimClassesForm'])->name('students.claim_classes_form');
+    Route::post('students/claim-classes', [App\Http\Controllers\GuruBK\StudentController::class, 'claimClasses'])->name('students.claim_classes');
     Route::get('students/create', [App\Http\Controllers\GuruBK\StudentController::class, 'create'])->name('students.create');
     Route::post('students', [App\Http\Controllers\GuruBK\StudentController::class, 'store'])->name('students.store');
     Route::get('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'show'])->name('students.show');
