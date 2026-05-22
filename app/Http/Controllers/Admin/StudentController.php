@@ -178,10 +178,49 @@ class StudentController extends Controller
             return back()->with('error', 'Format berkas tidak valid atau kosong.');
         }
 
-        // Clean headers: lower case and trim
-        $headers = array_map(function($h) {
-            return strtolower(trim(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $h)));
-        }, $headers);
+        // Clean and prepare header mapping
+        $columnMapping = [
+            'name' => ['nama lengkap siswa', 'nama lengkap', 'nama siswa', 'nama', 'name'],
+            'nisn' => ['nisn', 'nomor induk siswa nasional', 'no induk siswa nasional'],
+            'class' => ['kelas', 'class'],
+            'gender' => ['jenis kelamin', 'jenis_kelamin', 'jk', 'kelamin', 'gender'],
+            'religion' => ['agama', 'religion'],
+            'birth_place' => ['tempat lahir', 'tempat_lahir', 'birth_place', 'tempat lahir siswa'],
+            'birth_date' => ['tanggal lahir', 'tanggal_lahir', 'tgl lahir', 'birth_date', 'tanggal lahir siswa'],
+            'living_status' => ['status tinggal', 'status_tinggal', 'living_status', 'status tinggal siswa'],
+            'address' => ['alamat lengkap', 'alamat', 'alamat siswa', 'address'],
+            'phone' => ['no. hp siswa', 'no hp siswa', 'no hp', 'nomor hp', 'telepon', 'phone'],
+            'father_name' => ['nama ayah', 'ayah', 'father_name'],
+            'mother_name' => ['nama ibu', 'ibu', 'mother_name'],
+        ];
+
+        $mappedHeaders = [];
+        foreach ($headers as $index => $rawHeader) {
+            if ($rawHeader === null) {
+                $mappedHeaders[$index] = null;
+                continue;
+            }
+            $header = strtolower(trim($rawHeader));
+            $foundKey = null;
+            foreach ($columnMapping as $dbKey => $synonyms) {
+                if (in_array($header, $synonyms)) {
+                    $foundKey = $dbKey;
+                    break;
+                }
+            }
+            // If no exact match, try matching via substring
+            if (!$foundKey) {
+                foreach ($columnMapping as $dbKey => $synonyms) {
+                    foreach ($synonyms as $synonym) {
+                        if (str_contains($header, $synonym) || str_contains($synonym, $header)) {
+                            $foundKey = $dbKey;
+                            break 2;
+                        }
+                    }
+                }
+            }
+            $mappedHeaders[$index] = $foundKey;
+        }
 
         $rowCount = 0;
         $successCount = 0;
@@ -195,9 +234,10 @@ class StudentController extends Controller
             }
 
             $data = [];
-            foreach ($headers as $index => $header) {
-                if (isset($row[$index])) {
-                    $data[$header] = trim($row[$index]);
+            foreach ($row as $index => $value) {
+                $dbKey = $mappedHeaders[$index] ?? null;
+                if ($dbKey) {
+                    $data[$dbKey] = $value !== null ? trim($value) : null;
                 }
             }
 
@@ -205,7 +245,7 @@ class StudentController extends Controller
             $nisn = $data['nisn'] ?? null;
 
             if (!$name || !$nisn) {
-                $errors[] = "Baris #{$rowCount}: Kolom name dan nisn wajib diisi.";
+                $errors[] = "Baris #{$rowCount}: Kolom Nama dan NISN wajib diisi.";
                 continue;
             }
 
@@ -243,8 +283,11 @@ class StudentController extends Controller
                 'class' => $data['class'] ?? null,
                 'gender' => $data['gender'] ?? null,
                 'religion' => $data['religion'] ?? null,
-                'phone' => $data['phone'] ?? null,
+                'birth_place' => $data['birth_place'] ?? null,
+                'birth_date' => $this->parseDate($data['birth_date'] ?? null),
+                'living_status' => $data['living_status'] ?? null,
                 'address' => $data['address'] ?? null,
+                'phone' => $data['phone'] ?? null,
                 'father_name' => $data['father_name'] ?? null,
                 'mother_name' => $data['mother_name'] ?? null,
             ]);
@@ -258,5 +301,40 @@ class StudentController extends Controller
         }
 
         return redirect()->route('admin.students.index')->with('success', $msg);
+    }
+
+    private function parseDate($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        if (is_numeric($value)) {
+            try {
+                return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value))->format('Y-m-d');
+            } catch (\Exception $e) {
+                // Silently fallback if it's not a numeric Excel timestamp
+            }
+        }
+
+        $value = trim($value);
+
+        $formats = ['d/m/Y', 'Y-m-d', 'd-m-Y', 'm/d/Y', 'Y/m/d', 'd.m.Y', 'Y.m.d'];
+        foreach ($formats as $format) {
+            try {
+                $d = \Carbon\Carbon::createFromFormat($format, $value);
+                if ($d) {
+                    return $d->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                // Try next format
+            }
+        }
+
+        try {
+            return \Carbon\Carbon::parse($value)->format('Y-m-d');
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
