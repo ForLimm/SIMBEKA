@@ -167,7 +167,7 @@
 
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-slate-100">
             <div class="bg-primary px-6 py-4 text-white flex items-center justify-between">
-                <h3 class="text-md font-bold">Impor Data Siswa via Excel CSV</h3>
+                <h3 class="text-md font-bold">Impor Data Siswa via Excel</h3>
                 <button type="button" onclick="document.getElementById('importModal').classList.add('hidden')" class="text-blue-100 hover:text-white transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -178,17 +178,17 @@
                 <div class="space-y-4">
                     <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs text-slate-600 space-y-2 leading-relaxed">
                         <div class="font-bold text-slate-700">Petunjuk Format File:</div>
-                        <p>Format file harus berupa <strong>CSV</strong> (koma atau titik koma sebagai pemisah).</p>
-                        <p>Baris pertama file CSV harus berupa nama kolom persis seperti berikut:</p>
+                        <p>Format file harus berupa Excel (<strong>.xlsx</strong> / <strong>.xls</strong>) atau <strong>CSV</strong>.</p>
+                        <p>Baris pertama (Header) harus berupa nama kolom persis seperti berikut:</p>
                         <code class="block bg-slate-100 p-2 rounded text-[10px] border border-slate-200 font-mono text-slate-800 whitespace-nowrap overflow-x-auto">
-                            name,class,nisn,gender,religion,phone,address,father_name,mother_name
+                            name,nisn,class,gender,religion,phone,address,father_name,mother_name
                         </code>
-                        <div class="text-rose-500 font-bold">* Kolom name, class, dan nisn wajib diisi. (Akun login email/password akan dibuat secara otomatis dari NISN)</div>
+                        <div class="text-rose-500 font-bold">* Hanya kolom name dan nisn yang wajib diisi. (Email & Password akan dibuat secara otomatis dari NISN)</div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Pilih File CSV</label>
-                        <input type="file" name="file" accept=".csv,.txt" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-secondary">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Pilih File Excel / CSV</label>
+                        <input type="file" name="file" accept=".xlsx,.xls,.csv" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-secondary">
                     </div>
                 </div>
 

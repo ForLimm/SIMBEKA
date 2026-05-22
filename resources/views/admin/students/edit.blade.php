@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Kelas <span class="text-rose-500">*</span></label>
-                        <select name="class" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Kelas</label>
+                        <select name="class" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
                             <option value="">Pilih Kelas</option>
                             @foreach(['VII-1','VII-2','VII-3','VII-4','VII-5','VII-6','VIII-1','VIII-2','VIII-3','VIII-4','VIII-5','VIII-6','IX-1','IX-2','IX-3','IX-4','IX-5','IX-6'] as $kls)
                                 <option value="{{ $kls }}" {{ old('class', $student->class) == $kls ? 'selected' : '' }}>{{ $kls }}</option>
@@ -63,8 +63,8 @@
                     </div>
 
                     <div class="md:col-span-2">
-                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Jenis Kelamin <span class="text-rose-500">*</span></label>
-                        <select name="gender" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Jenis Kelamin</label>
+                        <select name="gender" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
                             <option value="">Pilih Gender</option>
                             <option value="Laki-laki" {{ old('gender', $student->gender) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ old('gender', $student->gender) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>

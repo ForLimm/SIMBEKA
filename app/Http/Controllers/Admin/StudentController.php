@@ -152,27 +152,33 @@ class StudentController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:csv,txt|max:4096',
+            'file' => 'required|file|max:10240',
         ], [
-            'file.required' => 'File CSV wajib diunggah.',
-            'file.mimes' => 'Format file harus berupa CSV.',
+            'file.required' => 'Berkas Excel wajib diunggah.',
         ]);
 
         $file = $request->file('file');
+        $extension = strtolower($file->getClientOriginalExtension());
+        if (!in_array($extension, ['xlsx', 'xls', 'csv'])) {
+            return back()->with('error', 'Format berkas harus berupa Excel (.xlsx, .xls) atau CSV.');
+        }
+
         $path = $file->getRealPath();
 
-        $firstLine = fgets(fopen($path, 'r'));
-        $separator = ',';
-        if (str_contains($firstLine, ';')) {
-            $separator = ';';
+        try {
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $rows = $worksheet->toArray();
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal membaca berkas Excel: ' . $e->getMessage());
         }
 
-        $handle = fopen($path, 'r');
-        $headers = fgetcsv($handle, 0, $separator);
+        $headers = array_shift($rows);
         if (!$headers) {
-            return back()->with('error', 'Format file CSV tidak valid.');
+            return back()->with('error', 'Format berkas tidak valid atau kosong.');
         }
 
+        // Clean headers: lower case and trim
         $headers = array_map(function($h) {
             return strtolower(trim(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $h)));
         }, $headers);
@@ -181,8 +187,9 @@ class StudentController extends Controller
         $successCount = 0;
         $errors = [];
 
-        while (($row = fgetcsv($handle, 0, $separator)) !== FALSE) {
+        foreach ($rows as $row) {
             $rowCount++;
+            // Skip empty rows
             if (empty(array_filter($row))) {
                 continue;
             }
@@ -195,11 +202,10 @@ class StudentController extends Controller
             }
 
             $name = $data['name'] ?? null;
-            $class = $data['class'] ?? null;
             $nisn = $data['nisn'] ?? null;
 
-            if (!$name || !$nisn || !$class) {
-                $errors[] = "Baris #{$rowCount}: Kolom name, nisn, dan class wajib diisi.";
+            if (!$name || !$nisn) {
+                $errors[] = "Baris #{$rowCount}: Kolom name dan nisn wajib diisi.";
                 continue;
             }
 
@@ -234,8 +240,8 @@ class StudentController extends Controller
                 'user_id' => $user->id,
                 'name' => $name,
                 'nisn' => $nisn,
-                'class' => $class,
-                'gender' => $data['gender'] ?? 'Laki-laki',
+                'class' => $data['class'] ?? null,
+                'gender' => $data['gender'] ?? null,
                 'religion' => $data['religion'] ?? null,
                 'phone' => $data['phone'] ?? null,
                 'address' => $data['address'] ?? null,
@@ -245,7 +251,6 @@ class StudentController extends Controller
 
             $successCount++;
         }
-        fclose($handle);
 
         $msg = "Berhasil mengimpor {$successCount} siswa.";
         if (count($errors) > 0) {

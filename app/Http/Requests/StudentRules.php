@@ -15,8 +15,8 @@ class StudentRules
      */
     private static array $baseFields = [
         'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
-        'class' => 'required|string',
-        'gender' => 'required|string|in:Laki-laki,Perempuan',
+        'class' => 'nullable|string',
+        'gender' => 'nullable|string|in:Laki-laki,Perempuan',
         'religion' => 'nullable|string|in:Islam,Kristen,Katolik,Hindu,Buddha,Khonghucu',
         'birth_place' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s.,\']+$/'],
         'birth_date' => 'nullable|date|before:today',
