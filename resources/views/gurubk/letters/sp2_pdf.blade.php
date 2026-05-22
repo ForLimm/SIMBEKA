@@ -110,7 +110,6 @@
         }
         .sig-name {
             font-weight: bold;
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -145,10 +144,10 @@
             </td>
             <td class="meta-right">
                 Kepada :<br/>
-                Yth. Bapak/Ibu Orang Tua/Wali<br/>
-                <strong>{{ $father_name ?? $mother_name ?? '' }}</strong><br/>
+                Yth. Bpk/Ibu Orang Tua/Wali<br/>
+                An. <strong>{{ $student_name }}</strong><br/>
                 Di -<br/>
-                <span style="padding-left: 20px; font-style: italic;">Tempat</span>
+                <span style="padding-left: 20px;">Tempat</span>
             </td>
         </tr>
     </table>
@@ -156,7 +155,7 @@
     {{-- ISI SURAT --}}
     <div class="content">
         <p class="no-indent" style="margin-bottom: 15px;">Dengan hormat,</p>
-        <p class="no-indent">Sehubungan dengan pelanggaran tata tertib sekolah yang dilakukan oleh siswa di bawah ini:</p>
+        <p class="no-indent">Sehubungan dengan pelanggaran yang dilakukan oleh siswa :</p>
 
         <table class="detail-table">
             <tr>
@@ -172,17 +171,17 @@
             <tr>
                 <td class="label">Pelanggaran</td>
                 <td class="colon">:</td>
-                <td style="font-weight: bold;">{!! nl2br(e($reason)) !!}</td>
+                <td>{!! nl2br(e($reason)) !!}</td>
             </tr>
         </table>
 
-        <p class="no-indent" style="margin-top: 15px;">Kami pihak sekolah memberikan surat peringatan kedua atau yang biasa disebut <strong>SP 2</strong>.</p>
+        <p class="no-indent" style="margin-top: 15px;">Kami pihak sekolah memberikan surat peringatan kedua atau yang biasa disebut <strong>SP 2</strong>. Jika 
+terjadi pelanggaran yang sama atau berbeda, maka pihak sekolah akan memberikan surat 
+peringatan ketiga atau siswa akan dikembalikan ke orang tuanya. Apabila dalam masa 
+pemantauan siswa menunjukaan perubahan dan bersikap baik, maka SP 2 ini akan diputihkan.</p>
         
-        <p class="no-indent">Jika terjadi pelanggaran yang sama atau berbeda, maka pihak sekolah akan memberikan surat peringatan ketiga (SP 3) atau siswa akan dikembalikan kepada orang tuanya (dikeluarkan dari sekolah).</p>
-        
-        <p class="no-indent">Apabila dalam masa pemantauan siswa menunjukkan perubahan perilaku ke arah yang lebih baik dan mematuhi tata tertib sekolah, maka Surat Peringatan Kedua (SP2) ini akan diputihkan kembali.</p>
-        
-        <p class="no-indent" style="margin-top: 15px;">Demikian surat peringatan kedua ini dibuat agar siswa yang bersangkutan dapat memperbaiki perilakunya. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
+        <p class="no-indent" style="margin-top: 15px;">Demikian surat peringatan ini dibuat agar siswa dapat memperbaiki perilakunya. Atas 
+perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
     </div>
 
     {{-- TANDA TANGAN --}}
@@ -193,7 +192,7 @@
                 <div class="sig-image-container">
                     <img class="sig-image" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/cap_signature.png'))) }}" />
                 </div>
-                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</p>
+                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::now('Asia/Makassar')->locale('id')->isoFormat('D MMMM Y') }}</p>
                 <p style="margin-top: 5px; margin-bottom: 0; position: relative; z-index: 2;">Mengetahui,<br/>Kepala Sekolah,</p>
                 <div class="sig-space"></div>
                 <p class="sig-name" style="margin-top: 0; margin-bottom: 0; position: relative; z-index: 2;">Hartadi Gatot, S.Pd., M.P.Mat.</p>

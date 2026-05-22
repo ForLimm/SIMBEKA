@@ -125,13 +125,13 @@
                     <div>
                         <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-3 ml-1">Status Konseling <span class="text-rose-500">*</span></label>
                         <div class="space-y-2">
-                            @foreach(['selesai' => 'Selesai', 'monitoring' => 'Monitoring', 'tindak_lanjut' => 'Tindak Lanjut'] as $val => $label)
+                            @foreach(['monitoring' => 'Monitoring', 'selesai' => 'Selesai'] as $val => $label)
                                 <label class="relative cursor-pointer block group">
-                                    <input type="radio" name="status" value="{{ $val }}" {{ old('status', 'selesai') == $val ? 'checked' : '' }} class="peer sr-only">
-                                    <div class="py-3 px-4 rounded-lg border border-slate-200 bg-white group-hover:bg-slate-50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary transition-all shadow-sm flex items-center justify-between">
+                                    <input type="radio" name="status" value="{{ $val }}" {{ old('status', 'monitoring') == $val ? 'checked' : '' }} class="peer sr-only">
+                                    <div class="py-3 px-4 rounded-lg border border-slate-200 bg-white group-hover:bg-slate-50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary peer-checked:[&_.indicator-circle]:border-primary peer-checked:[&_.indicator-circle]:bg-primary peer-checked:[&_.indicator-dot]:opacity-100 transition-all shadow-sm flex items-center justify-between">
                                         <span class="text-[10px] font-medium">{{ $label }}</span>
-                                        <div class="w-4 h-4 rounded-full border-2 border-slate-200 peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center transition-all">
-                                            <div class="w-1.5 h-1.5 rounded-full bg-white opacity-0 peer-checked:opacity-100"></div>
+                                        <div class="indicator-circle w-4 h-4 rounded-full border-2 border-slate-200 flex items-center justify-center transition-all">
+                                            <div class="indicator-dot w-1.5 h-1.5 rounded-full bg-white opacity-0 transition-all"></div>
                                         </div>
                                     </div>
                                 </label>

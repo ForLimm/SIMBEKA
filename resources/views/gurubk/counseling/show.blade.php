@@ -28,15 +28,14 @@
         <div class="lg:col-span-2 space-y-8">
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8">
                 <h4 class="text-[10px] font-semibold text-slate-400 font-medium mb-6 border-b border-slate-100 pb-2">Ringkasan Sesi Konseling</h4>
-                <div class="bg-slate-50 rounded-[2rem] p-8 text-slate-700 leading-relaxed font-medium text-lg italic border border-slate-100 relative">
-                    <svg class="w-12 h-12 text-slate-200 absolute -top-4 -left-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.899 14.899 16 16 16L19 16L19 13L16 13C13.239 13 11 15.239 11 18L11 21L14.017 21ZM5.017 21L5.017 18C5.017 16.899 5.899 16 7 16L10 16L10 13L7 13C4.239 13 2 15.239 2 18L2 21L5.017 21Z"></path></svg>
+                <div class="bg-slate-50 rounded-lg p-6 text-slate-700 leading-relaxed text-sm border border-slate-100 relative">
                     {{ $session->summary }}
                 </div>
 
                 @if($session->follow_up)
                     <div class="mt-8 pt-8 border-t border-slate-100">
                         <h4 class="text-[10px] font-semibold text-slate-400 font-medium mb-4">Rencana Tindak Lanjut</h4>
-                        <div class="bg-primary/5 border border-primary/10 p-6 rounded-[2rem] text-slate-700 leading-relaxed font-medium text-sm">
+                        <div class="bg-primary/5 border border-primary/10 p-6 rounded-lg text-slate-700 leading-relaxed text-sm">
                             {{ $session->follow_up }}
                         </div>
                     </div>
@@ -57,7 +56,7 @@
                         <div class="font-semibold text-slate-900 tracking-tight">{{ $session->student->name }}</div>
                         @php
                             $subjectUser = $session->student->user ?? null;
-                            $accountStatus = 'Siswa Terdaftar';
+                            $accountStatus = 'Siswa Binaan';
                             if ($subjectUser) {
                                 if ($subjectUser->is_guest) {
                                     $accountStatus = 'Akun Guest';
@@ -99,25 +98,25 @@
             </div>
 
             {{-- Officer Info --}}
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-6 bg-slate-900 text-white border-none shadow-xl shadow-slate-900/20">
-                <h4 class="text-[10px] font-semibold text-slate-500 font-medium mb-4">Ditangani Oleh</h4>
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-6">
+                <h4 class="text-[10px] font-semibold text-slate-400 font-medium mb-4">Ditangani Oleh</h4>
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-slate-800 text-white rounded-lg flex items-center justify-center text-sm font-semibold border border-slate-700">
-                        {{ substr($session->teacher->user->name ?? '?', 0, 1) }}
+                    <div class="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center text-sm font-semibold border border-slate-200">
+                        {{ substr($session->teacher_name ?? ($session->teacher->user->name ?? '?'), 0, 1) }}
                     </div>
                     <div>
-                        <div class="font-bold tracking-tight text-white">{{ $session->teacher->user->name ?? 'Guru BK' }}</div>
-                        <div class="text-[10px] text-slate-500 font-bold uppercase">Petugas Penanganan</div>
+                        <div class="font-semibold text-slate-900 tracking-tight">{{ $session->teacher_name ?? ($session->teacher->user->name ?? 'Guru BK') }}</div>
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Guru BK</div>
                     </div>
                 </div>
-                <div class="mt-6 pt-6 border-t border-slate-800 space-y-4">
+                <div class="mt-6 pt-6 border-t border-slate-100 space-y-4">
                     <div>
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Tanggal Bimbingan</span>
-                        <p class="text-xs font-bold text-slate-300 mt-1">{{ $session->counseling_date->translatedFormat('d M Y') }}</p>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tanggal Bimbingan</span>
+                        <p class="text-xs font-semibold text-slate-800 mt-1">{{ $session->counseling_date->translatedFormat('d M Y') }}</p>
                     </div>
                     <div>
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Selesai Pada</span>
-                        <p class="text-xs font-bold text-slate-300 mt-1">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Selesai Pada</span>
+                        <p class="text-xs font-semibold text-slate-800 mt-1">
                             {{ $session->completed_at ? $session->completed_at->translatedFormat('d M Y, H:i') . ' WITA' : 'Belum Selesai' }}
                         </p>
                     </div>

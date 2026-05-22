@@ -110,7 +110,6 @@
         }
         .sig-name {
             font-weight: bold;
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -145,18 +144,18 @@
             </td>
             <td class="meta-right">
                 Kepada :<br/>
-                Yth. Bapak/Ibu Orang Tua/Wali<br/>
-                <strong>{{ $father_name ?? $mother_name ?? '' }}</strong><br/>
+                Yth. Bpk/Ibu Orang Tua/Wali<br/>
+                An. <strong>{{ $student_name }}</strong><br/>
                 Di -<br/>
-                <span style="padding-left: 20px; font-style: italic;">Tempat</span>
+                <span style="padding-left: 20px;">Tempat</span>
             </td>
         </tr>
     </table>
 
     {{-- ISI SURAT --}}
     <div class="content">
-        <p style="text-indent: 0;">Dengan Hormat,</p>
-        <p>Sehubungan dengan adanya permasalahan/pelanggaran tata tertib yang dilakukan oleh putra/putri Bapak/Ibu, maka kami mengharapkan kehadiran Bapak/Ibu pada:</p>
+         <p style="text-indent: 0;">Dengan Hormat,</p>
+         <p style="text-indent: 0;">Sehubungan dengan adanya permasalahan/pelanggaran tata tertib yang dilakukan oleh putra/putri Bapak/Ibu, maka kami mengharapkan kehadiran Bapak/Ibu pada:</p>
 
         <table class="detail-table">
             <tr>
@@ -172,17 +171,12 @@
             <tr>
                 <td class="label">Tempat</td>
                 <td class="colon">:</td>
-                <td><strong>Ruang Bimbingan Konseling (BK) SMP Negeri 6 Palu</strong></td>
-            </tr>
-            <tr>
-                <td class="label">Keterangan / Alasan</td>
-                <td class="colon">:</td>
-                <td style="font-weight: bold;">{!! nl2br(e($reason)) !!}</td>
+                <td><strong>{{ $room }}</strong></td>
             </tr>
         </table>
 
-        <p class="closing">Mengingat pentingnya hal tersebut, maka kami mengharapkan Bapak/Ibu untuk datang tepat waktu sesuai dengan waktu yang telah ditentukan.</p>
-        <p class="closing">Demikian surat panggilan ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
+        <p style="text-indent: 0;">Mengingat pentingnya hal tersebut, maka kami mengharapkan Bapak/Ibu untuk datang tepat waktu sesuai dengan waktu yang telah ditentukan.</p>
+        <p style="text-indent: 0;">Demikian surat panggilan ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
     </div>
 
     {{-- TANDA TANGAN --}}
@@ -193,7 +187,7 @@
                 <div class="sig-image-container">
                     <img class="sig-image" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/cap_signature.png'))) }}" />
                 </div>
-                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::parse($date)->locale('id')->isoFormat('D MMMM Y') }}</p>
+                <p style="margin-bottom: 0; position: relative; z-index: 2;">Palu, {{ \Carbon\Carbon::now('Asia/Makassar')->locale('id')->isoFormat('D MMMM Y') }}</p>
                 <p style="margin-top: 5px; margin-bottom: 0; position: relative; z-index: 2;">Mengetahui,<br/>Kepala Sekolah,</p>
                 <div class="sig-space"></div>
                 <p class="sig-name" style="margin-top: 0; margin-bottom: 0; position: relative; z-index: 2;">Hartadi Gatot, S.Pd., M.P.Mat.</p>

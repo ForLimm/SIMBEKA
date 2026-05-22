@@ -28,6 +28,7 @@ class StudentRules
         'parents_job' => 'nullable|string|max:255',
         'parents_phone' => 'nullable|string|digits_between:10,15',
         'parents_address' => 'nullable|string|max:1000',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     ];
 
     /**
@@ -77,7 +78,7 @@ class StudentRules
         return [
             'name', 'nisn', 'class', 'gender', 'religion', 'birth_place', 'birth_date',
             'living_status', 'address', 'phone', 'father_name', 'mother_name',
-            'parents_job', 'parents_phone', 'parents_address',
+            'parents_job', 'parents_phone', 'parents_address', 'photo',
         ];
     }
 }

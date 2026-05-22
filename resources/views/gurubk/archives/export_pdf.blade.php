@@ -95,12 +95,29 @@
         <img class="kop-img" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/kop_surat.png'))) }}" />
     </div>
 
+    @php
+        $types = [];
+        if (isset($data['sessions']) && $data['sessions']->count() > 0) $types[] = 'Konseling';
+        if (isset($data['archives'])) {
+            $hasKonsul = $data['archives']->contains(fn($a) => $a->report->type === 'konsultasi');
+            $hasLapor = $data['archives']->contains(fn($a) => $a->report->type === 'pelaporan');
+            if ($hasKonsul) $types[] = 'Konsultasi';
+            if ($hasLapor) $types[] = 'Pelaporan';
+        }
+        if (isset($data['letters']) && $data['letters']->count() > 0) $types[] = 'Surat';
+
+        $laporanTitle = 'Laporan ' . implode(' & ', $types);
+        if (empty($types)) {
+            $laporanTitle = 'Laporan Rekapitulasi Bimbingan';
+        }
+    @endphp
+
     {{-- INFO LAPORAN --}}
     <table class="info-table">
         <tr>
             <td style="width: 130px; font-weight: bold;">Laporan</td>
             <td style="width: 10px;">:</td>
-            <td><strong>Laporan Pengarsipan Surat</strong></td>
+            <td><strong>{{ $laporanTitle }}</strong></td>
         </tr>
         <tr>
             <td style="font-weight: bold;">Tanggal Cetak</td>
@@ -108,6 +125,37 @@
             <td>{{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</td>
         </tr>
     </table>
+
+    {{-- DATA KONSELING --}}
+    @if(isset($data['sessions']) && $data['sessions']->count() > 0)
+        <div class="section-title">Data Sesi Bimbingan / Konseling</div>
+        <table class="data">
+            <thead>
+                <tr>
+                    <th style="width: 6%;">No</th>
+                    <th style="width: 25%;">Siswa Binaan</th>
+                    <th style="width: 35%;">Topik / Kategori</th>
+                    <th style="width: 20%;">Tanggal Selesai</th>
+                    <th style="width: 14%;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($data['sessions'] as $index => $session)
+                    <tr>
+                        <td style="text-align: center;">{{ $index + 1 }}</td>
+                        <td>{{ $session->student->name }} (Kelas {{ $session->student->class }})</td>
+                        <td>
+                            <strong>{{ $session->title ?? 'Sesi Bimbingan Tatap Muka' }}</strong>
+                            <br>
+                            <span style="font-size: 8pt; color: #555;">Kategori: {{ ucfirst($session->category) }}</span>
+                        </td>
+                        <td style="text-align: center;">{{ $session->completed_at ? $session->completed_at->format('d/m/Y') : $session->counseling_date->format('d/m/Y') }}</td>
+                        <td style="text-align: center;">Selesai</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 
     {{-- DATA KONSULTASI --}}
     @if(isset($data['archives']) && $data['archives']->count() > 0)
@@ -118,7 +166,7 @@
                     <th style="width: 6%;">No</th>
                     <th style="width: 15%;">Jenis</th>
                     <th style="width: 34%;">Judul / Perihal</th>
-                    <th style="width: 25%;">Siswa</th>
+                    <th style="width: 25%;">Siswa Binaan</th>
                     <th style="width: 12%;">Tanggal</th>
                     <th style="width: 8%;">Status</th>
                 </tr>

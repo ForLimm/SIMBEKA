@@ -9,7 +9,7 @@ class Archive extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['student_id', 'teacher_id', 'report_id', 'guidance_notes', 'completed_date', 'attachment_path'];
+    protected $fillable = ['student_id', 'teacher_id', 'handler_name', 'report_id', 'guidance_notes', 'completed_date', 'attachment_path'];
 
     protected function casts(): array
     {

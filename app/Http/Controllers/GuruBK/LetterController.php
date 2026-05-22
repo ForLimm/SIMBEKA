@@ -28,17 +28,20 @@ class LetterController extends Controller
             'student_id' => 'required|exists:students,id',
             'date' => 'required|date',
             'time' => 'nullable|string',
-            'reason' => 'required|string',
-            'letter_number' => 'required|string|max:10',
+            'letter_number' => 'required|string|max:255',
+            'room_select' => 'required|string',
+            'room_manual' => 'nullable|string|max:255',
         ]);
 
         $teacher = Auth::user()->teacher;
         $student = $this->resolveStudent($request->student_id, $teacher);
 
+        $room = $request->room_select === 'Lainnya' ? $request->room_manual : $request->room_select;
+
         $data = $this->buildLetterData($student, $teacher, $request->letter_number, [
             'date' => $request->date,
             'time' => $request->time ?? '09:00',
-            'reason' => $request->reason,
+            'room' => $room,
         ]);
 
         $this->generateAndArchiveLetter(
@@ -47,7 +50,7 @@ class LetterController extends Controller
             type: 'panggilan',
             viewName: 'gurubk.letters.pdf',
             filePrefix: 'surat_panggilan',
-            archiveNote: 'Surat Panggilan Orang Tua: ' . $request->reason,
+            archiveNote: 'Surat Panggilan Orang Tua',
             data: $data
         );
 
@@ -67,7 +70,7 @@ class LetterController extends Controller
     {
         $request->validate([
             'student_id' => 'required|exists:students,id',
-            'letter_number' => 'required|string|max:10',
+            'letter_number' => 'required|string|max:255',
             'reason' => 'required|string',
             'duration' => 'required|integer|min:1',
             'start_date' => 'required|date',
@@ -110,7 +113,7 @@ class LetterController extends Controller
     {
         $request->validate([
             'student_id' => 'required|exists:students,id',
-            'letter_number' => 'required|string|max:10',
+            'letter_number' => 'required|string|max:255',
             'reason' => 'required|string',
         ]);
 
@@ -147,7 +150,7 @@ class LetterController extends Controller
     {
         $request->validate([
             'student_id' => 'required|exists:students,id',
-            'letter_number' => 'required|string|max:10',
+            'letter_number' => 'required|string|max:255',
             'reason' => 'required|string',
         ]);
 
@@ -196,7 +199,7 @@ class LetterController extends Controller
     private function buildLetterData(Student $student, $teacher, string $letterNumber, array $extra = []): array
     {
         $studentName = $student->name ?? ($student->user ? $student->user->name : 'Tanpa Nama');
-        $fullLetterNumber = '421.7 / ' . trim($letterNumber) . ' / SMP.06 / ' . date('Y');
+        $fullLetterNumber = trim($letterNumber);
 
         return array_merge([
             'student_name' => $studentName,
@@ -244,6 +247,7 @@ class LetterController extends Controller
         Archive::create([
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
+            'handler_name' => $teacher->user->name ?? 'Guru BK',
             'guidance_notes' => $archiveNote,
             'completed_date' => now(),
             'attachment_path' => $filePath,

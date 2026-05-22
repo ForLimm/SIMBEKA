@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <form action="{{ route('gurubk.students.store') }}" method="POST" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+    <form action="{{ route('gurubk.students.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
         @csrf
         
         {{-- Left: Identitas Pribadi (8/12) --}}
@@ -97,6 +97,12 @@
                     <div class="md:col-span-2">
                         <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">No. HP Siswa</label>
                         <input type="text" name="phone" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="{{ old('phone') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Maks 15 Digit Angka">
+                    </div>
+
+                    <div class="md:col-span-6">
+                        <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Foto Siswa (4x6)</label>
+                        <input type="file" name="photo" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-xs focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium">
+                        <p class="text-[9px] text-slate-400 mt-1 font-medium ml-1">Format: JPG, JPEG, PNG. Maksimal ukuran file: 2MB. (Opsional)</p>
                     </div>
                 </div>
             </div>
