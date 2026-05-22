@@ -17,7 +17,7 @@
     $currKey = $currYear . '_' . $currSem;
 @endphp
 <div class="max-w-6xl mx-auto space-y-8">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4" x-data="{ showExport: false }">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4" x-data="{ showExport: false, showExportSurat: false }">
         {{-- Tabs Navigation or Section Header --}}
         @if(request('type') !== 'surat')
             <div class="flex overflow-x-auto whitespace-nowrap p-1.5 bg-white border border-slate-100 rounded-lg shadow-sm max-w-full custom-scrollbar shrink-0">
@@ -44,13 +44,13 @@
                 <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">Daftar Surat Panggilan Orang Tua & Wali Siswa</p>
             </div>
         @endif
-
+ 
         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
             @if(request('type') == 'surat')
-                <a href="{{ route('gurubk.archives.export', array_merge(['surat' => 1, 'format' => 'pdf'], request()->only('academic_year', 'semester', 'name'))) }}" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center justify-center gap-2 text-sm group">
+                <button @click="showExportSurat = true" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center justify-center gap-2 text-sm group">
                     <svg class="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     Ekspor Laporan Resmi
-                </a>
+                </button>
             @else
                 <button @click="showExport = true" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center justify-center gap-2 text-sm group">
                     <svg class="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -137,6 +137,104 @@
 
                     <div class="pt-4">
                         <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-lg shadow-xl shadow-primary/20 transition-all active:scale-[0.95] text-xs flex items-center justify-center gap-3">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Unduh Laporan PDF
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{-- Export Surat Modal --}}
+        <div x-show="showExportSurat" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div @click.away="showExportSurat = false" class="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-300">
+                <div class="bg-primary p-8 text-white flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10">
+                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <div class="relative z-10">
+                        <h3 class="font-semibold text-sm">Konfigurasi Ekspor Laporan Resmi</h3>
+                        <p class="text-blue-100 text-xs font-medium mt-1 opacity-80">Pilih Data Terpadu (Format PDF)</p>
+                    </div>
+                    <button @click="showExportSurat = false" class="relative z-10 w-8 h-8 flex items-center justify-center bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form action="{{ route('gurubk.archives.export') }}" method="GET" class="p-8 space-y-6">
+                    <input type="hidden" name="surat" value="1">
+                    <input type="hidden" name="format" value="pdf">
+
+                    <div>
+                        <label class="text-[10px] font-semibold text-slate-400 block mb-4 ml-1">Pilih Jenis Surat</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-5 h-5 rounded border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="letter_types[]" value="panggilan" checked class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-semibold text-slate-800 leading-none">Surat Panggilan</span>
+                                    <span class="text-[9px] font-bold text-slate-400 mt-1">Panggilan Wali</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-5 h-5 rounded border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="letter_types[]" value="sp1" checked class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-semibold text-slate-800 leading-none">Surat SP1</span>
+                                    <span class="text-[9px] font-bold text-slate-400 mt-1">Peringatan Pertama</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-5 h-5 rounded border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="letter_types[]" value="sp2" checked class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-semibold text-slate-800 leading-none">Surat SP2</span>
+                                    <span class="text-[9px] font-bold text-slate-400 mt-1">Peringatan Kedua</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-100 cursor-pointer hover:border-primary/30 transition-all group">
+                                <div class="w-5 h-5 rounded border-2 border-slate-200 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                                    <input type="checkbox" name="letter_types[]" value="skorsing" checked class="w-3.5 h-3.5 rounded text-primary focus:ring-primary border-none bg-transparent">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-semibold text-slate-800 leading-none">Surat Skorsing</span>
+                                    <span class="text-[9px] font-bold text-slate-400 mt-1">Pemberitahuan Skorsing</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-semibold text-slate-400 block mb-1 ml-1">Filter Tahun Ajaran & Semester (Opsional)</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="relative">
+                                <select name="academic_year" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium text-slate-700 pr-8">
+                                    <option value="">Semua Tahun Ajaran</option>
+                                    @foreach($academicYears as $year)
+                                        <option value="{{ $year }}">{{ $year }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <select name="semester" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium text-slate-700 pr-8">
+                                    <option value="">Semua Semester</option>
+                                    <option value="1">Semester 1 (Ganjil)</option>
+                                    <option value="2">Semester 2 (Genap)</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" @click="setTimeout(() => showExportSurat = false, 500)" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-lg shadow-xl shadow-primary/20 transition-all active:scale-[0.95] text-xs flex items-center justify-center gap-3">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                             Unduh Laporan PDF
                         </button>

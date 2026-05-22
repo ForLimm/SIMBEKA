@@ -278,6 +278,11 @@ class ArchiveController extends Controller
         if ($include_surat) {
             $query = Letter::with('student.user')
                 ->where('teacher_id', $teacher->id);
+                
+            if ($request->filled('letter_types')) {
+                $query->whereIn('type', (array) $request->letter_types);
+            }
+            
             $this->applyAcademicFilters($query, 'created_at', $request);
             $data['letters'] = $query->orderBy('created_at', 'desc')->get();
         }
