@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Klaim Kelas Bimbingan - Sistem Informasi Manajemen Bimbingan & Konseling')
-@section('title_display', 'Klaim Kelas Bimbingan')
+@section('title', 'Ambil Kelas Bimbingan - Sistem Informasi Manajemen Bimbingan & Konseling')
+@section('title_display', 'Ambil Kelas Bimbingan')
 
 @section('content')
-<div class="max-w-4xl mx-auto space-y-6" x-data="{
+<div class="max-w-6xl mx-auto space-y-6" x-data="{
     maxQuota: {{ $teacher->max_quota }},
     classes: [
         @foreach($classData as $c)
@@ -31,7 +31,7 @@
             </a>
             <div class="h-8 w-px bg-slate-100"></div>
             <div>
-                <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Klaim Kelas Bimbingan</h2>
+                <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Ambil Kelas Bimbingan</h2>
                 <p class="text-slate-500 text-xs font-medium mt-2">Pilih kelas bimbingan Anda secara massal dari database pusat.</p>
             </div>
         </div>

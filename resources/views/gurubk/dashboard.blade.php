@@ -19,7 +19,7 @@
         {{-- Consolidated Premium Stats Grid --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {{-- Student Overview --}}
-            <div class="bg-white border border-slate-200 border-t-4 border-t-blue-500 rounded-lg p-5 shadow-sm">
+            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm font-medium text-slate-500 mb-1">Total Siswa</div>
@@ -33,7 +33,7 @@
             </div>
 
             {{-- Counseling Overview --}}
-            <div class="bg-white border border-slate-200 border-t-4 border-t-purple-500 rounded-lg p-5 shadow-sm">
+            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm font-medium text-slate-500 mb-1">Sesi Konseling</div>
@@ -47,7 +47,7 @@
             </div>
 
             {{-- Active Cases Overview --}}
-            <div class="bg-white border border-slate-200 border-t-4 border-t-amber-500 rounded-lg p-5 shadow-sm">
+            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm font-medium text-slate-500 mb-1">Kasus Aktif</div>
@@ -61,7 +61,7 @@
             </div>
 
             {{-- Resolved Cases Overview --}}
-            <div class="bg-white border border-slate-200 border-t-4 border-t-emerald-500 rounded-lg p-5 shadow-sm">
+            <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm font-medium text-slate-500 mb-1">Kasus Selesai</div>

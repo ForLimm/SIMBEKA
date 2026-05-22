@@ -50,6 +50,11 @@ class Student extends Model
         return $this->hasMany(Archive::class);
     }
 
+    public function letters()
+    {
+        return $this->hasMany(Letter::class)->latest();
+    }
+
     public function counselingSessions()
     {
         return $this->hasMany(CounselingSession::class)->latest('counseling_date');

@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@section('title', 'Dokumentasi Konseling')
-@section('title_display', 'Dokumentasi Sesi Konseling')
+@section('title', 'Catatan Anekdot')
+@section('title_display', 'Catatan Anekdot')
 
 @section('content')
 <div class="max-w-6xl mx-auto space-y-8">
     {{-- Header --}}
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>
-            <h2 class="text-3xl font-semibold text-slate-800 tracking-tight">Riwayat Konseling</h2>
+            <h2 class="text-3xl font-semibold text-slate-800 tracking-tight">Catatan Anekdot</h2>
             <p class="text-slate-500 font-medium">Pantau perkembangan bimbingan tatap muka siswa binaan Anda.</p>
         </div>
         <a href="{{ route('gurubk.counseling.create') }}" class="inline-flex items-center gap-2 bg-primary hover:bg-secondary text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
@@ -151,7 +151,7 @@
                                 <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center text-slate-200 mx-auto mb-4">
                                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                 </div>
-                                <h4 class="text-slate-400 font-bold">Belum ada dokumentasi konseling</h4>
+                                <h4 class="text-slate-400 font-bold">Belum ada catatan anekdot</h4>
                                 <a href="{{ route('gurubk.counseling.create') }}" class="text-primary font-semibold hover:underline text-sm">Catat Sesi Pertama</a>
                             </div>
                         </td>

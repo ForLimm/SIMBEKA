@@ -30,6 +30,10 @@ class PasswordController extends Controller
             return back()->withErrors(['username' => 'Username tidak ditemukan.'])->onlyInput('username');
         }
 
+        if (!$user->is_guest) {
+            return back()->withErrors(['recovery_code' => 'Akun ini sudah memiliki password. Silakan gunakan password Anda atau reset melalui Pertanyaan Keamanan.'])->onlyInput('username');
+        }
+
         if (strtoupper($user->recovery_code) !== strtoupper($request->recovery_code)) {
             return back()->withErrors(['recovery_code' => 'Kode pemulihan salah. Silakan periksa kembali.'])->onlyInput('username');
         }
@@ -87,6 +91,7 @@ class PasswordController extends Controller
 
         $user = auth()->user();
         $verified = false;
+        $wasGuest = $user->is_guest;
 
         if (Hash::check($request->current_password, $user->password)) {
             $verified = true;
@@ -101,10 +106,22 @@ class PasswordController extends Controller
             return back()->withErrors(['current_password' => $errorMsg]);
         }
 
-        $user->update([
-            'password' => Hash::make($request->new_password)
-        ]);
+        $updateData = [
+            'password' => Hash::make($request->new_password),
+        ];
 
-        return back()->with('success', 'Password Anda berhasil diperbarui.');
+        // Guest yang berhasil set password → naik status jadi user biasa
+        if ($wasGuest) {
+            $updateData['is_guest'] = false;
+            $updateData['recovery_code'] = strtoupper(\Illuminate\Support\Str::random(4) . '-' . \Illuminate\Support\Str::random(4));
+        }
+
+        $user->update($updateData);
+
+        $message = $wasGuest
+            ? 'Password berhasil diatur! Akun Anda sekarang sudah menjadi akun permanen.'
+            : 'Password Anda berhasil diperbarui.';
+
+        return back()->with('success', $message);
     }
 }

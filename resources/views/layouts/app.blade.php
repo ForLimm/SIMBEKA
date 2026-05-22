@@ -163,7 +163,7 @@
                                 </a>
                                 <a href="{{ route('gurubk.counseling.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-lg transition-all duration-200 group {{ request()->routeIs('gurubk.counseling.*') ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">
                                     <svg class="w-5 h-5 {{ request()->routeIs('gurubk.counseling.*') ? 'text-white' : 'text-[#494b74] group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                    <span class="font-bold text-sm">Catatan Konseling</span>
+                                    <span class="font-bold text-sm">Catatan Anekdot</span>
                                 </a>
                                 {{-- Arsip Bimbingan --}}
                                 <a href="{{ route('gurubk.archives.index') }}" class="flex items-center gap-4 px-4 py-3.5 rounded-lg transition-all duration-200 group {{ request()->routeIs('gurubk.archives.*') && request('type') != 'surat' ? 'sidebar-item-active' : 'sidebar-item-inactive' }}">

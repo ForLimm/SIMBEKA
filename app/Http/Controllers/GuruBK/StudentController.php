@@ -54,17 +54,76 @@ class StudentController extends Controller
 
         $student->load([
             'teacher.user', 
-            'reports' => function($q) {
-                $q->where('type', 'pelaporan')->latest();
-            }, 
-            'reports.reporter', 
-            'archives' => function($q) {
-                $q->latest();
+            'counselingSessions' => function($q) {
+                $q->latest('counseling_date');
             },
-            'archives.report'
+            'letters' => function($q) {
+                $q->latest();
+            }
         ]);
 
-        return view('gurubk.students.show', compact('student', 'teacher'));
+        $now = \Carbon\Carbon::now();
+        $currentPeriod = $this->getAcademicPeriod($now);
+        $currentPeriodKey = $currentPeriod['academic_year'] . '_' . $currentPeriod['semester'];
+
+        // Group anecdotes (counselingSessions)
+        $anecdotesByPeriod = [];
+        foreach ($student->counselingSessions as $session) {
+            $period = $this->getAcademicPeriod($session->counseling_date);
+            $key = $period['academic_year'] . '_' . $period['semester'];
+            
+            if (!isset($anecdotesByPeriod[$key])) {
+                $anecdotesByPeriod[$key] = [
+                    'label' => $period['label'],
+                    'academic_year' => $period['academic_year'],
+                    'semester' => $period['semester'],
+                    'items' => []
+                ];
+            }
+            $anecdotesByPeriod[$key]['items'][] = $session;
+        }
+        krsort($anecdotesByPeriod);
+
+        // Group letters
+        $lettersByPeriod = [];
+        foreach ($student->letters as $letter) {
+            $period = $this->getAcademicPeriod($letter->created_at);
+            $key = $period['academic_year'] . '_' . $period['semester'];
+            
+            if (!isset($lettersByPeriod[$key])) {
+                $lettersByPeriod[$key] = [
+                    'label' => $period['label'],
+                    'academic_year' => $period['academic_year'],
+                    'semester' => $period['semester'],
+                    'items' => []
+                ];
+            }
+            $lettersByPeriod[$key]['items'][] = $letter;
+        }
+        krsort($lettersByPeriod);
+
+        return view('gurubk.students.show', compact('student', 'teacher', 'anecdotesByPeriod', 'lettersByPeriod', 'currentPeriodKey'));
+    }
+
+    private function getAcademicPeriod($date)
+    {
+        $carbonDate = \Carbon\Carbon::parse($date);
+        $year = $carbonDate->year;
+        $month = $carbonDate->month;
+
+        if ($month >= 7 && $month <= 12) {
+            $semester = '1';
+            $academicYear = $year . '/' . ($year + 1);
+        } else {
+            $semester = '2';
+            $academicYear = ($year - 1) . '/' . $year;
+        }
+
+        return [
+            'semester' => $semester,
+            'academic_year' => $academicYear,
+            'label' => "Semester $semester (TA $academicYear)"
+        ];
     }
 
     public function claimClassesForm()
