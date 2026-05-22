@@ -40,8 +40,9 @@ class StudentController extends Controller
 
         $students = $query->latest()->paginate(15)->withQueryString();
         $teachers = Teacher::with('user')->get();
+        $classes = Student::whereNotNull('class')->distinct()->orderBy('class')->pluck('class');
 
-        return view('admin.students.index', compact('students', 'teachers'));
+        return view('admin.students.index', compact('students', 'teachers', 'classes'));
     }
 
     public function create()
