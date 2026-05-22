@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Report;
 use App\Models\Student;
+use App\Models\AcademicPeriod;
+use App\Models\TeacherClassAssignment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -56,11 +58,21 @@ class DashboardController extends Controller
         $activeFollowUps = \App\Models\CounselingSession::where('teacher_id', $teacher->id)
             ->whereIn('status', ['monitoring', 'tindak_lanjut'])
             ->count();
+        // Active period info
+        $activePeriod = AcademicPeriod::active();
+        $assignedClasses = [];
+        if ($activePeriod && $teacher) {
+            $assignedClasses = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+                ->where('teacher_id', $teacher->id)
+                ->pluck('class')
+                ->toArray();
+        }
                            
         return view('gurubk.dashboard', compact(
             'pendingReports', 'myInProgressReports', 'myReports',
             'totalStudents', 'classStats', 'counseledStudentsCount', 'violationCount',
-            'totalSessions', 'topCategory', 'activeFollowUps'
+            'totalSessions', 'topCategory', 'activeFollowUps',
+            'activePeriod', 'assignedClasses'
         ));
     }
 
@@ -125,7 +137,10 @@ class DashboardController extends Controller
             $student = \App\Models\Student::where('user_id', $report->reported_by)->whereNotNull('user_id')->first();
         }
 
+        $activePeriod = AcademicPeriod::active();
+
         \App\Models\Archive::create([
+            'academic_period_id' => $activePeriod?->id,
             'student_id' => $student ? $student->id : null,
             'teacher_id' => $teacher->id,
             'handler_name' => $teacher->user->name ?? 'Guru BK',

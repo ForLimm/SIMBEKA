@@ -10,6 +10,7 @@ class CounselingSession extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'academic_period_id',
         'student_id',
         'teacher_id',
         'teacher_name',
@@ -27,6 +28,11 @@ class CounselingSession extends Model
         'counseling_date' => 'date',
         'completed_at' => 'datetime'
     ];
+
+    public function academicPeriod()
+    {
+        return $this->belongsTo(\App\Models\AcademicPeriod::class);
+    }
 
     public function student()
     {

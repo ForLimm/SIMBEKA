@@ -10,16 +10,25 @@
         {
             name: '{{ $c->class }}',
             count: {{ $c->total_students }},
-            myStudents: {{ $c->my_students }},
-            checked: {{ $c->my_students > 0 ? 'true' : 'false' }}
+            checked: {{ in_array($c->class, $myAssignedClasses) ? 'true' : 'false' }},
+            lockedByOther: {{ isset($classHandlers[$c->class]) ? 'true' : 'false' }},
+            handler: '{{ $classHandlers[$c->class] ?? '' }}'
         },
         @endforeach
     ],
+    previousClasses: @json($previousAssignments),
     get totalClaimed() {
         return this.classes.filter(c => c.checked).reduce((sum, c) => sum + c.count, 0);
     },
     get isOverQuota() {
         return this.totalClaimed > this.maxQuota;
+    },
+    carryOver() {
+        this.classes.forEach(c => {
+            if (this.previousClasses.includes(c.name) && !c.lockedByOther) {
+                c.checked = true;
+            }
+        });
     }
 }">
     {{-- Header --}}
@@ -35,6 +44,24 @@
                 <p class="text-slate-500 text-xs font-medium mt-2">Pilih kelas bimbingan Anda secara massal dari database pusat.</p>
             </div>
         </div>
+    </div>
+
+    {{-- Active Period Banner --}}
+    <div class="p-5 bg-primary/5 border border-primary/20 rounded-lg flex items-center gap-4">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white shrink-0 shadow-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        </div>
+        <div class="flex-1">
+            <div class="text-[10px] font-semibold text-primary uppercase tracking-wider">Periode Aktif</div>
+            <div class="text-sm font-bold text-slate-800">{{ $activePeriod->name }}</div>
+        </div>
+        @if(!empty($previousAssignments))
+            <button type="button" @click="carryOver()" 
+                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-primary font-bold rounded-lg hover:bg-primary/5 transition text-xs border border-primary/20">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Lanjutkan Kelas Periode Lalu
+            </button>
+        @endif
     </div>
 
     {{-- Quota Alert / Tracker --}}
@@ -73,21 +100,27 @@
                         <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 text-center w-20">Pilih</th>
                         <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100">Kelas</th>
                         <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 text-center w-40">Jumlah Siswa</th>
-                        <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100">Status & Pengampu Saat Ini</th>
+                        <th class="px-8 py-5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100">Status & Pengampu</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     @forelse($classData as $index => $c)
-                        <tr class="hover:bg-slate-50/30 transition-colors" :class="classes[{{ $index }}].checked ? 'bg-primary/5' : ''">
+                        <tr class="hover:bg-slate-50/30 transition-colors" 
+                            :class="{ 'bg-primary/5': classes[{{ $index }}].checked, 'opacity-50': classes[{{ $index }}].lockedByOther }">
                             <td class="px-8 py-5 text-center">
-                                <input type="checkbox" name="classes[]" value="{{ $c->class }}"
-                                       x-model="classes[{{ $index }}].checked"
-                                       class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary/20 cursor-pointer">
+                                <template x-if="!classes[{{ $index }}].lockedByOther">
+                                    <input type="checkbox" name="classes[]" value="{{ $c->class }}"
+                                           x-model="classes[{{ $index }}].checked"
+                                           class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary/20 cursor-pointer">
+                                </template>
+                                <template x-if="classes[{{ $index }}].lockedByOther">
+                                    <svg class="w-5 h-5 text-slate-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                </template>
                             </td>
                             <td class="px-8 py-5 font-bold text-slate-800">Kelas {{ $c->class }}</td>
                             <td class="px-8 py-5 text-center font-bold text-slate-700">{{ $c->total_students }} Siswa</td>
                             <td class="px-8 py-5 text-xs">
-                                @if($c->my_students > 0)
+                                @if(in_array($c->class, $myAssignedClasses))
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full font-bold border border-emerald-100">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                         Kelas Anda

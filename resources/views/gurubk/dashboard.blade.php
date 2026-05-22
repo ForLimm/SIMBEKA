@@ -16,6 +16,45 @@
     } 
 }">
     <div class="max-w-6xl mx-auto space-y-8">
+        {{-- Active Period Banner --}}
+        @if($activePeriod)
+            <div class="p-5 bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center text-white shrink-0 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-semibold text-primary uppercase tracking-wider">Periode Aktif</div>
+                        <div class="text-sm font-bold text-slate-800">{{ $activePeriod->name }}</div>
+                        @if(!empty($assignedClasses))
+                            <div class="text-xs text-slate-500 font-medium mt-1">
+                                Kelas Anda: <span class="text-slate-700 font-bold">{{ implode(', ', $assignedClasses) }}</span>
+                                <span class="text-slate-400">({{ $totalStudents }} siswa)</span>
+                            </div>
+                        @else
+                            <div class="text-xs text-amber-600 font-bold mt-1">
+                                ⚠ Anda belum klaim kelas untuk periode ini
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <a href="{{ route('gurubk.students.claim_classes_form') }}" 
+                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white font-bold rounded-lg hover:bg-black transition text-xs shadow-sm shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Kelola Kelas Bimbingan
+                </a>
+            </div>
+        @else
+            <div class="p-5 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-4">
+                <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div>
+                    <div class="text-sm font-bold text-amber-800">Tidak ada periode akademik aktif</div>
+                    <div class="text-xs text-amber-600 font-medium">Hubungi Admin untuk mengaktifkan periode akademik.</div>
+                </div>
+            </div>
+        @endif
         {{-- Consolidated Premium Stats Grid --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {{-- Student Overview --}}

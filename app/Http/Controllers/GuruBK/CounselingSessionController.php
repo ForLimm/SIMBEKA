@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CounselingSession;
 use App\Models\Student;
+use App\Models\AcademicPeriod;
 use Illuminate\Support\Facades\Auth;
 
 class CounselingSessionController extends Controller
@@ -68,9 +69,12 @@ class CounselingSessionController extends Controller
             return back()->with('error', 'Akses ditolak.');
         }
 
+        $activePeriod = AcademicPeriod::active();
+
         CounselingSession::create(array_merge(
             $request->only(['student_id', 'title', 'counseling_date', 'category', 'summary', 'follow_up', 'status']),
             [
+                'academic_period_id' => $activePeriod?->id,
                 'teacher_id' => $teacher->id,
                 'teacher_name' => $teacher->user->name ?? 'Guru BK',
                 'teacher_nip' => $teacher->nip,

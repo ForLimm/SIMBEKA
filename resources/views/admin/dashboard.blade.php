@@ -113,6 +113,19 @@
                         </div>
                         <svg class="w-5 h-5 text-slate-300 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
+
+                    <a href="{{ route('admin.academic_periods.index') }}" class="flex items-center justify-between p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-primary hover:bg-white transition-all group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white rounded-lg shadow-sm flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-semibold text-slate-800">Periode Akademik</h5>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Kelola Tahun Ajaran & Semester</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-slate-300 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
                 </div>
             </div>
         </div>

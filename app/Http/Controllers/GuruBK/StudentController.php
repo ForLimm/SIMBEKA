@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 use App\Models\User;
+use App\Models\AcademicPeriod;
+use App\Models\TeacherClassAssignment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +20,8 @@ class StudentController extends Controller
         if (!$teacher) {
             return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
         }
+
+        $activePeriod = AcademicPeriod::active();
 
         $query = Student::with('user')->where('teacher_id', $teacher->id);
 
@@ -40,8 +44,17 @@ class StudentController extends Controller
         for ($y = 2024; $y <= $currentYear + 1; $y++) {
             $academicYears[] = $y . '/' . ($y + 1);
         }
+
+        // Get assigned classes for the active period
+        $assignedClasses = [];
+        if ($activePeriod) {
+            $assignedClasses = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+                ->where('teacher_id', $teacher->id)
+                ->pluck('class')
+                ->toArray();
+        }
         
-        return view('gurubk.students.index', compact('students', 'teacher', 'academicYears'));
+        return view('gurubk.students.index', compact('students', 'teacher', 'academicYears', 'activePeriod', 'assignedClasses'));
     }
 
     public function show(Student $student)
@@ -133,6 +146,12 @@ class StudentController extends Controller
             return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
         }
 
+        $activePeriod = AcademicPeriod::active();
+        if (!$activePeriod) {
+            return redirect()->route('gurubk.students.index')
+                ->with('error', 'Tidak ada periode akademik yang aktif saat ini. Hubungi Admin untuk mengaktifkan periode.');
+        }
+
         // Get all unique classes and student counts per class
         $classData = Student::select('class')
             ->selectRaw('count(*) as total_students')
@@ -142,23 +161,43 @@ class StudentController extends Controller
             ->orderBy('class')
             ->get();
 
-        // For each class, find the current teacher(s) handling it if any
-        $classTeachers = [];
-        $studentsWithTeachers = Student::whereNotNull('class')
-            ->whereNotNull('teacher_id')
+        // Check which classes are already assigned in this period (by other teachers)
+        $periodAssignments = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
             ->with('teacher.user')
-            ->get();
+            ->get()
+            ->keyBy('class');
 
-        foreach ($studentsWithTeachers as $s) {
-            $classTeachers[$s->class][$s->teacher->user->name] = true;
-        }
+        // Get my current assignments for this period
+        $myAssignedClasses = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->where('teacher_id', $teacher->id)
+            ->pluck('class')
+            ->toArray();
 
+        // Build class handlers info
         $classHandlers = [];
-        foreach ($classTeachers as $cls => $names) {
-            $classHandlers[$cls] = implode(', ', array_keys($names));
+        foreach ($periodAssignments as $cls => $assignment) {
+            if ($assignment->teacher_id !== $teacher->id) {
+                $classHandlers[$cls] = $assignment->teacher->user->name ?? 'Guru Lain';
+            }
         }
 
-        return view('gurubk.students.claim_classes', compact('teacher', 'classData', 'classHandlers'));
+        // Get previous period's assignments for carry-over feature
+        $previousAssignments = [];
+        $previousPeriod = AcademicPeriod::where('is_active', false)
+            ->orderByDesc('end_date')
+            ->first();
+
+        if ($previousPeriod) {
+            $previousAssignments = TeacherClassAssignment::where('academic_period_id', $previousPeriod->id)
+                ->where('teacher_id', $teacher->id)
+                ->pluck('class')
+                ->toArray();
+        }
+
+        return view('gurubk.students.claim_classes', compact(
+            'teacher', 'classData', 'classHandlers', 'activePeriod', 
+            'myAssignedClasses', 'previousAssignments'
+        ));
     }
 
     public function claimClasses(Request $request)
@@ -168,7 +207,24 @@ class StudentController extends Controller
             return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
         }
 
+        $activePeriod = AcademicPeriod::active();
+        if (!$activePeriod) {
+            return back()->with('error', 'Tidak ada periode akademik yang aktif.');
+        }
+
         $submittedClasses = $request->input('classes', []);
+
+        // Check if any of the submitted classes are already claimed by another teacher in this period
+        $conflicting = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->where('teacher_id', '!=', $teacher->id)
+            ->whereIn('class', $submittedClasses)
+            ->with('teacher.user')
+            ->get();
+
+        if ($conflicting->isNotEmpty()) {
+            $conflictInfo = $conflicting->map(fn($a) => "{$a->class} ({$a->teacher->user->name})")->join(', ');
+            return back()->with('error', "Kelas berikut sudah di-claim guru lain: {$conflictInfo}");
+        }
 
         // Check if claiming these classes would exceed quota
         $targetStudentsCount = Student::whereIn('class', $submittedClasses)->count();
@@ -176,7 +232,21 @@ class StudentController extends Controller
             return back()->with('error', "Jumlah siswa di kelas yang Anda pilih (total: {$targetStudentsCount}) melebihi kuota bimbingan Anda ({$teacher->max_quota}). Silakan kurangi pilihan kelas.");
         }
 
-        // Release classes that were previously handled by this teacher but are not in the submitted list
+        // Remove old assignments for this teacher in this period
+        TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->where('teacher_id', $teacher->id)
+            ->delete();
+
+        // Create new assignments
+        foreach ($submittedClasses as $class) {
+            TeacherClassAssignment::create([
+                'academic_period_id' => $activePeriod->id,
+                'teacher_id' => $teacher->id,
+                'class' => $class,
+            ]);
+        }
+
+        // Sync students.teacher_id: Release classes no longer handled by this teacher
         Student::where('teacher_id', $teacher->id)
             ->whereNotIn('class', $submittedClasses)
             ->update(['teacher_id' => null]);
@@ -187,7 +257,7 @@ class StudentController extends Controller
                 ->update(['teacher_id' => $teacher->id]);
         }
 
-        return redirect()->route('gurubk.students.index')->with('success', 'Kelas bimbingan berhasil diperbarui.');
+        return redirect()->route('gurubk.students.index')->with('success', 'Kelas bimbingan berhasil diperbarui untuk periode ' . $activePeriod->name . '.');
     }
 
     public function create()
