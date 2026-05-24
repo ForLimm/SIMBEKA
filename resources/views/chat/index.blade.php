@@ -8,12 +8,12 @@
         <div class="flex items-center gap-5">
             {{-- Improved Back Button --}}
             @if(auth()->user()->role === 'guru_bk')
-                <a href="{{ route('gurubk.report.show', $report->id) }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm group">
+                <a href="{{ route('gurubk.report.show', $report->id) }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm group">
                     <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     <span>Kembali</span>
                 </a>
             @else
-                <a href="{{ route('siswa.dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm group">
+                <a href="{{ route('siswa.dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm group">
                     <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     <span>Kembali</span>
                 </a>
@@ -50,7 +50,7 @@
     <div class="flex-1 overflow-y-auto px-6 md:px-12 py-10 space-y-8 bg-[#f0f2f5] custom-scrollbar pattern-bg" id="chat-messages" x-ref="chatContainer">
         {{-- Notice --}}
         <div class="max-w-2xl mx-auto mb-10">
-            <div class="bg-amber-50/80 backdrop-blur border border-amber-200/50 p-6 rounded-[2rem] flex items-start gap-4 shadow-sm">
+            <div class="bg-amber-50/80 backdrop-blur border border-amber-200/50 p-6 rounded-lg flex items-start gap-4 shadow-sm">
                 <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center shrink-0 text-amber-600">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
@@ -63,7 +63,7 @@
 
         <template x-if="messages.length === 0">
             <div class="flex flex-col items-center justify-center h-full space-y-4 opacity-30">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-inner">
+                <div class="w-24 h-24 bg-white rounded-lg flex items-center justify-center shadow-inner">
                     <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                 </div>
                 <div class="text-center">
@@ -80,8 +80,8 @@
                     </template>
 
                     <div class="relative px-6 py-4 shadow-md break-words overflow-hidden" :class="msg.is_mine 
-                        ? 'bg-primary text-white rounded-[1.8rem] rounded-tr-none' 
-                        : 'bg-white text-slate-700 rounded-[1.8rem] rounded-tl-none border border-white'">
+                        ? 'bg-primary text-white rounded-lg rounded-tr-none' 
+                        : 'bg-white text-slate-700 rounded-lg rounded-tl-none border border-white'">
                         
                         <p class="text-sm font-medium leading-relaxed whitespace-pre-wrap break-words" x-text="msg.message"></p>
                         
@@ -105,11 +105,11 @@
             <div class="flex-1 relative">
                 <textarea name="message" required autocomplete="off" rows="1"
                     x-on:input="$el.style.height = '56px'; $el.style.height = $el.scrollHeight + 'px'"
-                    class="w-full bg-slate-50 border border-slate-200 rounded-[1.5rem] px-8 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium shadow-inner resize-none overflow-hidden max-h-40" 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-lg px-8 py-4 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium shadow-inner resize-none overflow-hidden max-h-40" 
                     placeholder="Tulis pesan Anda di sini..."
                     style="height: 56px;"></textarea>
             </div>
-            <button type="submit" class="bg-primary hover:bg-secondary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl shadow-primary/30 transition-all hover:scale-110 active:scale-95 group shrink-0 mb-0.5">
+            <button type="submit" class="bg-primary hover:bg-secondary text-white w-14 h-14 rounded-lg flex items-center justify-center shadow-xl shadow-primary/30 transition-all hover:scale-110 active:scale-95 group shrink-0 mb-0.5">
                 <svg class="w-6 h-6 rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
             </button>
         </form>

@@ -3,7 +3,7 @@
 @section('title_display', 'Master Data Guru BK')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-8">
+<div class="w-full space-y-8">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="text-3xl font-semibold text-slate-800 tracking-tight">Master Data Guru BK</h2>

@@ -169,8 +169,14 @@
         <div class="xl:col-span-4 space-y-6">
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 text-center relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-32 bg-primary/5 -z-10"></div>
-                <div class="w-24 h-24 bg-white rounded-[2rem] shadow-xl mx-auto flex items-center justify-center text-primary font-semibold text-4xl border-4 border-white">
-                    {{ substr($student->name, 0, 1) }}
+                <div class="w-24 h-24 bg-white rounded-lg overflow-hidden shadow-xl mx-auto flex items-center justify-center border-4 border-white shrink-0">
+                    @if($student->photo && file_exists(public_path('storage/' . $student->photo)))
+                        <img src="{{ asset('storage/' . $student->photo) }}" class="w-full h-full object-cover">
+                    @else
+                        <div class="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-bold text-3xl">
+                            {{ substr($student->name, 0, 1) }}
+                        </div>
+                    @endif
                 </div>
                 <h3 class="mt-6 text-xl font-semibold text-slate-800">{{ $student->name }}</h3>
                 <p class="text-xs font-semibold text-primary font-medium mt-1">NISN: {{ $student->nisn }}</p>

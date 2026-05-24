@@ -243,7 +243,7 @@
             <main class="flex-1 @if(!$isGuestPage) p-4 md:p-8 @endif">
                 {{-- Flash Messages --}}
                 @if(session('success') || session('error') || $errors->any())
-                <div class="max-w-4xl mx-auto mb-6 @if($isGuestPage) mt-4 px-4 @endif">
+                <div class="@if($isGuestPage) max-w-md mx-auto mt-4 px-4 @else w-full @endif mb-6">
                     @if(session('success'))
                         <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-lg flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>

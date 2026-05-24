@@ -3,7 +3,7 @@
 @section('title_display', 'Master Data Siswa')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-8">
+<div class="w-full space-y-8">
     {{-- Header --}}
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -76,6 +76,22 @@
             </div>
         </form>
     </div>
+
+    {{-- Class Tabs --}}
+    @if(count($classes) > 0)
+        <div class="flex gap-2 border-b border-slate-100 pb-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <a href="{{ route('admin.students.index', array_merge(request()->query(), ['class' => '', 'page' => 1])) }}" 
+                class="px-5 py-2.5 rounded-t-lg font-bold text-xs border-b-2 transition-all shrink-0 {{ !request('class') ? 'bg-white border-primary text-primary shadow-sm' : 'bg-slate-50 border-transparent text-slate-400 hover:text-slate-600' }}">
+                Semua Kelas
+            </a>
+            @foreach($classes as $cls)
+                <a href="{{ route('admin.students.index', array_merge(request()->query(), ['class' => $cls, 'page' => 1])) }}" 
+                    class="px-5 py-2.5 rounded-t-lg font-bold text-xs border-b-2 transition-all shrink-0 {{ request('class') === $cls ? 'bg-white border-primary text-primary shadow-sm' : 'bg-slate-50 border-transparent text-slate-400 hover:text-slate-600' }}">
+                    Kelas {{ $cls }}
+                </a>
+            @endforeach
+        </div>
+    @endif
 
     {{-- Student Database Table --}}
     <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden shadow-xl shadow-slate-200/50">

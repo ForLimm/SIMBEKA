@@ -3,7 +3,7 @@
 @section('title_display', 'Pusat Dokumen BK')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-8">
+<div class="w-full space-y-8">
     {{-- Header --}}
     <div class="mb-8">
         <h2 class="text-3xl font-semibold text-slate-800 tracking-tight">Buat Surat</h2>

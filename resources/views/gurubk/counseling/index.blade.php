@@ -3,7 +3,7 @@
 @section('title_display', 'Catatan Anekdot')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-8">
+<div class="w-full space-y-8">
     {{-- Header --}}
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>

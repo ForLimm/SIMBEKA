@@ -3,7 +3,7 @@
 @section('title_display', 'Detail Periode')
 
 @section('content')
-<div class="max-w-5xl mx-auto space-y-6">
+<div class="w-full space-y-6">
     {{-- Header --}}
     <div class="flex items-center gap-6 bg-white p-6 rounded-lg border border-slate-100 shadow-sm">
         <a href="{{ route('admin.academic_periods.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition shadow-sm text-xs group">

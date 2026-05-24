@@ -14,7 +14,7 @@
             <div class="h-8 w-px bg-slate-100"></div>
             <div>
                 <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Lengkapi Data {{ ucfirst($type) }}</h2>
-                <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2 leading-none">Detail Pelaporan & Konsultasi Langsung ke Guru BK</p>
+                <p class="text-slate-500 text-xs font-medium mt-2 leading-none">Detail Pelaporan & Konsultasi Langsung ke Guru BK</p>
             </div>
         </div>
     </div>
@@ -26,35 +26,35 @@
 
         {{-- Left: Main Form (8/12) --}}
         <div class="xl:col-span-8 space-y-6">
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden bg-white">
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
                 <div class="bg-primary/5 px-8 py-5 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="text-[10px] font-semibold text-primary ">Formulir Informasi</h3>
-                    <span class="text-[9px] font-bold text-slate-400 font-medium leading-none">Wajib Diisi *</span>
+                    <h3 class="text-xs font-bold text-primary uppercase">Formulir Informasi</h3>
+                    <span class="text-xs font-medium text-slate-500 leading-none">Wajib Diisi *</span>
                 </div>
                 
                 <div class="p-8 space-y-8">
                     {{-- Title Input --}}
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-400  mb-3 ml-1">Perihal / Judul <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs font-bold text-slate-700 mb-3 ml-1">Perihal / Judul <span class="text-rose-500">*</span></label>
                         <input type="text" name="title" required 
-                               class="w-full bg-slate-50 border border-slate-200 rounded-lg px-6 py-4 text-base focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all font-bold text-slate-700 placeholder:font-medium placeholder:text-slate-300" 
+                               class="w-full bg-slate-50 border border-slate-200 rounded-lg px-6 py-4 text-base focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all font-bold text-slate-700 placeholder:font-medium placeholder:text-slate-400" 
                                placeholder="Contoh: Konsultasi Masalah Belajar">
                     </div>
 
                     {{-- Content Input --}}
                     <div>
-                        <label class="block text-[10px] font-semibold text-slate-400  mb-3 ml-1">Isi Detail Permasalahan <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs font-bold text-slate-700 mb-3 ml-1">Isi Detail Permasalahan <span class="text-rose-500">*</span></label>
                         <textarea name="content" required rows="10" 
-                                  class="w-full bg-slate-50 border border-slate-200 rounded-lg px-6 py-5 text-base focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all font-medium text-slate-700 placeholder:text-slate-300 resize-none leading-relaxed" 
+                                  class="w-full bg-slate-50 border border-slate-200 rounded-lg px-6 py-5 text-base focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all font-medium text-slate-700 placeholder:text-slate-400 resize-none leading-relaxed" 
                                   placeholder="Ceritakan detail permasalahan Anda di sini secara lengkap..."></textarea>
                     </div>
                 </div>
 
                 {{-- Action Bar --}}
                 <div class="p-8 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                    <div class="flex items-center gap-2 text-slate-400">
+                    <div class="flex items-center gap-2 text-slate-500">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span class="text-[9px] font-bold font-medium italic">Sistem mengenkripsi data Anda</span>
+                        <span class="text-xs font-semibold italic">Sistem mengenkripsi data Anda</span>
                     </div>
                     <button type="submit" class="bg-primary hover:bg-secondary text-white font-semibold px-12 py-4 rounded-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.95] text-sm font-medium">
                         Kirim Formulir
@@ -65,7 +65,7 @@
 
         {{-- Right: Sidebar Info (4/12) --}}
         <div class="xl:col-span-4 space-y-6">
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 bg-[#1e1e2d] text-white relative overflow-hidden group border-none">
+            <div class="bg-[#1e1e2d] text-white rounded-lg shadow-sm p-8 relative overflow-hidden group">
                 {{-- Decor --}}
                 
 
@@ -93,13 +93,13 @@
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 bg-white border-slate-100">
-                <h4 class="text-[10px] font-semibold text-slate-400 font-medium mb-6">Informasi Bimbingan</h4>
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8">
+                <h4 class="text-xs font-bold text-slate-700 uppercase mb-6">Informasi Bimbingan</h4>
                 <div class="p-6 bg-slate-50 rounded-lg border border-slate-100">
-                    <p class="text-[11px] text-slate-500 font-medium leading-relaxed italic">"Jangan ragu untuk menyampaikan segala keresahanmu. Kami di sini untuk mendengarkan dan membimbingmu mencapai versi terbaikmu."</p>
+                    <p class="text-xs text-slate-600 font-medium leading-relaxed italic">"Jangan ragu untuk menyampaikan segala keresahanmu. Kami di sini untuk mendengarkan dan membimbingmu mencapai versi terbaikmu."</p>
                     <div class="mt-4 flex items-center gap-3">
                         <div class="w-1 h-8 bg-primary rounded-full"></div>
-                        <span class="text-[10px] font-semibold text-slate-700 font-medium">Tim Konseling SMPN 6 Palu</span>
+                        <span class="text-xs font-bold text-slate-700">Tim Konseling SMPN 6 Palu</span>
                     </div>
                 </div>
             </div>

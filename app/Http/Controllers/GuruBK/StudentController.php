@@ -37,7 +37,7 @@ class StudentController extends Controller
             $query->where('class', $request->class);
         }
 
-        $students = $query->latest()->get();
+        $students = $query->latest()->paginate(15)->withQueryString();
         
         $currentYear = date('Y');
         $academicYears = [];

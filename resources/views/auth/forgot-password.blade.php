@@ -6,7 +6,7 @@
 <div class="fixed inset-0 flex flex-col md:flex-row overflow-hidden bg-white">
     {{-- Left Column: Recovery Form --}}
     <div class="w-full md:w-[45%] flex items-center justify-center p-8 md:p-12 overflow-y-auto custom-scrollbar bg-white">
-        <div class="w-full max-w-sm" x-data="{ tab: 'recovery_code' }">
+        <div class="w-full max-w-sm" x-data="{ tab: 'recovery_code', showPass: false, showConf: false, isCustomQuestion: false }">
             {{-- Branding Logo --}}
             <div class="mb-8 flex justify-center md:justify-start">
                 <a href="{{ url('/') }}" class="block">
@@ -87,13 +87,19 @@
                         </div>
                         <div class="space-y-1.5">
                             <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Pertanyaan Keamanan</label>
-                            <select name="security_question" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
+                            <select :name="isCustomQuestion ? 'select_security_question' : 'security_question'" @change="isCustomQuestion = ($event.target.value === 'custom')" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
                                 <option value="">Pilih pertanyaan Anda</option>
                                 <option value="Apa nama hewan peliharaan pertama Anda?">Nama hewan peliharaan pertama?</option>
                                 <option value="Nama sekolah dasar Anda?">Nama sekolah dasar Anda?</option>
                                 <option value="Siapa nama guru favorit Anda?">Siapa nama guru favorit Anda?</option>
                                 <option value="Di kota mana orang tua Anda bertemu?">Kota pertemuan orang tua?</option>
+                                <option value="custom">Lainnya (Tulis Pertanyaan Kustom)</option>
                             </select>
+
+                            <div x-show="isCustomQuestion" x-cloak class="mt-2 space-y-1">
+                                <label class="text-[9px] font-semibold text-slate-400 font-medium ml-1">Tulis Pertanyaan Keamanan Anda <span class="text-rose-500">*</span></label>
+                                <input type="text" :name="isCustomQuestion ? 'security_question' : 'custom_security_question'" :required="isCustomQuestion" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="Masukkan pertanyaan kustom Anda">
+                            </div>
                         </div>
                         <div class="space-y-1.5">
                             <label class="text-[10px] font-semibold text-slate-400 font-medium ml-1">Jawaban</label>
@@ -102,12 +108,37 @@
                         <div class="grid grid-cols-2 gap-3 pt-2">
                             <div class="space-y-1.5">
                                 <label class="text-[9px] font-semibold text-slate-400 font-medium ml-1">Password Baru</label>
-                                <input type="password" name="new_password" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
+                                <div class="relative">
+                                    <input :type="showPass ? 'text' : 'password'" name="new_password" required class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-4 pr-10 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••" value="{{ old('new_password') }}">
+                                    <button type="button" @click="showPass = !showPass" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition">
+                                        <svg x-show="!showPass" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        <svg x-show="showPass" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="space-y-1.5">
                                 <label class="text-[9px] font-semibold text-slate-400 font-medium ml-1">Konfirmasi</label>
-                                <input type="password" name="new_password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••">
+                                <div class="relative">
+                                    <input :type="showConf ? 'text' : 'password'" name="new_password_confirmation" required class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-4 pr-10 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition font-medium" placeholder="••••••••" value="{{ old('new_password_confirmation') }}">
+                                    <button type="button" @click="showConf = !showConf" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition">
+                                        <svg x-show="!showConf" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        <svg x-show="showConf" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+                        <div class="px-1 text-[8px] text-slate-400 leading-normal">
+                            * Password harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@$!%*?&).
                         </div>
                     </div>
                     <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-lg shadow-xl shadow-primary/20 transition-all active:scale-[0.98] text-sm font-medium mt-4">
