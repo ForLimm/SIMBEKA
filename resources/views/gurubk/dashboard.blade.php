@@ -15,7 +15,7 @@
         created_at: ''
     } 
 }">
-    <div class="max-w-6xl mx-auto space-y-8">
+    <div class="w-full space-y-8">
         {{-- Active Period Banner --}}
         @if($activePeriod)
             <div class="p-5 bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">

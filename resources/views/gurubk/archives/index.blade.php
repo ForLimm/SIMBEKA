@@ -16,7 +16,7 @@
     }
     $currKey = $currYear . '_' . $currSem;
 @endphp
-<div class="max-w-6xl mx-auto space-y-8">
+<div class="w-full space-y-8">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4" x-data="{ showExport: false, showExportSurat: false }">
         {{-- Tabs Navigation or Section Header --}}
         @if(request('type') !== 'surat')
@@ -617,7 +617,7 @@
                                             <div class="w-1.5 h-1.5 bg-accent rounded-full"></div>
                                             <span class="font-semibold text-accent text-[10px] font-medium">Diselesaikan</span>
                                         </div>
-                                        <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-tighter">Oleh: {{ $isSession ? ($archive->teacher_name ?? ($archive->teacher->user->name ?? 'Guru BK')) : ($archive->handler_name ?? ($archive->teacher->user->name ?? 'Guru BK')) }}</div>
+                                        <div class="text-[9px] text-slate-400 mt-1 font-bold uppercase tracking-tighter">Oleh: {{ $isSession ? ($archive->teacher_name ?? ($archive->teacher?->user?->name ?? 'Guru BK')) : ($archive->handler_name ?? ($archive->teacher?->user?->name ?? 'Guru BK')) }}</div>
                                     </td>
                                     <td class="px-6 py-6">
                                         @php

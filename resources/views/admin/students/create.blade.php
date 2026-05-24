@@ -3,7 +3,7 @@
 @section('title_display', 'Master Data Siswa')
 
 @section('content')
-<div class="w-full space-y-4 max-w-6xl mx-auto">
+<div class="w-full space-y-4">
     {{-- Header --}}
     <div class="flex items-center justify-between bg-white p-6 rounded-lg border border-slate-100 shadow-sm">
         <div class="flex items-center gap-6">

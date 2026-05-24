@@ -27,16 +27,10 @@ class LoginController extends Controller
                     ->orWhere('username', $request->login)
                     ->first();
 
-        if (!$user) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors([
-                'login' => 'Username atau Email tidak terdaftar dalam sistem kami.',
-            ])->onlyInput('login');
-        }
-
-        if (!Hash::check($request->password, $user->password)) {
-            return back()->withErrors([
-                'login' => 'Kata sandi yang Anda masukkan salah. Silakan coba lagi.',
-            ])->onlyInput('login');
+                'login' => 'Username, email, atau password salah.',
+            ])->withInput($request->except('_token'));
         }
 
         if (Auth::attempt([$loginType => $request->login, 'password' => $request->password])) {
@@ -49,8 +43,8 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Gagal masuk. Silakan periksa kembali akun Anda.',
-        ])->onlyInput('login');
+            'login' => 'Username, email, atau password salah.',
+        ])->withInput($request->except('_token'));
     }
 
     public function logout(Request $request)

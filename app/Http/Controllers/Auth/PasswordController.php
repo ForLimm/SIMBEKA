@@ -34,7 +34,7 @@ class PasswordController extends Controller
             return back()->withErrors(['recovery_code' => 'Akun ini sudah memiliki password. Silakan gunakan password Anda atau reset melalui Pertanyaan Keamanan.'])->onlyInput('username');
         }
 
-        if (strtoupper($user->recovery_code) !== strtoupper($request->recovery_code)) {
+        if (strtoupper($user->recovery_code_decrypt) !== strtoupper($request->recovery_code)) {
             return back()->withErrors(['recovery_code' => 'Kode pemulihan salah. Silakan periksa kembali.'])->onlyInput('username');
         }
 
@@ -95,7 +95,7 @@ class PasswordController extends Controller
 
         if (Hash::check($request->current_password, $user->password)) {
             $verified = true;
-        } elseif ($user->is_guest && strtoupper($request->current_password) === strtoupper($user->recovery_code)) {
+        } elseif ($user->is_guest && strtoupper($request->current_password) === strtoupper($user->recovery_code_decrypt)) {
             $verified = true;
         }
 
@@ -113,7 +113,9 @@ class PasswordController extends Controller
         // Guest yang berhasil set password → naik status jadi user biasa
         if ($wasGuest) {
             $updateData['is_guest'] = false;
-            $updateData['recovery_code'] = strtoupper(\Illuminate\Support\Str::random(4) . '-' . \Illuminate\Support\Str::random(4));
+            $updateData['recovery_code'] = \Illuminate\Support\Facades\Crypt::encryptString(
+                strtoupper(\Illuminate\Support\Str::random(4) . '-' . \Illuminate\Support\Str::random(4))
+            );
         }
 
         $user->update($updateData);

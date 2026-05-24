@@ -37,7 +37,7 @@ class StudentController extends Controller
             $query->where('class', $request->class);
         }
 
-        $students = $query->latest()->get();
+        $students = $query->latest()->paginate(15)->withQueryString();
         
         $currentYear = date('Y');
         $academicYears = [];
@@ -76,13 +76,13 @@ class StudentController extends Controller
         ]);
 
         $now = \Carbon\Carbon::now();
-        $currentPeriod = $this->getAcademicPeriod($now);
+        $currentPeriod = \App\Helpers\AcademicHelper::getAcademicPeriod($now);
         $currentPeriodKey = $currentPeriod['academic_year'] . '_' . $currentPeriod['semester'];
 
         // Group anecdotes (counselingSessions)
         $anecdotesByPeriod = [];
         foreach ($student->counselingSessions as $session) {
-            $period = $this->getAcademicPeriod($session->counseling_date);
+            $period = \App\Helpers\AcademicHelper::getAcademicPeriod($session->counseling_date);
             $key = $period['academic_year'] . '_' . $period['semester'];
             
             if (!isset($anecdotesByPeriod[$key])) {
@@ -100,7 +100,7 @@ class StudentController extends Controller
         // Group letters
         $lettersByPeriod = [];
         foreach ($student->letters as $letter) {
-            $period = $this->getAcademicPeriod($letter->created_at);
+            $period = \App\Helpers\AcademicHelper::getAcademicPeriod($letter->created_at);
             $key = $period['academic_year'] . '_' . $period['semester'];
             
             if (!isset($lettersByPeriod[$key])) {
@@ -116,27 +116,6 @@ class StudentController extends Controller
         krsort($lettersByPeriod);
 
         return view('gurubk.students.show', compact('student', 'teacher', 'anecdotesByPeriod', 'lettersByPeriod', 'currentPeriodKey'));
-    }
-
-    private function getAcademicPeriod($date)
-    {
-        $carbonDate = \Carbon\Carbon::parse($date);
-        $year = $carbonDate->year;
-        $month = $carbonDate->month;
-
-        if ($month >= 7 && $month <= 12) {
-            $semester = '1';
-            $academicYear = $year . '/' . ($year + 1);
-        } else {
-            $semester = '2';
-            $academicYear = ($year - 1) . '/' . $year;
-        }
-
-        return [
-            'semester' => $semester,
-            'academic_year' => $academicYear,
-            'label' => "Semester $semester (TA $academicYear)"
-        ];
     }
 
     public function claimClassesForm()

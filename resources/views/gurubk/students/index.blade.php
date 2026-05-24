@@ -3,12 +3,12 @@
 @section('title_display', 'Data Siswa')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-8" x-data="{ showExport: false, exportMode: 'all', selectedStudents: [], selectAll: false, toggleAll() { if(this.selectAll) { this.selectedStudents = [{!! $students->pluck('id')->map(fn($id) => '\'' . $id . '\'')->join(',') !!}]; } else { this.selectedStudents = []; } }, exportPeriod: 'semester', exportYear: '', exportSemester: '' }">
+<div class="w-full space-y-8" x-data="{ showExport: false, exportMode: 'all', selectedStudents: [], selectAll: false, toggleAll() { if(this.selectAll) { this.selectedStudents = [{!! $students->pluck('id')->map(fn($id) => '\'' . $id . '\'')->join(',') !!}]; } else { this.selectedStudents = []; } }, exportPeriod: 'semester', exportYear: '', exportSemester: '' }">
     {{-- Header --}}
     <div class="flex items-center justify-between mb-8">
         <div>
             <h2 class="text-3xl font-semibold text-slate-800 tracking-tight">Manajemen Siswa</h2>
-            <p class="text-slate-500 font-medium">Kelola data siswa bimbingan Anda ({{ $students->count() }}/{{ $teacher->max_quota }})</p>
+            <p class="text-slate-500 font-medium">Kelola data siswa bimbingan Anda ({{ $students->total() }}/{{ $teacher->max_quota }})</p>
         </div>
         <div class="flex items-center gap-3">
             <button @click="exportMode = 'all'; showExport = true" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
@@ -144,6 +144,22 @@
         </form>
     </div>
 
+    {{-- Class Tabs --}}
+    @if(count($assignedClasses) > 0)
+        <div class="flex gap-2 border-b border-slate-100 pb-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <a href="{{ route('gurubk.students.index', array_merge(request()->query(), ['class' => '', 'page' => 1])) }}" 
+                class="px-5 py-2.5 rounded-t-lg font-bold text-xs border-b-2 transition-all shrink-0 {{ !request('class') ? 'bg-white border-primary text-primary shadow-sm' : 'bg-slate-50 border-transparent text-slate-400 hover:text-slate-600' }}">
+                Semua Kelas
+            </a>
+            @foreach($assignedClasses as $assignedClass)
+                <a href="{{ route('gurubk.students.index', array_merge(request()->query(), ['class' => $assignedClass, 'page' => 1])) }}" 
+                    class="px-5 py-2.5 rounded-t-lg font-bold text-xs border-b-2 transition-all shrink-0 {{ request('class') === $assignedClass ? 'bg-white border-primary text-primary shadow-sm' : 'bg-slate-50 border-transparent text-slate-400 hover:text-slate-600' }}">
+                    Kelas {{ $assignedClass }}
+                </a>
+            @endforeach
+        </div>
+    @endif
+
     {{-- Floating Action Bar --}}
     <div class="fixed bottom-8 left-0 right-0 flex justify-center z-50 pointer-events-none">
         <div x-show="selectedStudents.length > 0" 
@@ -187,11 +203,16 @@
                     <tr class="group hover:bg-slate-50/50 transition-colors" :class="selectedStudents.includes('{{ $student->id }}') ? 'bg-primary/5' : ''">
                         <td class="px-6 py-5 text-center">
                             <input type="checkbox" x-model="selectedStudents" value="{{ $student->id }}" class="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300 cursor-pointer">
-                        </td>
                         <td class="px-4 py-5">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm border border-primary/20">
-                                    {{ substr($student->name, 0, 1) }}
+                                <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 bg-slate-50 flex items-center justify-center">
+                                    @if($student->photo && file_exists(public_path('storage/' . $student->photo)))
+                                        <img src="{{ asset('storage/' . $student->photo) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
+                                            {{ substr($student->name, 0, 1) }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div>
                                     <a href="{{ route('gurubk.students.show', $student->id) }}" class="font-bold text-slate-800 leading-tight hover:text-primary hover:underline transition-all">{{ $student->name }}</a>
@@ -230,6 +251,13 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- Pagination --}}
+        @if($students->hasPages())
+            <div class="px-8 py-5 border-t border-slate-50">
+                {{ $students->links() }}
+            </div>
+        @endif
     </div>
 </div>
 @endsection

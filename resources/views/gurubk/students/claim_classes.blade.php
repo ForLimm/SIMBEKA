@@ -3,7 +3,7 @@
 @section('title_display', 'Ambil Kelas Bimbingan')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-6" x-data="{
+<div class="w-full space-y-6" x-data="{
     maxQuota: {{ $teacher->max_quota }},
     classes: [
         @foreach($classData as $c)

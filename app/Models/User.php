@@ -10,10 +10,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'username', 'email', 'password', 'role', 'is_guest', 'recovery_code', 'security_question', 'security_answer'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    protected $fillable = [
+        'name',
+        'username',
+        'email',
+        'password',
+        'role',
+        'is_guest',
+        'recovery_code',
+        'security_question',
+        'security_answer'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function getRecoveryCodeDecryptAttribute()
+    {
+        if (empty($this->recovery_code)) {
+            return null;
+        }
+
+        try {
+            return \Illuminate\Support\Facades\Crypt::decryptString($this->recovery_code);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return $this->recovery_code;
+        }
+    }
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
