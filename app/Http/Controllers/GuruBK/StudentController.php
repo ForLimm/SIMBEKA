@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Student;
 use App\Models\User;
+use App\Models\AcademicPeriod;
+use App\Models\TeacherClassAssignment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StudentRules;
 
 class StudentController extends Controller
 {
@@ -19,6 +20,8 @@ class StudentController extends Controller
         if (!$teacher) {
             return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
         }
+
+        $activePeriod = AcademicPeriod::active();
 
         $query = Student::with('user')->where('teacher_id', $teacher->id);
 
@@ -41,8 +44,17 @@ class StudentController extends Controller
         for ($y = 2024; $y <= $currentYear + 1; $y++) {
             $academicYears[] = $y . '/' . ($y + 1);
         }
+
+        // Get assigned classes for the active period
+        $assignedClasses = [];
+        if ($activePeriod) {
+            $assignedClasses = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+                ->where('teacher_id', $teacher->id)
+                ->pluck('class')
+                ->toArray();
+        }
         
-        return view('gurubk.students.index', compact('students', 'teacher', 'academicYears'));
+        return view('gurubk.students.index', compact('students', 'teacher', 'academicYears', 'activePeriod', 'assignedClasses'));
     }
 
     public function show(Student $student)
@@ -55,119 +67,226 @@ class StudentController extends Controller
 
         $student->load([
             'teacher.user', 
-            'reports' => function($q) {
-                $q->where('type', 'pelaporan')->latest();
-            }, 
-            'reports.reporter', 
-            'archives' => function($q) {
-                $q->latest();
+            'counselingSessions' => function($q) {
+                $q->latest('counseling_date');
             },
-            'archives.report'
+            'letters' => function($q) {
+                $q->latest();
+            }
         ]);
 
-        return view('gurubk.students.show', compact('student', 'teacher'));
+        $now = \Carbon\Carbon::now();
+        $currentPeriod = $this->getAcademicPeriod($now);
+        $currentPeriodKey = $currentPeriod['academic_year'] . '_' . $currentPeriod['semester'];
+
+        // Group anecdotes (counselingSessions)
+        $anecdotesByPeriod = [];
+        foreach ($student->counselingSessions as $session) {
+            $period = $this->getAcademicPeriod($session->counseling_date);
+            $key = $period['academic_year'] . '_' . $period['semester'];
+            
+            if (!isset($anecdotesByPeriod[$key])) {
+                $anecdotesByPeriod[$key] = [
+                    'label' => $period['label'],
+                    'academic_year' => $period['academic_year'],
+                    'semester' => $period['semester'],
+                    'items' => []
+                ];
+            }
+            $anecdotesByPeriod[$key]['items'][] = $session;
+        }
+        krsort($anecdotesByPeriod);
+
+        // Group letters
+        $lettersByPeriod = [];
+        foreach ($student->letters as $letter) {
+            $period = $this->getAcademicPeriod($letter->created_at);
+            $key = $period['academic_year'] . '_' . $period['semester'];
+            
+            if (!isset($lettersByPeriod[$key])) {
+                $lettersByPeriod[$key] = [
+                    'label' => $period['label'],
+                    'academic_year' => $period['academic_year'],
+                    'semester' => $period['semester'],
+                    'items' => []
+                ];
+            }
+            $lettersByPeriod[$key]['items'][] = $letter;
+        }
+        krsort($lettersByPeriod);
+
+        return view('gurubk.students.show', compact('student', 'teacher', 'anecdotesByPeriod', 'lettersByPeriod', 'currentPeriodKey'));
+    }
+
+    private function getAcademicPeriod($date)
+    {
+        $carbonDate = \Carbon\Carbon::parse($date);
+        $year = $carbonDate->year;
+        $month = $carbonDate->month;
+
+        if ($month >= 7 && $month <= 12) {
+            $semester = '1';
+            $academicYear = $year . '/' . ($year + 1);
+        } else {
+            $semester = '2';
+            $academicYear = ($year - 1) . '/' . $year;
+        }
+
+        return [
+            'semester' => $semester,
+            'academic_year' => $academicYear,
+            'label' => "Semester $semester (TA $academicYear)"
+        ];
+    }
+
+    public function claimClassesForm()
+    {
+        $teacher = Auth::user()->teacher;
+        if (!$teacher) {
+            return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
+        }
+
+        $activePeriod = AcademicPeriod::active();
+        if (!$activePeriod) {
+            return redirect()->route('gurubk.students.index')
+                ->with('error', 'Tidak ada periode akademik yang aktif saat ini. Hubungi Admin untuk mengaktifkan periode.');
+        }
+
+        // Get all unique classes and student counts per class
+        $classData = Student::select('class')
+            ->selectRaw('count(*) as total_students')
+            ->selectRaw('sum(case when teacher_id = ? then 1 else 0 end) as my_students', [$teacher->id])
+            ->selectRaw('sum(case when teacher_id is not null and teacher_id != ? then 1 else 0 end) as other_students', [$teacher->id])
+            ->groupBy('class')
+            ->orderBy('class')
+            ->get();
+
+        // Check which classes are already assigned in this period (by other teachers)
+        $periodAssignments = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->with('teacher.user')
+            ->get()
+            ->keyBy('class');
+
+        // Get my current assignments for this period
+        $myAssignedClasses = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->where('teacher_id', $teacher->id)
+            ->pluck('class')
+            ->toArray();
+
+        // Build class handlers info
+        $classHandlers = [];
+        foreach ($periodAssignments as $cls => $assignment) {
+            if ($assignment->teacher_id !== $teacher->id) {
+                $classHandlers[$cls] = $assignment->teacher->user->name ?? 'Guru Lain';
+            }
+        }
+
+        // Get previous period's assignments for carry-over feature
+        $previousAssignments = [];
+        $previousPeriod = AcademicPeriod::where('is_active', false)
+            ->orderByDesc('end_date')
+            ->first();
+
+        if ($previousPeriod) {
+            $previousAssignments = TeacherClassAssignment::where('academic_period_id', $previousPeriod->id)
+                ->where('teacher_id', $teacher->id)
+                ->pluck('class')
+                ->toArray();
+        }
+
+        return view('gurubk.students.claim_classes', compact(
+            'teacher', 'classData', 'classHandlers', 'activePeriod', 
+            'myAssignedClasses', 'previousAssignments'
+        ));
+    }
+
+    public function claimClasses(Request $request)
+    {
+        $teacher = Auth::user()->teacher;
+        if (!$teacher) {
+            return redirect('/')->with('error', 'Anda belum dikonfigurasi sebagai Guru BK oleh Admin.');
+        }
+
+        $activePeriod = AcademicPeriod::active();
+        if (!$activePeriod) {
+            return back()->with('error', 'Tidak ada periode akademik yang aktif.');
+        }
+
+        $submittedClasses = $request->input('classes', []);
+
+        // Check if any of the submitted classes are already claimed by another teacher in this period
+        $conflicting = TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->where('teacher_id', '!=', $teacher->id)
+            ->whereIn('class', $submittedClasses)
+            ->with('teacher.user')
+            ->get();
+
+        if ($conflicting->isNotEmpty()) {
+            $conflictInfo = $conflicting->map(fn($a) => "{$a->class} ({$a->teacher->user->name})")->join(', ');
+            return back()->with('error', "Kelas berikut sudah di-claim guru lain: {$conflictInfo}");
+        }
+
+        // Check if claiming these classes would exceed quota
+        $targetStudentsCount = Student::whereIn('class', $submittedClasses)->count();
+        if ($targetStudentsCount > $teacher->max_quota) {
+            return back()->with('error', "Jumlah siswa di kelas yang Anda pilih (total: {$targetStudentsCount}) melebihi kuota bimbingan Anda ({$teacher->max_quota}). Silakan kurangi pilihan kelas.");
+        }
+
+        // Remove old assignments for this teacher in this period
+        TeacherClassAssignment::where('academic_period_id', $activePeriod->id)
+            ->where('teacher_id', $teacher->id)
+            ->delete();
+
+        // Create new assignments
+        foreach ($submittedClasses as $class) {
+            TeacherClassAssignment::create([
+                'academic_period_id' => $activePeriod->id,
+                'teacher_id' => $teacher->id,
+                'class' => $class,
+            ]);
+        }
+
+        // Sync students.teacher_id: Release classes no longer handled by this teacher
+        Student::where('teacher_id', $teacher->id)
+            ->whereNotIn('class', $submittedClasses)
+            ->update(['teacher_id' => null]);
+
+        // Claim the new classes
+        if (!empty($submittedClasses)) {
+            Student::whereIn('class', $submittedClasses)
+                ->update(['teacher_id' => $teacher->id]);
+        }
+
+        return redirect()->route('gurubk.students.index')->with('success', 'Kelas bimbingan berhasil diperbarui untuk periode ' . $activePeriod->name . '.');
     }
 
     public function create()
     {
-        $teacher = Auth::user()->teacher;
-        return view('gurubk.students.create', compact('teacher'));
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menambah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function store(Request $request)
     {
-        $request->validate(StudentRules::storeRules(), StudentRules::messages());
-
-        $teacher = Auth::user()->teacher;
-
-        // Check Quota
-        $currentCount = Student::where('teacher_id', $teacher->id)->count();
-        if ($currentCount >= $teacher->max_quota) {
-            return redirect()->route('gurubk.students.index')->with('error', 'Kuota siswa bimbingan Anda sudah penuh (' . $teacher->max_quota . ').');
-        }
-
-        $data = $request->only(StudentRules::safeFields());
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('student-photos', 'public');
-        }
-
-        Student::create(array_merge(
-            $data,
-            ['teacher_id' => $teacher->id]
-        ));
-
-        return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil ditambahkan.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menambah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function edit(Student $student)
     {
-        $teacher = Auth::user()->teacher;
-        if ($student->teacher_id !== $teacher->id) {
-            return redirect()->route('gurubk.students.index')->with('error', 'Akses ditolak.');
-        }
-        return view('gurubk.students.edit', compact('student', 'teacher'));
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas mengubah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function update(Request $request, Student $student)
     {
-        $teacher = Auth::user()->teacher;
-        if ($student->teacher_id !== $teacher->id) {
-            return redirect()->route('gurubk.students.index')->with('error', 'Akses ditolak.');
-        }
-
-        $request->validate(StudentRules::updateRules($student->id), StudentRules::messages());
-
-        $data = $request->only(StudentRules::safeFields());
-
-        // Handle photo removal
-        if ($request->has('remove_photo') && $request->remove_photo == '1') {
-            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
-                @unlink(public_path('storage/' . $student->photo));
-            }
-            $data['photo'] = null;
-        }
-
-        // Handle new photo upload
-        if ($request->hasFile('photo')) {
-            if ($student->photo && file_exists(public_path('storage/' . $student->photo))) {
-                @unlink(public_path('storage/' . $student->photo));
-            }
-            $data['photo'] = $request->file('photo')->store('student-photos', 'public');
-        }
-
-        $student->update($data);
-
-        return redirect()->route('gurubk.students.index')->with('success', 'Data siswa berhasil diperbarui.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas mengubah data siswa secara langsung telah dialihkan ke Super Admin.');
     }
+
     public function destroy(Student $student)
     {
-        $teacher = Auth::user()->teacher;
-        
-        if ($student->teacher_id !== $teacher->id) {
-            return back()->with('error', 'Anda tidak memiliki otoritas untuk menghapus siswa ini.');
-        }
-
-        $student->delete();
-
-        return back()->with('success', 'Data siswa berhasil dihapus.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menghapus data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 
     public function bulkDestroy(Request $request)
     {
-        $teacher = Auth::user()->teacher;
-        
-        if (!$request->has('student_ids')) {
-            return back()->with('error', 'Tidak ada siswa yang dipilih.');
-        }
-
-        $ids = explode(',', $request->student_ids);
-        
-        // Ensure the teacher only deletes their own students
-        $students = Student::whereIn('id', $ids)->where('teacher_id', $teacher->id)->get();
-        foreach ($students as $student) {
-            $student->delete();
-        }
-
-        return back()->with('success', 'Data siswa terpilih berhasil dihapus.');
+        return redirect()->route('gurubk.students.index')->with('error', 'Otoritas menghapus data siswa secara langsung telah dialihkan ke Super Admin.');
     }
 }

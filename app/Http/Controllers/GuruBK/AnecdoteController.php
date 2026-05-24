@@ -104,6 +104,20 @@ class AnecdoteController extends Controller
         
         $filename = $filenamePrefix . now()->format('Ymd');
  
+        if ($request->format === 'word') {
+            $html = view('gurubk.exports.anecdote', $data)->render();
+            return response($html)
+                ->header('Content-Type', 'application/msword')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '.doc"');
+        }
+
+        if ($request->format === 'excel') {
+            $html = view('gurubk.exports.anecdote', $data)->render();
+            return response($html)
+                ->header('Content-Type', 'application/vnd.ms-excel')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '.xls"');
+        }
+
         return Pdf::loadView('gurubk.exports.anecdote', $data)
             ->download($filename . '.pdf');
     }

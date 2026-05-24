@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Letter;
 use App\Models\Archive;
+use App\Models\AcademicPeriod;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
@@ -236,7 +237,10 @@ class LetterController extends Controller
         
         \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $pdf->output());
 
+        $activePeriod = AcademicPeriod::active();
+
         Letter::create([
+            'academic_period_id' => $activePeriod?->id,
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
             'type' => $type,
@@ -245,6 +249,7 @@ class LetterController extends Controller
         ]);
 
         Archive::create([
+            'academic_period_id' => $activePeriod?->id,
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
             'handler_name' => $teacher->user->name ?? 'Guru BK',

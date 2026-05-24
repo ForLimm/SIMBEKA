@@ -15,9 +15,9 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 Cetak Anekdot
             </button>
-            <a href="{{ route('gurubk.students.create') }}" class="inline-flex items-center gap-2 bg-primary hover:bg-secondary text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                Tambah Siswa
+            <a href="{{ route('gurubk.students.claim_classes_form') }}" class="inline-flex items-center gap-2 bg-primary hover:bg-secondary text-white font-bold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                Ambil Kelas
             </a>
         </div>
     </div>
@@ -41,51 +41,61 @@
                 <template x-if="exportMode === 'selected'">
                     <input type="hidden" name="student_ids" :value="selectedStudents.join(',')">
                 </template>
-                <input type="hidden" name="format" value="pdf">
                 
-                <div class="space-y-4">
-                    <label class="text-[10px] font-semibold text-slate-400 font-medium block mb-2 ml-1">Periode Laporan</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="relative">
-                            <input type="radio" name="period" value="semester" x-model="exportPeriod" @change="exportYear = ''; exportSemester = ''" class="peer sr-only">
-                            <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                                <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semester Ini</span>
-                            </div>
-                        </label>
-                        <label class="relative">
-                            <input type="radio" name="period" value="all" x-model="exportPeriod" @change="exportYear = ''; exportSemester = ''" class="peer sr-only">
-                            <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                                <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semua Data</span>
-                            </div>
-                        </label>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-semibold text-slate-400 font-medium block mb-4 ml-1">Periode Laporan</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="relative">
+                                <input type="radio" name="period" value="month" class="peer sr-only">
+                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Bulan Ini</span>
+                                </div>
+                            </label>
+                            <label class="relative">
+                                <input type="radio" name="period" value="semester" class="peer sr-only">
+                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semester Ini</span>
+                                </div>
+                            </label>
+                            <label class="relative">
+                                <input type="radio" name="period" value="year" class="peer sr-only">
+                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Tahun Ini</span>
+                                </div>
+                            </label>
+                            <label class="relative">
+                                <input type="radio" name="period" value="all" checked class="peer sr-only">
+                                <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                                    <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Semua Data</span>
+                                </div>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <label class="text-[10px] font-semibold text-slate-400 font-medium block mb-1 ml-1">Pilih Semester / Tahun Ajaran Lain (Opsional)</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="relative">
-                            <select name="academic_year" x-model="exportYear" @change="exportPeriod = ''" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 outline-none transition appearance-none font-medium text-slate-700 pr-8">
-                                <option value="">Semua Tahun Ajaran</option>
-                                @foreach($academicYears as $year)
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                @endforeach
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <label class="relative col-span-3">
+                        <span class="text-[10px] font-semibold text-slate-400 font-medium block mb-4 ml-1">Format Dokumen</span>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" name="format" value="word" checked class="peer sr-only">
+                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Word</span>
                         </div>
-                        <div class="relative">
-                            <select name="semester" x-model="exportSemester" @change="exportPeriod = ''" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-xs focus:ring-4 focus:ring-indigo-600/10 focus:border-indigo-600 outline-none transition appearance-none font-medium text-slate-700 pr-8">
-                                <option value="">Semua Semester</option>
-                                <option value="1">Semester 1 (Ganjil)</option>
-                                <option value="2">Semester 2 (Genap)</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </div>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" name="format" value="pdf" class="peer sr-only">
+                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">PDF</span>
                         </div>
-                    </div>
+                    </label>
+                    <label class="relative">
+                        <input type="radio" name="format" value="excel" class="peer sr-only">
+                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
+                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Excel</span>
+                        </div>
+                    </label>
                 </div>
 
                 <div class="pt-4">
@@ -153,15 +163,6 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     <span class="hidden sm:block">Cetak Anekdot</span>
                 </button>
-                <form action="{{ route('gurubk.students.bulk_destroy') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus siswa yang dipilih secara permanen?')" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <input type="hidden" name="student_ids" :value="selectedStudents.join(',')">
-                    <button type="submit" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 rounded-lg text-xs font-bold transition flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        <span class="hidden sm:block">Hapus</span>
-                    </button>
-                </form>
             </div>
         </div>
     </div>
@@ -206,16 +207,10 @@
                         </td>
                         <td class="px-4 py-5">
                             <div class="flex items-center justify-end gap-2">
-                                <a href="{{ route('gurubk.students.edit', $student->id) }}" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                <a href="{{ route('gurubk.students.show', $student->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
+                                    Detail Siswa
+                                    <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                                 </a>
-                                <form action="{{ route('gurubk.students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Hapus data siswa ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                    </button>
-                                </form>
                             </div>
                         </td>
                     </tr>
@@ -227,7 +222,7 @@
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                 </div>
                                 <p class="text-slate-400 font-bold tracking-tight">Belum ada data siswa</p>
-                                <a href="{{ route('gurubk.students.create') }}" class="text-blue-600 font-bold hover:underline text-sm">Tambah Siswa Pertama</a>
+                                <a href="{{ route('gurubk.students.claim_classes_form') }}" class="text-blue-600 font-bold hover:underline text-sm">Ambil Kelas Pertama Anda</a>
                             </div>
                         </td>
                     </tr>

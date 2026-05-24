@@ -311,7 +311,7 @@
                     @if(request('type') == 'surat')
                         Kumpulan Surat Panggilan Resmi
                     @elseif(request('type') == 'konseling')
-                        Dokumentasi Sesi Bimbingan / Konseling yang Telah Selesai
+                        Catatan Anekdot / Konseling yang Telah Selesai
                     @else
                         Kumpulan Sesi Konsul & Laporan Selesai
                     @endif

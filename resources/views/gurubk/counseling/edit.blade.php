@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Dokumentasi Konseling - Sistem Informasi Manajemen Bimbingan & Konseling')
+@section('title', 'Edit Catatan Anekdot - Sistem Informasi Manajemen Bimbingan & Konseling')
 
 @section('content')
 <div class="w-full space-y-4">
@@ -13,7 +13,7 @@
             </a>
             <div class="h-8 w-px bg-slate-100"></div>
             <div>
-                <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Edit Dokumentasi</h2>
+                <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Edit Catatan Anekdot</h2>
                 <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">ID Sesi: #{{ $session->id }}</p>
             </div>
         </div>
@@ -148,7 +148,7 @@
 
             <div class="pt-2">
                 <button type="submit" class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-4 rounded-lg shadow-xl transition-all hover:scale-[1.01] active:scale-[0.98] text-sm">
-                    Perbarui Dokumentasi
+                    Perbarui Catatan Anekdot
                 </button>
             </div>
         </div>

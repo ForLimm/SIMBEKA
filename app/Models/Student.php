@@ -42,12 +42,17 @@ class Student extends Model
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'reported_by', 'user_id');
     }
 
     public function archives()
     {
         return $this->hasMany(Archive::class);
+    }
+
+    public function letters()
+    {
+        return $this->hasMany(Letter::class)->latest();
     }
 
     public function counselingSessions()

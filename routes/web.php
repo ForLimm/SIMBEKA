@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\AcademicPeriodController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
@@ -56,9 +57,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('teachers/{teacher}/edit', [TeacherController::class, 'edit'])->name('teachers.edit');
     Route::put('teachers/{teacher}', [TeacherController::class, 'update'])->name('teachers.update');
     
+    Route::get('students', [StudentController::class, 'index'])->name('students.index');
     Route::get('students/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('students', [StudentController::class, 'store'])->name('students.store');
-    Route::get('students', function() { return redirect()->route('admin.dashboard'); })->name('students.index');
+    Route::get('students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('students/{student}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+    Route::post('students/import', [StudentController::class, 'import'])->name('students.import');
+
+    // Academic Periods
+    Route::get('academic-periods', [AcademicPeriodController::class, 'index'])->name('academic_periods.index');
+    Route::get('academic-periods/create', [AcademicPeriodController::class, 'create'])->name('academic_periods.create');
+    Route::post('academic-periods', [AcademicPeriodController::class, 'store'])->name('academic_periods.store');
+    Route::get('academic-periods/{academicPeriod}', [AcademicPeriodController::class, 'show'])->name('academic_periods.show');
+    Route::post('academic-periods/{academicPeriod}/activate', [AcademicPeriodController::class, 'activate'])->name('academic_periods.activate');
+    Route::delete('academic-periods/{academicPeriod}', [AcademicPeriodController::class, 'destroy'])->name('academic_periods.destroy');
 });
 
 Route::prefix('gurubk')->name('gurubk.')->middleware(['auth', 'role:guru_bk'])->group(function () {
@@ -85,6 +98,8 @@ Route::prefix('gurubk')->name('gurubk.')->middleware(['auth', 'role:guru_bk'])->
     Route::get('anecdotes/export', [App\Http\Controllers\GuruBK\AnecdoteController::class, 'export'])->name('anecdotes.export');
 
     Route::get('students', [App\Http\Controllers\GuruBK\StudentController::class, 'index'])->name('students.index');
+    Route::get('students/claim-classes', [App\Http\Controllers\GuruBK\StudentController::class, 'claimClassesForm'])->name('students.claim_classes_form');
+    Route::post('students/claim-classes', [App\Http\Controllers\GuruBK\StudentController::class, 'claimClasses'])->name('students.claim_classes');
     Route::get('students/create', [App\Http\Controllers\GuruBK\StudentController::class, 'create'])->name('students.create');
     Route::post('students', [App\Http\Controllers\GuruBK\StudentController::class, 'store'])->name('students.store');
     Route::get('students/{student}', [App\Http\Controllers\GuruBK\StudentController::class, 'show'])->name('students.show');

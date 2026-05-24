@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Letter extends Model
 {
-    protected $fillable = ['student_id', 'teacher_id', 'type', 'file_path', 'content_json'];
+    protected $fillable = ['academic_period_id', 'student_id', 'teacher_id', 'type', 'file_path', 'content_json'];
 
     protected function casts(): array
     {
         return [
             'content_json' => 'array',
         ];
+    }
+
+    public function academicPeriod()
+    {
+        return $this->belongsTo(\App\Models\AcademicPeriod::class);
     }
 
     public function student()

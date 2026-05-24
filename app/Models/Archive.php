@@ -9,13 +9,18 @@ class Archive extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['student_id', 'teacher_id', 'handler_name', 'report_id', 'guidance_notes', 'completed_date', 'attachment_path'];
+    protected $fillable = ['academic_period_id', 'student_id', 'teacher_id', 'handler_name', 'report_id', 'guidance_notes', 'completed_date', 'attachment_path'];
 
     protected function casts(): array
     {
         return [
             'completed_date' => 'date',
         ];
+    }
+
+    public function academicPeriod()
+    {
+        return $this->belongsTo(\App\Models\AcademicPeriod::class);
     }
 
     public function student()
