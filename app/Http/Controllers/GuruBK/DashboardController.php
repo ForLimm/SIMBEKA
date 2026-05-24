@@ -78,7 +78,7 @@ class DashboardController extends Controller
 
     public function show(Report $report)
     {
-        if ($report->handled_by !== Auth::id()) {
+        if ((int)$report->handled_by !== (int)Auth::id()) {
             return redirect()->route('gurubk.dashboard')->with('error', 'Anda tidak memiliki akses ke kasus ini.');
         }
 
@@ -119,7 +119,7 @@ class DashboardController extends Controller
 
     public function resolve(Report $report)
     {
-        if ($report->handled_by !== Auth::id()) {
+        if ((int)$report->handled_by !== (int)Auth::id()) {
             return back()->with('error', 'Anda tidak memiliki akses.');
         }
 

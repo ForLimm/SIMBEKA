@@ -17,7 +17,7 @@ class ChatController extends Controller
         $user = Auth::user();
 
         // Only allow the reporter or the handler to access the chat
-        if ($user->id !== $report->reported_by && $user->id !== $report->handled_by) {
+        if ((int)$user->id !== (int)$report->reported_by && (int)$user->id !== (int)$report->handled_by) {
             abort(403, 'Anda tidak memiliki akses ke chat ini.');
         }
 
@@ -42,7 +42,7 @@ class ChatController extends Controller
                 'id' => $msg->id,
                 'message' => $msg->message,
                 'sender_name' => $msg->sender->name,
-                'is_mine' => $msg->sender_id === $user->id,
+                'is_mine' => (int)$msg->sender_id === (int)$user->id,
                 'time' => $msg->created_at->format('H:i'),
                 'date' => $msg->created_at->format('d M Y'),
             ];
@@ -58,7 +58,7 @@ class ChatController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->id !== $report->reported_by && $user->id !== $report->handled_by) {
+        if ((int)$user->id !== (int)$report->reported_by && (int)$user->id !== (int)$report->handled_by) {
             abort(403);
         }
 
@@ -82,7 +82,7 @@ class ChatController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->id !== $report->reported_by && $user->id !== $report->handled_by) {
+        if ((int)$user->id !== (int)$report->reported_by && (int)$user->id !== (int)$report->handled_by) {
             abort(403);
         }
 
@@ -106,7 +106,7 @@ class ChatController extends Controller
                     'id' => $msg->id,
                     'message' => $msg->message,
                     'sender_name' => $msg->sender->name,
-                    'is_mine' => $msg->sender_id === $user->id,
+                    'is_mine' => (int)$msg->sender_id === (int)$user->id,
                     'time' => $msg->created_at->format('H:i'),
                     'date' => $msg->created_at->format('d M Y'),
                 ];

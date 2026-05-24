@@ -233,7 +233,7 @@ class ArchiveController extends Controller
     {
         $teacher = Auth::user()->teacher;
         
-        if ($archive->teacher_id !== $teacher->id) {
+        if ((int)$archive->teacher_id !== (int)$teacher->id) {
             abort(403, 'Unauthorized access to archive.');
         }
 
@@ -322,5 +322,31 @@ class ArchiveController extends Controller
             }
         }
         return $query;
+    }
+
+    /**
+     * Download the archive attachment securely.
+     */
+    public function downloadAttachment(Archive $archive)
+    {
+        $user = Auth::user();
+        if ($user->role === 'guru_bk') {
+            $teacher = $user->teacher;
+            if (!$teacher || (int)$archive->teacher_id !== (int)$teacher->id) {
+                abort(403, 'Unauthorized access to archive.');
+            }
+        } elseif ($user->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+
+        if (!$archive->attachment_path) {
+            abort(404, 'Tidak ada lampiran pada arsip ini.');
+        }
+
+        if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($archive->attachment_path)) {
+            abort(404, 'File lampiran tidak ditemukan.');
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->download($archive->attachment_path);
     }
 }

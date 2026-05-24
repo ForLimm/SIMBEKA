@@ -81,7 +81,7 @@
                                 <p class="font-semibold text-slate-900 text-sm">Dokumen Surat Panggilan / Pendukung</p>
                                 <p class="text-[10px] text-accent font-bold font-medium mt-0.5">Format: PDF Document</p>
                             </div>
-                            <a href="{{ asset('storage/' . $archive->attachment_path) }}" target="_blank" class="bg-accent hover:bg-emerald-700 text-white text-[10px] font-semibold px-6 py-3 rounded-lg transition-all shadow-sm active:scale-95 font-medium">
+                            <a href="{{ route('gurubk.archives.download', $archive->id) }}" target="_blank" class="bg-accent hover:bg-emerald-700 text-white text-[10px] font-semibold px-6 py-3 rounded-lg transition-all shadow-sm active:scale-95 font-medium">
                                 Buka File
                             </a>
                         </div>

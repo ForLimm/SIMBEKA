@@ -183,22 +183,19 @@
 
         {{-- Right: Submit & Security Card (4/12) --}}
         <div class="xl:col-span-4">
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm bg-[#1e1e2d] border-none p-8 flex flex-col justify-center items-center text-center text-white relative overflow-hidden group">
-                {{-- Decor --}}
-                
-                
-                <div class="w-16 h-16 bg-white/5 rounded-lg flex items-center justify-center mb-6 border border-white/10 group-hover:border-primary/50 transition-colors">
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 flex flex-col justify-center items-center text-center relative overflow-hidden group">
+                <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6 border border-primary/20 group-hover:border-primary/50 transition-colors">
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 </div>
                 
-                <h4 class="text-xl font-semibold mb-2 relative z-10">Konfirmasi Sandi</h4>
-                <p class="text-slate-500 text-xs text-slate-500 font-medium mb-8 relative z-10">Pastikan sandi Anda sulit ditebak demi keamanan akun Anda.</p>
+                <h4 class="text-xl font-semibold mb-2 relative z-10 text-slate-800">Konfirmasi Sandi</h4>
+                <p class="text-slate-400 text-xs font-medium mb-8 relative z-10">Pastikan sandi Anda sulit ditebak demi keamanan akun Anda.</p>
                 
                 <div class="w-full space-y-3 relative z-10">
-                    <button type="submit" :disabled="score < 5" :class="score < 5 ? 'opacity-50 cursor-not-allowed bg-slate-700 text-slate-400' : 'bg-primary hover:bg-secondary text-white hover:scale-[1.02] active:scale-[0.95]'" class="w-full font-semibold py-4 rounded-lg shadow-xl transition-all text-sm font-medium">
+                    <button type="submit" :disabled="score < 5" :class="score < 5 ? 'opacity-50 cursor-not-allowed bg-slate-200 text-slate-400' : 'bg-primary hover:bg-secondary text-white hover:scale-[1.02] active:scale-[0.95]'" class="w-full font-semibold py-4 rounded-lg shadow-xl transition-all text-sm font-medium">
                         Simpan Sandi Baru
                     </button>
-                    <button type="reset" @click="password = ''" class="w-full bg-white/5 hover:bg-white/10 text-slate-500 font-bold py-3 rounded-lg transition text-[9px] ">
+                    <button type="reset" @click="password = ''" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-500 font-bold py-3 rounded-lg transition text-[9px] border border-slate-100">
                         Reset Formulir
                     </button>
                 </div>

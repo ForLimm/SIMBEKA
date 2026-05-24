@@ -187,7 +187,7 @@ class LetterController extends Controller
     {
         $student = Student::with('user')->findOrFail($studentId);
 
-        if ($student->teacher_id !== $teacher->id) {
+        if ((int)$student->teacher_id !== (int)$teacher->id) {
             abort(403, 'Unauthorized access to student.');
         }
 
@@ -257,5 +257,27 @@ class LetterController extends Controller
             'completed_date' => now(),
             'attachment_path' => $filePath,
         ]);
+    }
+
+    /**
+     * Download the letter securely.
+     */
+    public function download(Letter $letter)
+    {
+        $user = Auth::user();
+        if ($user->role === 'guru_bk') {
+            $teacher = $user->teacher;
+            if (!$teacher || (int)$letter->teacher_id !== (int)$teacher->id) {
+                abort(403, 'Unauthorized access to letter.');
+            }
+        } elseif ($user->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+
+        if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($letter->file_path)) {
+            abort(404, 'File surat tidak ditemukan.');
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->download($letter->file_path);
     }
 }

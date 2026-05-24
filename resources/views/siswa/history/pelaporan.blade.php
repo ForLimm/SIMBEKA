@@ -27,7 +27,7 @@
     <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden bg-white">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
-                <thead class="text-xs font-bold text-slate-400 font-medium bg-slate-50/50">
+                <thead class="hidden md:table-header-group text-xs font-bold text-slate-400 font-medium bg-slate-50/50">
                     <tr>
                         <th class="px-8 py-5">Kasus / Perihal</th>
                         <th class="px-6 py-5">Status Penanganan</th>
@@ -35,10 +35,11 @@
                         <th class="px-8 py-5 text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="block md:table-row-group divide-y divide-slate-100">
                     @forelse($pelaporan as $report)
-                        <tr class="hover:bg-slate-50/80 transition-colors group">
-                            <td class="px-8 py-6">
+                        <tr class="block md:table-row hover:bg-slate-50/80 transition-colors group p-4 md:p-0 space-y-3 md:space-y-0">
+                            <td class="block md:table-cell px-4 md:px-8 py-2 md:py-6">
+                                <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Kasus / Perihal</span>
                                 <div class="font-semibold text-slate-800 text-base tracking-tight mb-1">{{ $report->title }}</div>
                                 <div class="flex items-center gap-2">
                                     <span class="text-[9px] uppercase font-semibold px-2 py-0.5 rounded {{ $report->priority === 'high' ? 'bg-rose-50 text-rose-500' : ($report->priority === 'medium' ? 'bg-amber-50 text-amber-500' : 'bg-emerald-50 text-emerald-500') }}">
@@ -46,7 +47,8 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="px-6 py-6 text-xs font-semibold">
+                            <td class="block md:table-cell px-4 md:px-6 py-2 md:py-6 text-xs font-semibold">
+                                <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Status Penanganan</span>
                                 @if($report->status === 'pending')
                                     <span class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 font-medium text-[9px]">Menunggu Antrean</span>
                                 @elseif($report->status === 'in-progress')
@@ -58,17 +60,20 @@
                                     <span class="px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 font-medium text-[9px]">Selesai Ditangani</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-6 text-slate-500 font-medium">
+                            <td class="block md:table-cell px-4 md:px-6 py-2 md:py-6 text-slate-500 font-medium">
+                                <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Waktu Lapor</span>
                                 <div class="font-bold text-slate-700">{{ $report->created_at->translatedFormat('d M Y') }}</div>
                                 <div class="text-[10px] text-slate-400 mt-1 uppercase tracking-tighter">{{ $report->created_at->translatedFormat('H:i') }} WITA</div>
                             </td>
-                            <td class="px-8 py-6">
+                            <td class="block md:table-cell px-4 md:px-8 py-3 md:py-6">
+                                <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Aksi</span>
                                 <div class="flex items-center justify-center">
                                     @if($report->status === 'resolved')
-                                        <form action="{{ route('siswa.report.hide', $report->id) }}" method="POST" onsubmit="return confirm('Sembunyikan riwayat ini dari tampilan?')">
+                                        <form action="{{ route('siswa.report.hide', $report->id) }}" method="POST" onsubmit="return confirm('Sembunyikan riwayat ini dari tampilan?')" class="w-full md:w-auto">
                                             @csrf
-                                            <button type="submit" class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            <button type="submit" class="w-full md:w-10 h-10 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all border border-slate-200 md:border-none py-2 md:py-0 flex items-center justify-center gap-2">
+                                                <span class="block md:hidden text-xs font-semibold">Sembunyikan Riwayat</span>
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142a2 2 0 01-1.858 2.142H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </form>
                                     @else
@@ -78,8 +83,8 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="4" class="px-8 py-20 text-center">
+                        <tr class="block md:table-row">
+                            <td colspan="4" class="block md:table-cell px-8 py-20 text-center">
                                 <div class="flex flex-col items-center opacity-10">
                                     <svg class="w-24 h-24 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                                     <p class="text-xl font-medium">Belum Ada Riwayat Pelaporan</p>

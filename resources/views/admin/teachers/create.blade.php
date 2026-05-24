@@ -75,22 +75,19 @@
 
         {{-- Right: Submit Card (4/12) --}}
         <div class="xl:col-span-4">
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm bg-[#1e1e2d] border-none p-8 flex flex-col justify-center items-center text-center text-white relative overflow-hidden group">
-                {{-- Decor --}}
-                
-                
-                <div class="w-16 h-16 bg-white/5 rounded-lg flex items-center justify-center mb-6 border border-white/10 group-hover:border-primary/50 transition-colors">
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 flex flex-col justify-center items-center text-center relative overflow-hidden group">
+                <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6 border border-primary/20 group-hover:border-primary/50 transition-colors">
                     <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                 </div>
                 
-                <h4 class="text-xl font-semibold mb-2 relative z-10">Simpan Staf Baru</h4>
-                <p class="text-slate-500 text-xs text-slate-500 font-medium mb-8 relative z-10">Data akun akan langsung aktif setelah disimpan.</p>
+                <h4 class="text-xl font-semibold mb-2 relative z-10 text-slate-800">Simpan Staf Baru</h4>
+                <p class="text-slate-400 text-xs font-medium mb-8 relative z-10">Data akun akan langsung aktif setelah disimpan.</p>
                 
                 <div class="w-full space-y-3 relative z-10">
                     <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-semibold py-4 rounded-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.95] text-sm font-medium">
                         Konfirmasi & Simpan
                     </button>
-                    <button type="reset" class="w-full bg-white/5 hover:bg-white/10 text-slate-500 font-bold py-3 rounded-lg transition text-[9px] ">
+                    <button type="reset" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-500 font-bold py-3 rounded-lg transition text-[9px] border border-slate-100">
                         Reset Formulir
                     </button>
                 </div>

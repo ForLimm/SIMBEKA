@@ -13,8 +13,8 @@
             </a>
             <div class="h-8 w-px bg-slate-100"></div>
             <div>
-                <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Detail Pelaporan</h2>
-                <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">ID Pelaporan: #{{ str_pad($report->id, 5, '0', STR_PAD_LEFT) }}</p>
+                <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">Detail {{ $report->type === 'konsultasi' ? 'Konsultasi' : 'Pelaporan' }}</h2>
+                <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">ID {{ $report->type === 'konsultasi' ? 'Konsultasi' : 'Pelaporan' }}: #{{ str_pad($report->id, 5, '0', STR_PAD_LEFT) }}</p>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -34,7 +34,7 @@
 
                 <div class="relative z-10">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="text-[9px] font-semibold  text-primary bg-primary/10 px-2 py-0.5 rounded-md">{{ $report->type }}</span>
+                        <span class="text-[9px] font-semibold  text-primary bg-primary/10 px-2 py-0.5 rounded-md">{{ ucfirst($report->type) }}</span>
                         <span class="text-[9px] font-semibold  {{ $report->priority === 'high' ? 'text-rose-600 bg-rose-50' : 'text-slate-400 bg-slate-50' }} px-2 py-0.5 rounded-md">Prioritas {{ $report->priority === 'high' ? 'Tinggi' : ($report->priority === 'medium' ? 'Sedang' : 'Rendah') }}</span>
                     </div>
                     
@@ -55,7 +55,7 @@
                 </div>
                 
                 <div class="flex items-center gap-3 w-full md:w-auto">
-                    @if($report->type === 'konsultasi' && $report->handled_by === auth()->id())
+                    @if($report->type === 'konsultasi' && (int)$report->handled_by === (int)auth()->id())
                         <a href="{{ route('chat.show', $report->id) }}" class="flex-1 md:flex-none bg-primary hover:bg-secondary text-white font-semibold px-6 py-3.5 rounded-lg shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 text-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                             Lanjut Percakapan
@@ -78,7 +78,7 @@
             {{-- Reporter Info --}}
             <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden bg-white">
                 <div class="bg-slate-50 px-6 py-4 border-b border-slate-100">
-                    <h4 class="text-[10px] font-semibold text-slate-400 font-medium">Informasi Pelapor</h4>
+                    <h4 class="text-[10px] font-semibold text-slate-400 font-medium">Informasi {{ $report->type === 'konsultasi' ? 'Siswa' : 'Pelapor' }}</h4>
                 </div>
                 <div class="p-8">
                     <div class="flex items-center gap-4 mb-6">
@@ -119,22 +119,22 @@
                 </div>
             </div>
 
-            {{-- Handler Card (Dark style matching sidebar) --}}
-            <div class="bg-white border border-slate-200 rounded-lg shadow-sm bg-[#1e1e2d] border-none shadow-md overflow-hidden">
-                <div class="bg-white/5 px-6 py-4 border-b border-white/5">
-                    <h4 class="text-[10px] font-semibold text-slate-500 font-medium">Petugas Penanganan</h4>
+            {{-- Handler Card --}}
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-100">
+                    <h4 class="text-[10px] font-semibold text-slate-400 font-medium">Petugas Penanganan</h4>
                 </div>
                 <div class="p-8 text-center">
-                    <div class="w-12 h-12 bg-white/5 text-white rounded-lg flex items-center justify-center text-3xl font-semibold border border-white/10 mx-auto mb-4">
+                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-3xl font-semibold border border-primary/20 mx-auto mb-4">
                         {{ substr($report->handler->name ?? '-', 0, 1) }}
                     </div>
-                    <div class="font-bold text-white text-lg mb-1">{{ $report->handler->name ?? 'Belum ada' }}</div>
-                    <div class="text-[10px] text-slate-500 font-bold font-medium">Guru BK Pendamping</div>
+                    <div class="font-bold text-slate-800 text-lg mb-1">{{ $report->handler->name ?? 'Belum ada' }}</div>
+                    <div class="text-[10px] text-slate-400 font-bold font-medium">Guru BK Pendamping</div>
                     
                     @if($report->status === 'resolved')
-                        <div class="mt-6 pt-6 border-t border-white/5">
+                        <div class="mt-6 pt-6 border-t border-slate-100">
                             <div class="bg-accent/10 rounded-lg p-4 border border-accent/20">
-                                <p class="text-[10px] text-accent font-medium mb-1 text-center">Status Akhir</p>
+                                <p class="text-[10px] text-accent font-bold mb-1 text-center">Status Akhir</p>
                                 <p class="text-[11px] text-accent font-bold text-center">Selesai & Diarsipkan</p>
                             </div>
                         </div>

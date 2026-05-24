@@ -79,29 +79,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3">
-                    <label class="relative col-span-3">
-                        <span class="text-[10px] font-semibold text-slate-400 font-medium block mb-4 ml-1">Format Dokumen</span>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="word" checked class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Word</span>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="pdf" class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">PDF</span>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="excel" class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Excel</span>
-                        </div>
-                    </label>
-                </div>
+                <input type="hidden" name="format" value="pdf">
 
                 <div class="pt-4">
                     <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-[1.5rem] shadow-xl shadow-indigo-600/20 transition-all active:scale-[0.95] font-medium text-xs flex items-center justify-center gap-3">
@@ -435,7 +413,7 @@
                                         </div>
                                         
                                         <div class="shrink-0 flex items-center w-full sm:w-auto">
-                                            <a href="{{ asset('storage/' . $letter->file_path) }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
+                                            <a href="{{ route('gurubk.letters.download', $letter->id) }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                                 Unduh PDF
                                             </a>
@@ -509,7 +487,7 @@
                                                 </div>
                                                 
                                                 <div class="shrink-0 flex items-center w-full sm:w-auto">
-                                                    <a href="{{ asset('storage/' . $letter->file_path) }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
+                                                    <a href="{{ route('gurubk.letters.download', $letter->id) }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                                         Unduh PDF
                                                     </a>

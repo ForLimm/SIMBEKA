@@ -57,24 +57,8 @@ class StudentController extends Controller
             'teacher_id' => 'nullable|exists:teachers,id',
         ]), StudentRules::messages());
 
-        $email = $request->nisn . '@siswa.simbeka.id';
-        $username = 'siswa_' . $request->nisn;
-
-        // Check if email or username is already taken
-        if (User::where('email', $email)->exists() || User::where('username', $username)->exists()) {
-            return back()->withInput()->withErrors(['nisn' => 'Email atau Username yang dihasilkan dari NISN ini sudah terdaftar.']);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $username,
-            'email' => $email,
-            'password' => Hash::make($request->nisn),
-            'role' => 'siswa',
-        ]);
-
         $data = $request->only(StudentRules::safeFields());
-        $data['user_id'] = $user->id;
+        $data['user_id'] = null;
         $data['teacher_id'] = $request->teacher_id;
 
         if ($request->hasFile('photo')) {
@@ -99,22 +83,6 @@ class StudentController extends Controller
             'teacher_id' => 'nullable|exists:teachers,id',
         ]), StudentRules::messages());
 
-        $user = $student->user;
-        $email = $request->nisn . '@siswa.simbeka.id';
-        $username = 'siswa_' . $request->nisn;
-
-        // Check if email or username is taken by a different user
-        if (User::where('email', $email)->where('id', '!=', $user->id)->exists() || 
-            User::where('username', $username)->where('id', '!=', $user->id)->exists()) {
-            return back()->withInput()->withErrors(['nisn' => 'Email atau Username yang dihasilkan dari NISN ini sudah terdaftar untuk siswa lain.']);
-        }
-
-        $user->update([
-            'name' => $request->name,
-            'username' => $username,
-            'email' => $email,
-        ]);
-
         $data = $request->only(StudentRules::safeFields());
         $data['teacher_id'] = $request->teacher_id;
 
@@ -136,6 +104,13 @@ class StudentController extends Controller
 
         $student->update($data);
 
+        $user = $student->user;
+        if ($user) {
+            $user->update([
+                'name' => $request->name,
+            ]);
+        }
+
         return redirect()->route('admin.students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }
 
@@ -151,6 +126,9 @@ class StudentController extends Controller
 
     public function import(Request $request)
     {
+        @set_time_limit(180);
+        DB::disableQueryLog();
+
         $request->validate([
             'file' => 'required|file|max:10240',
         ], [
@@ -257,9 +235,6 @@ class StudentController extends Controller
                 continue;
             }
 
-            $email = $nisn . '@siswa.simbeka.id';
-            $username = 'siswa_' . $nisn;
-
             // Check if Student already exists by NISN
             $student = Student::where('nisn', $nisn)->first();
 
@@ -321,23 +296,9 @@ class StudentController extends Controller
                 continue;
             }
 
-            // If Student doesn't exist, but User with same email or username exists
-            if (User::where('email', $email)->exists() || User::where('username', $username)->exists()) {
-                $formatErrors[] = "Baris #{$rowCount}: Akun pengguna untuk NISN '{$nisn}' sudah ada tetapi tidak terhubung dengan profil siswa.";
-                continue;
-            }
-
-            // Create new User and Student
-            $user = User::create([
-                'name' => $name,
-                'username' => $username,
-                'email' => $email,
-                'password' => Hash::make($nisn),
-                'role' => 'siswa',
-            ]);
-
+            // Create new Student without User account
             Student::create([
-                'user_id' => $user->id,
+                'user_id' => null,
                 'name' => $name,
                 'nisn' => $nisn,
                 'class' => $data['class'] ?? null,

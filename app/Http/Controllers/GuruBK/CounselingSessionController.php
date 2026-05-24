@@ -65,7 +65,7 @@ class CounselingSessionController extends Controller
 
         // Security check: ensure student belongs to teacher
         $student = Student::findOrFail($request->student_id);
-        if ($student->teacher_id !== $teacher->id) {
+        if ((int)$student->teacher_id !== (int)$teacher->id) {
             return back()->with('error', 'Akses ditolak.');
         }
 
@@ -93,7 +93,7 @@ class CounselingSessionController extends Controller
     {
         $session = $counseling;
         $teacher = Auth::user()->teacher;
-        if ($session->teacher_id !== $teacher->id) {
+        if ((int)$session->teacher_id !== (int)$teacher->id) {
             return redirect()->route('gurubk.counseling.index')->with('error', 'Akses ditolak.');
         }
 
@@ -105,7 +105,7 @@ class CounselingSessionController extends Controller
     {
         $session = $counseling;
         $teacher = Auth::user()->teacher;
-        if ($session->teacher_id !== $teacher->id) {
+        if ((int)$session->teacher_id !== (int)$teacher->id) {
             return redirect()->route('gurubk.counseling.index')->with('error', 'Akses ditolak.');
         }
 
@@ -121,7 +121,7 @@ class CounselingSessionController extends Controller
     {
         $session = $counseling;
         $teacher = Auth::user()->teacher;
-        if ($session->teacher_id !== $teacher->id) {
+        if ((int)$session->teacher_id !== (int)$teacher->id) {
             return redirect()->route('gurubk.counseling.index')->with('error', 'Akses ditolak.');
         }
 
@@ -159,7 +159,7 @@ class CounselingSessionController extends Controller
     {
         $session = $counseling;
         $teacher = Auth::user()->teacher;
-        if ($session->teacher_id !== $teacher->id) {
+        if ((int)$session->teacher_id !== (int)$teacher->id) {
             return back()->with('error', 'Akses ditolak.');
         }
 

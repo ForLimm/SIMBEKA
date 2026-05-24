@@ -31,4 +31,12 @@ class TeacherClassAssignment extends Model
             ->where('teacher_id', $this->teacher_id)
             ->get();
     }
+
+    /**
+     * Mutator to automatically normalize class name for assignments.
+     */
+    public function setClassAttribute($value)
+    {
+        $this->attributes['class'] = Student::normalizeClass($value);
+    }
 }
