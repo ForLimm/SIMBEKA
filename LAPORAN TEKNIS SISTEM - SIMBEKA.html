@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Teknis & Teknologi Sistem - SIMBEKA</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #161b26;
+            --bg-tertiary: #1f2638;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+            --border-color: #2e3748;
+            --glass-bg: rgba(22, 27, 38, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-orange: #ea580c;
+            --border-color: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding-bottom: 80px;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Glassmorphism Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 0;
+            margin-bottom: 40px;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .logo-title h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--text-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-title p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Theme Toggle */
+        .toggle-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.05);
+            background: var(--border-color);
+        }
+
+        /* Hero Banner */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+            filter: blur(40px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            filter: blur(40px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-bottom: 16px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 24px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-blue);
+        }
+
+        /* Grid System */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .blue-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .purple-icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .green-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .orange-icon {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            margin-bottom: 20px;
+        }
+
+        .tech-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tech-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            font-size: 0.875rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .tech-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tech-version {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
+
+        /* Section Headings */
+        .section-header {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            color: var(--text-primary);
+        }
+
+        .section-line {
+            flex-grow: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        /* Detailed Info Boxes */
+        .info-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .info-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-col li {
+            position: relative;
+            padding-left: 24px;
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+
+        .info-col li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        /* Highlight box for key configurations */
+        .highlight-box {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px dashed var(--accent-purple);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .highlight-box h4 {
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+        }
+
+        .highlight-box p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .footer-links a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- STICKY HEADER -->
+    <header>
+        <div class="container header-content">
+            <div class="logo-area">
+                <div class="logo-badge">SB</div>
+                <div class="logo-title">
+                    <h1>SIMBEKA</h1>
+                    <p>Laporan Audit Teknologi</p>
+                </div>
+            </div>
+
+            <button class="toggle-btn" id="themeToggle" title="Ubah Tema" aria-label="Ubah Tema">
+                <!-- Sun Icon -->
+                <svg id="sunIcon" style="display: none;" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2"></path>
+                    <path d="M12 20v2"></path>
+                    <path d="m4.93 4.93 1.41 1.41"></path>
+                    <path d="m17.66 17.66 1.41 1.41"></path>
+                    <path d="M2 12h2"></path>
+                    <path d="M20 12h2"></path>
+                    <path d="m6.34 17.66-1.41 1.41"></path>
+                    <path d="m19.07 4.93-1.41 1.41"></path>
+                </svg>
+                <!-- Moon Icon -->
+                <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- HERO BANNER -->
+        <section class="hero animate-fade-in">
+            <div class="hero-content">
+                <span class="hero-badge">Audit Stack &amp; Arsitektur</span>
+                <h2>SIMBEKA Technology Blueprint</h2>
+                <p>Dokumentasi resmi mengenai spesifikasi teknologi, versi framework, konfigurasi library, penataan
+                    database, serta mekanisme keamanan yang diimplementasikan pada sistem SIMBEKA SMP Negeri 6 Palu.</p>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon"></span>
+                        <span>Backend: Laravel 12.6</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon" style="background-color: var(--accent-purple);"></span>
+                        <span>Frontend: Tailwind CSS 4.0</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon" style="background-color: var(--accent-green);"></span>
+                        <span>Database: SQLite / MySQL</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon" style="background-color: var(--accent-orange);"></span>
+                        <span>PHP: 8.2+</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: CORE STACK -->
+        <section class="animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="section-header">
+                <h2 class="section-title">Core Technology Stack</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="tech-grid">
+                <!-- Backend Card -->
+                <div class="card">
+                    <div class="card-icon blue-icon">⚙️</div>
+                    <h3>Backend Engine</h3>
+                    <p>Mesin utama pemrosesan data, validasi request, routing, dan logika bisnis sistem.</p>
+                    <ul class="tech-list">
+                        <li class="tech-item">
+                            <span class="tech-name">PHP Language</span>
+                            <span class="tech-version">^8.3</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">Laravel Framework</span>
+                            <span class="tech-version">^13.8</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">Laravel Tinker (REPL)</span>
+                            <span class="tech-version">^3.0</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Frontend Card -->
+                <div class="card">
+                    <div class="card-icon purple-icon">🎨</div>
+                    <h3>Frontend Stack</h3>
+                    <p>Framework penataan UI, bundle asset modern, dan pengelolaan interaksi dinamis.</p>
+                    <ul class="tech-list">
+                        <li class="tech-item">
+                            <span class="tech-name">Tailwind CSS</span>
+                            <span class="tech-version">^4.0.0</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">Vite Bundler</span>
+                            <span class="tech-version">^8.0.0</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">@tailwindcss/vite</span>
+                            <span class="tech-version">^4.0.0</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">Laravel Vite Plugin</span>
+                            <span class="tech-version">^3.1</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Document & Data Card -->
+                <div class="card">
+                    <div class="card-icon green-icon">📄</div>
+                    <h3>Data &amp; Documents</h3>
+                    <p>Library ekspor laporan kustom, rekap, serta sistem manipulasi spreadsheet.</p>
+                    <ul class="tech-list">
+                        <li class="tech-item">
+                            <span class="tech-name">Barryvdh DomPDF</span>
+                            <span class="tech-version">^3.1</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">PhpSpreadsheet</span>
+                            <span class="tech-version">^5.7</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Dev Utilities Card -->
+                <div class="card">
+                    <div class="card-icon orange-icon">🛠️</div>
+                    <h3>Dev Tools &amp; Testing</h3>
+                    <p>Utilitas pendukung kualitas kode, server local paralel, dan unit testing.</p>
+                    <ul class="tech-list">
+                        <li class="tech-item">
+                            <span class="tech-name">Concurrently</span>
+                            <span class="tech-version">^9.0.1</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">PHPUnit</span>
+                            <span class="tech-version">^12.5.12</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">Laravel Pint (Linter)</span>
+                            <span class="tech-version">^1.27</span>
+                        </li>
+                        <li class="tech-item">
+                            <span class="tech-name">Laravel Pail</span>
+                            <span class="tech-version">^1.2.5</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ARCHITECTURE & DATABASE -->
+        <section class="animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="section-header">
+                <h2 class="section-title">Database &amp; Data Integrity</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-grid">
+                    <div class="info-col">
+                        <h4>💾 Skema Database &amp; Driver</h4>
+                        <ul>
+                            <li><b>Driver Fleksibel:</b> Sistem mendukung SQLite (default local development) dan MySQL /
+                                MariaDB (production).</li>
+                            <li><b>Session &amp; Cache:</b> Sesi pengguna (`SESSION_DRIVER`) dan cache sistem
+                                (`CACHE_STORE`) dipusatkan pada database untuk stabilitas dan persistensi state login
+                                yang solid.</li>
+                            <li><b>Queue Driver:</b> Pengolahan antrean tugas di latar belakang (`QUEUE_CONNECTION`)
+                                dikelola via tabel database (`jobs`).</li>
+                        </ul>
+                    </div>
+                    <div class="info-col">
+                        <h4>🛡️ Integritas Data &amp; Relasi</h4>
+                        <ul>
+                            <li><b>SoftDeletes:</b> Diimplementasikan pada data sensitif (`students`, `reports`,
+                                `archives`, `counseling_sessions`) untuk melindungi dari ketidaksengajaan penghapusan
+                                data.</li>
+                            <li><b>Cascade Deletes:</b> Pengaturan foreign key terkonfigurasi secara programmatis dan
+                                database-level cascade untuk membersihkan relasi terkait saat data induk dihapus.</li>
+                            <li><b>Index Optimasi:</b> Kolom foreign key penting (`student_id`, `teacher_id`,
+                                `academic_period_id`), status laporan, dan role user dilengkapi index untuk mempercepat
+                                loading data.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SECURITY FEATURES -->
+        <section class="animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="section-header">
+                <h2 class="section-title">Security &amp; Encryption</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-grid">
+                    <div class="info-col">
+                        <h4>🔑 Enkripsi &amp; Otorisasi</h4>
+                        <ul>
+                            <li><b>Enkripsi Recovery Code:</b> Kode pemulihan siswa/guest di-enkripsi di database
+                                menggunakan algoritma <b>AES-256-CBC</b> via <code>Crypt::encryptString</code> untuk
+                                proteksi dari kebocoran data plain-text.</li>
+                            <li><b>Hashing Satu Arah:</b> Password user dan jawaban pertanyaan keamanan disimpan
+                                menggunakan hash algoritma <b>bcrypt</b> standar industri dengan cost factor 12.</li>
+                            <li><b>Role-Based Access Control (RBAC):</b> Hak akses super admin, guru bk, dan siswa
+                                diproteksi ketat menggunakan custom middleware <code>RoleMiddleware</code> dan
+                                <code>GuestOnly</code>.</li>
+                        </ul>
+                    </div>
+                    <div class="info-col">
+                        <h4>🌐 HTTP Protection &amp; Sanitasi</h4>
+                        <ul>
+                            <li><b>Security Headers Middleware:</b> Otomatis menambahkan header keamanan di setiap
+                                response:
+                                <ul>
+                                    <li><code>X-Frame-Options: SAMEORIGIN</code> (Proteksi Clickjacking)</li>
+                                    <li><code>X-Content-Type-Options: nosniff</code> (Proteksi MIME Sniffing)</li>
+                                    <li><code>X-XSS-Protection: 1; mode=block</code> (Proteksi Cross-Site Scripting)
+                                    </li>
+                                    <li><code>Referrer-Policy: strict-origin-when-cross-origin</code></li>
+                                    <li><code>Permissions-Policy: camera=(), microphone=(), geolocation=()</code></li>
+                                </ul>
+                            </li>
+                            <li><b>Sanitasi Input XSS:</b> Setiap pengiriman form konsultasi atau laporan secara
+                                otomatis dibersihkan dari tag HTML menggunakan helper <code>strip_tags()</code>.</li>
+                            <li><b>Rate Limiting (Anti Brute Force):</b> Pembatasan jumlah request percobaan login (5
+                                kali/menit) dan pembuatan akun guest (10 kali/menit) untuk mencegah serangan brute
+                                force.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💬 Kebijakan Privasi Sesi: Self-Destruct Chat</h4>
+                    <p>Setelah kasus konsultasi online diselesaikan (status diubah menjadi <code>resolved</code> oleh
+                        Guru BK), sistem mengeksekusi penutupan sesi chat secara permanen. Seluruh pesan dalam sesi
+                        tersebut ditandai dengan flag <code>is_destroyed = true</code> pada database dan disembunyikan
+                        secara permanen dari query Eloquent menggunakan custom Scope <code>visible()</code>, menjamin
+                        privasi percakapan sensitif antara siswa dan konselor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: GLOSARIUM TEKNIS UNTUK ORANG AWAM -->
+        <section class="animate-fade-in" style="animation-delay: 0.4s;">
+            <div class="section-header">
+                <h2 class="section-title">Glosarium Teknis (Bahasa Awam)</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="info-box">
+                <p style="margin-bottom: 24px; color: var(--text-secondary);">
+                    Untuk memudahkan komite sekolah, kepala sekolah, staf guru, dan pihak non-teknis memahami bagaimana
+                    sistem SIMBEKA dibangun, berikut adalah penjelasan sederhana dan analogi mengenai <b>seluruh
+                        teknologi (Core Stack)</b> yang kami gunakan:
+                </p>
+
+                <div class="info-grid">
+                    <!-- BLOCK 1: BACKEND ENGINE -->
+                    <div class="info-col">
+                        <h4 style="color: var(--accent-blue);">⚙️ Backend Engine (Mesin Pemroses Data)</h4>
+                        <ul>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>PHP Language (^8.2):</b><br>
+                                <i>Analogi: "Bahasa Percakapan Resmi Server".</i><br>
+                                PHP adalah bahasa pemrograman dasar yang digunakan untuk menulis logika di balik layar.
+                                Bahasa ini bertugas menerima pendaftaran siswa, menghitung kuota bimbingan, dan
+                                memproses obrolan chat.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Laravel Framework (^11.9 || ^12.0):</b><br>
+                                <i>Analogi: "Peralatan Dapur Modern Siap Pakai".</i><br>
+                                Laravel adalah kerangka kerja yang mempermudah penulisan PHP. Alih-alih membuat pengunci
+                                keamanan, pengirim surat, dan struktur data dari awal, Laravel menyediakan alat siap
+                                pakai agar sistem selesai lebih cepat, rapi, dan bebas celah keamanan.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Laravel Tinker (^2.9 || ^3.0):</b><br>
+                                <i>Analogi: "Remot Uji Coba Langsung".</i><br>
+                                Alat ini memungkinkan pembuat program berkomunikasi langsung dengan database menggunakan
+                                perintah teks cepat untuk mengecek data siswa atau mereset password secara langsung
+                                tanpa harus membuka halaman web.
+                            </li>
+                        </ul>
+
+                        <h4 style="color: var(--accent-purple); margin-top: 24px;">🎨 Frontend Stack (Desain & Tampilan
+                            Visual)</h4>
+                        <ul>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Tailwind CSS (^4.0.0):</b><br>
+                                <i>Analogi: "Palet Warna & Cetakan Desain Instan".</i><br>
+                                Tailwind CSS mengatur warna tombol, bentuk kotak, ukuran teks, dan tata letak agar
+                                tampilan SIMBEKA terasa modern, bersih, dan nyaman saat dipandang mata di HP maupun
+                                laptop.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Vite Bundler (^8.0.0):</b><br>
+                                <i>Analogi: "Petugas Packing Ekspres".</i><br>
+                                Vite bertugas mengompres (mengecilkan) file desain, gambar, dan kode Javascript ke dalam
+                                paket kecil agar halaman web tidak lemot saat dibuka oleh siswa.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>@tailwindcss/vite & Laravel Vite Plugin:</b><br>
+                                <i>Analogi: "Saluran Pipa Air Otomatis".</i><br>
+                                Menghubungkan sistem desain dengan mesin backend. Setiap kali pemrogram merubah letak
+                                tombol atau warna, perubahannya langsung mengalir ke server secara instan tanpa perlu
+                                mematikan dan menghidupkan ulang web.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- BLOCK 2: DOCUMENTS & TOOLS -->
+                    <div class="info-col">
+                        <h4 style="color: var(--accent-green);">📄 Data & Documents (Pengolahan Berkas)</h4>
+                        <ul>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Barryvdh DomPDF (^3.1):</b><br>
+                                <i>Analogi: "Mesin Cetak Surat Digital".</i><br>
+                                DomPDF secara otomatis merangkum catatan bimbingan atau surat peringatan di aplikasi,
+                                lalu mencetaknya ke dalam berkas PDF (.pdf) resmi yang siap diprint atau dibagikan ke
+                                orang tua siswa.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>PhpSpreadsheet (^5.7):</b><br>
+                                <i>Analogi: "Jembatan Pengisi Tabel Excel".</i><br>
+                                Library ini bertugas membaca berkas Excel data siswa baru dari staf tata usaha sekolah,
+                                lalu secara otomatis memasukkan ribuan nama tersebut ke database SIMBEKA dalam sekejap
+                                tanpa perlu mengetik manual satu per satu.
+                            </li>
+                        </ul>
+
+                        <h4 style="color: var(--accent-orange); margin-top: 24px;">🛠️ Dev Tools & Testing (Penjamin
+                            Kualitas & Sistem Deteksi)</h4>
+                        <ul>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Concurrently (^9.0.1):</b><br>
+                                <i>Analogi: "Operator Serbabisa (Multitasking)".</i><br>
+                                Menjalankan server website, pemroses antrean chat, dan mesin kompresi desain secara
+                                bersamaan dalam satu klik, memudahkan proses pengembangan lokal.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>PHPUnit (^10.5 || ^11.0):</b><br>
+                                <i>Analogi: "Robot Inspektur Kualitas (Quality Control)".</i><br>
+                                Robot otomatis yang menguji seluruh tombol (tombol klaim kelas, kirim laporan, dll.)
+                                berulang kali secara otomatis untuk menjamin tidak ada tombol yang rusak sebelum
+                                aplikasi dipakai resmi oleh sekolah.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Laravel Pint (^1.27):</b><br>
+                                <i>Analogi: "Editor Ejaan & Tata Bahasa".</i><br>
+                                Laravel Pint secara otomatis menyunting tulisan kode program agar rapi, seragam, dan
+                                mudah dibaca oleh pengembang lain yang ingin melanjutkan pemeliharaan sistem di masa
+                                mendatang.
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 20px;">
+                                <b>Laravel Pail (^1.2.5):</b><br>
+                                <i>Analogi: "Pencatat CCTV Masalah".</i><br>
+                                Laravel Pail memunculkan log (catatan) error secara langsung di layar komputer saat ada
+                                kesalahan sistem, sehingga pembuat aplikasi bisa mengetahui letak kerusakannya secara
+                                tepat detik itu juga.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ANALOGI FITUR KEAMANAN LAINNYA -->
+                <div class="highlight-box" style="margin-top: 32px;">
+                    <h4 style="color: var(--accent-purple); margin-bottom: 12px;">🔒 Analogi Fitur Keamanan Tambahan
+                    </h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px;">
+                        • <b>Enkripsi AES-256 (Crypt):</b> Kode pemulihan (Recovery Code) disembunyikan dalam brankas
+                        baja bersandi rumit. Hanya server yang memegang kunci pembukanya, mencegah peretas membaca kode
+                        tersebut sekalipun database bocor.
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px;">
+                        • <b>Hashing Bcrypt:</b> Mesin penghancur kertas satu arah. Password dihancurkan menjadi abu
+                        secara permanen. Sistem hanya mencocokkan kemiripan abunya saja saat login, menjaga kerahasiaan
+                        password mutlak bagi pengguna.
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px;">
+                        • <b>Middleware &amp; RBAC:</b> Kartu akses ruangan. Siswa tidak bisa menyusup ke ruang
+                        bimbingan Guru BK, dan Guru BK tidak bisa menyamar menjadi Kepala Sekolah atau Super Admin.
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                        • <b>Self-Destruct Chat:</b> Surat rahasia terbakar otomatis. Begitu kasus konsultasi online
+                        dinyatakan selesai (resolved), riwayat obrolan pribadi langsung dimusnahkan secara permanen dari
+                        layar web untuk menjaga aib siswa.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 SIMBEKA. Semua Hak Cipta Dilindungi.</p>
+            <div class="footer-links">
+                <a href="#">Dokumentasi API</a>
+                <a href="#">Panduan Admin</a>
+                <a href="#">Kebijakan Privasi</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT TEMA -->
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+
+        // Check local storage or system preferences
+        if (localStorage.getItem('theme') === 'light' ||
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            document.body.classList.add('light-mode');
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        } else {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+
+            if (document.body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

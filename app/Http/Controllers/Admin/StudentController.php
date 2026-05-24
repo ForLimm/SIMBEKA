@@ -224,7 +224,9 @@ class StudentController extends Controller
 
         $rowCount = 0;
         $successCount = 0;
-        $errors = [];
+        $updatedCount = 0;
+        $duplicateCount = 0;
+        $formatErrors = [];
 
         foreach ($rows as $row) {
             $rowCount++;
@@ -245,29 +247,87 @@ class StudentController extends Controller
             $nisn = $data['nisn'] ?? null;
 
             if (!$name || !$nisn) {
-                $errors[] = "Baris #{$rowCount}: Kolom Nama dan NISN wajib diisi.";
+                $formatErrors[] = "Baris #{$rowCount}: Kolom Nama dan NISN wajib diisi.";
                 continue;
             }
 
             // NISN validation length check
             if (strlen($nisn) !== 10 || !is_numeric($nisn)) {
-                $errors[] = "Baris #{$rowCount}: NISN '{$nisn}' tidak valid (harus 10 digit angka).";
+                $formatErrors[] = "Baris #{$rowCount}: NISN '{$nisn}' tidak valid (harus 10 digit angka).";
                 continue;
             }
 
             $email = $nisn . '@siswa.simbeka.id';
             $username = 'siswa_' . $nisn;
 
+            // Check if Student already exists by NISN
+            $student = Student::where('nisn', $nisn)->first();
+
+            if ($student) {
+                $user = $student->user;
+                $parsedBirthDate = $this->parseDate($data['birth_date'] ?? null);
+
+                // Determine if anything changed
+                $hasChanges = false;
+                if ($user && $user->name !== $name) {
+                    $hasChanges = true;
+                }
+
+                $fieldsToCompare = [
+                    'name' => $name,
+                    'class' => $data['class'] ?? null,
+                    'gender' => $data['gender'] ?? null,
+                    'religion' => $data['religion'] ?? null,
+                    'birth_place' => $data['birth_place'] ?? null,
+                    'birth_date' => $parsedBirthDate,
+                    'living_status' => $data['living_status'] ?? null,
+                    'address' => $data['address'] ?? null,
+                    'phone' => $data['phone'] ?? null,
+                    'father_name' => $data['father_name'] ?? null,
+                    'mother_name' => $data['mother_name'] ?? null,
+                ];
+
+                foreach ($fieldsToCompare as $key => $val) {
+                    $oldVal = $student->$key;
+                    $oldTrimmed = $oldVal !== null ? trim($oldVal) : null;
+                    $newTrimmed = $val !== null ? trim($val) : null;
+                    if ($oldTrimmed !== $newTrimmed) {
+                        $hasChanges = true;
+                        break;
+                    }
+                }
+
+                if ($hasChanges) {
+                    if ($user) {
+                        $user->update(['name' => $name]);
+                    }
+                    $student->update([
+                        'name' => $name,
+                        'class' => $data['class'] ?? null,
+                        'gender' => $data['gender'] ?? null,
+                        'religion' => $data['religion'] ?? null,
+                        'birth_place' => $data['birth_place'] ?? null,
+                        'birth_date' => $parsedBirthDate,
+                        'living_status' => $data['living_status'] ?? null,
+                        'address' => $data['address'] ?? null,
+                        'phone' => $data['phone'] ?? null,
+                        'father_name' => $data['father_name'] ?? null,
+                        'mother_name' => $data['mother_name'] ?? null,
+                    ]);
+                    $updatedCount++;
+                } else {
+                    $duplicateCount++;
+                }
+                continue;
+            }
+
+            // If Student doesn't exist, but User with same email or username exists
             if (User::where('email', $email)->exists() || User::where('username', $username)->exists()) {
-                $errors[] = "Baris #{$rowCount}: Siswa dengan NISN '{$nisn}' sudah terdaftar (Email/Username terpakai).";
+                $formatErrors[] = "Baris #{$rowCount}: Akun pengguna untuk NISN '{$nisn}' sudah ada tetapi tidak terhubung dengan profil siswa.";
                 continue;
             }
 
-            if (Student::where('nisn', $nisn)->exists()) {
-                $errors[] = "Baris #{$rowCount}: NISN '{$nisn}' sudah terdaftar di database.";
-                continue;
-            }
-
+            // Create new User and Student
             $user = User::create([
                 'name' => $name,
                 'username' => $username,
@@ -295,12 +355,45 @@ class StudentController extends Controller
             $successCount++;
         }
 
-        $msg = "Berhasil mengimpor {$successCount} siswa.";
-        if (count($errors) > 0) {
-            return redirect()->route('admin.students.index')->with('success', $msg)->withErrors($errors);
+        $errors = [];
+
+        // Scenario 1: All rows are duplicates (no new inserts, no updates, duplicates > 0, no format errors)
+        if ($successCount === 0 && $updatedCount === 0 && $duplicateCount > 0 && empty($formatErrors)) {
+            return redirect()->route('admin.students.index')
+                ->with('error', 'Semua data siswa dalam berkas sudah terdaftar dan tidak ada perubahan data.');
         }
 
-        return redirect()->route('admin.students.index')->with('success', $msg);
+        // Scenario 2: Some rows imported or updated successfully
+        if ($successCount > 0 || $updatedCount > 0) {
+            $msgParts = [];
+            if ($successCount > 0) {
+                $msgParts[] = "mengimpor {$successCount} siswa baru";
+            }
+            if ($updatedCount > 0) {
+                $msgParts[] = "memperbarui {$updatedCount} data siswa";
+            }
+            $msg = "Berhasil " . implode(" dan ", $msgParts) . ".";
+
+            if ($duplicateCount > 0) {
+                $errors[] = "Sebanyak {$duplicateCount} data siswa dilewati karena sudah terdaftar dan datanya sama.";
+            }
+            $errors = array_merge($errors, $formatErrors);
+
+            if (count($errors) > 0) {
+                return redirect()->route('admin.students.index')
+                    ->with('success', $msg)
+                    ->withErrors($errors);
+            }
+            return redirect()->route('admin.students.index')->with('success', $msg);
+        }
+
+        // Scenario 3: No success, no updates, but we have errors (format errors / duplicates)
+        if ($duplicateCount > 0) {
+            $errors[] = "Sebanyak {$duplicateCount} data siswa dilewati karena sudah terdaftar dan datanya sama.";
+        }
+        $errors = array_merge($errors, $formatErrors);
+
+        return redirect()->route('admin.students.index')->withErrors($errors);
     }
 
     private function parseDate($value)

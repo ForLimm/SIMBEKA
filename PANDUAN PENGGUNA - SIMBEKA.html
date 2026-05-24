@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Panduan Pengguna (User Guide) - SIMBEKA</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #161b26;
+            --bg-tertiary: #1f2638;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f97316;
+            --border-color: #2e3748;
+            --glass-bg: rgba(22, 27, 38, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-green: #059669;
+            --accent-orange: #ea580c;
+            --border-color: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding-bottom: 80px;
+            transition: var(--transition);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header Style */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 0;
+            margin-bottom: 40px;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .logo-title h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--text-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-title p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .toggle-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        /* Banner Hero */
+        .hero {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .hero h2 {
+            font-size: 2.25rem;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+
+        /* Role Selector Tabs */
+        .role-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .role-tab {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .role-tab:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+
+        .role-tab.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Content Panel Layout */
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Step Section */
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .step-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .step-card {
+                flex-direction: column;
+            }
+        }
+
+        .step-badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .step-card.purple-theme .step-badge {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .step-card.green-theme .step-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .step-info {
+            flex-grow: 1;
+        }
+
+        .step-info h3 {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .step-list {
+            margin-left: 20px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .attention-box {
+            background: rgba(249, 115, 22, 0.05);
+            border: 1px dashed var(--accent-orange);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .attention-box b {
+            color: var(--accent-orange);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-content">
+            <div class="logo-area">
+                <div class="logo-badge">SB</div>
+                <div class="logo-title">
+                    <h1>SIMBEKA</h1>
+                    <p>Buku Panduan Pengguna</p>
+                </div>
+            </div>
+            
+            <button class="toggle-btn" id="themeToggle" title="Ubah Tema" aria-label="Ubah Tema">
+                <!-- Sun Icon -->
+                <svg id="sunIcon" style="display: none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                <!-- Moon Icon -->
+                <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- HERO -->
+        <section class="hero">
+            <h2>Manual Book &amp; Panduan SIMBEKA</h2>
+            <p>Panduan lengkap tata cara penggunaan aplikasi Sistem Informasi Manajemen Bimbingan &amp; Konseling (SIMBEKA) SMP Negeri 6 Palu. Silakan pilih kategori pengguna di bawah ini untuk melihat alur kerja masing-masing.</p>
+        </section>
+
+        <!-- ROLE SELECTOR TABS -->
+        <div class="role-tabs">
+            <button class="role-tab active" data-target="admin-panel">🛡️ Super Admin</button>
+            <button class="role-tab" data-target="guru-panel">💼 Guru BK</button>
+            <button class="role-tab" data-target="siswa-panel">🎓 Siswa / Tamu</button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SUPER ADMIN PANEL -->
+        <!-- ============================================== -->
+        <div class="panel active" id="admin-panel">
+            <div class="step-container">
+                
+                <div class="step-card">
+                    <div class="step-badge">01</div>
+                    <div class="step-info">
+                        <h3>Login &amp; Dashboard Utama</h3>
+                        <p>Super Admin masuk menggunakan username atau email khusus admin sekolah.</p>
+                        <ul class="step-list">
+                            <li>Buka halaman utama aplikasi SIMBEKA.</li>
+                            <li>Masukkan username/email dan password Admin, lalu klik tombol <b>Masuk</b>.</li>
+                            <li>Pada dashboard, perhatikan statistik jumlah Guru BK aktif, Siswa Manual terdaftar, dan Siswa Tamu (Guest) yang sedang aktif di sistem.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-badge">02</div>
+                    <div class="step-info">
+                        <h3>Mengelola Periode Akademik (Tahun Ajaran &amp; Semester)</h3>
+                        <p>Penting dilakukan di setiap awal semester baru untuk mereset dan mencatat batasan arsip.</p>
+                        <ul class="step-list">
+                            <li>Pilih menu <b>Periode Akademik</b> di sidebar sebelah kiri.</li>
+                            <li>Gunakan tombol <b>Tambah Periode</b> untuk membuat tahun ajaran (contoh: "2025/2026") dan pilih semester (Ganjil/1 atau Genap/2).</li>
+                            <li>Untuk mengaktifkan periode baru, klik tombol <b>Aktifkan</b> pada baris periode tersebut.</li>
+                        </ul>
+                        <div class="attention-box">
+                            <b>PENTING:</b> Mengaktifkan periode akademik baru akan menonaktifkan periode sebelumnya dan secara otomatis <b>me-reset status bimbingan seluruh siswa di sistem menjadi kosong (null)</b>. Guru BK diwajibkan melakukan klaim kelas ulang agar data bimbingan ter-sinkronisasi ke periode yang baru.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-badge">03</div>
+                    <div class="step-info">
+                        <h3>Manajemen Data Guru BK</h3>
+                        <p>Mengelola biodata dan kapasitas kuota bimbingan masing-masing Guru BK.</p>
+                        <ul class="step-list">
+                            <li>Pilih menu <b>Guru BK</b> di sidebar kiri.</li>
+                            <li>Klik <b>Tambah Guru</b> dan isi formulir lengkap: Nama, NIP (wajib tepat 18 digit), Email unik, dan <b>Kuota Bimbingan Maksimal (Max Quota)</b>.</li>
+                            <li>Parameter kuota bimbingan (max_quota) digunakan untuk membatasi jumlah siswa yang dapat diampu oleh Guru BK tersebut saat melakukan klaim kelas.</li>
+                            <li>Klik tombol <b>Simpan</b>. Akun Guru BK akan otomatis terbuat di database.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-badge">04</div>
+                    <div class="step-info">
+                        <h3>Sentralisasi Data Siswa (CRUD &amp; Impor Excel/CSV)</h3>
+                        <p>Seluruh penambahan, pengeditan, dan penghapusan data siswa kini dipusatkan penuh di tangan Super Admin.</p>
+                        <ul class="step-list">
+                            <li><b>Input Manual:</b> Pilih menu <b>Siswa</b> &rarr; klik <b>Tambah Siswa</b>. Masukkan nama, NISN (10 digit), kelas, data wali, serta upload foto profil siswa. Klik Simpan.</li>
+                            <li><b>Unggah Massal (Impor):</b> Klik tombol <b>Impor Excel/CSV</b>. Pilih file Excel (.xlsx / .xls) atau CSV dari komputer Anda.</li>
+                            <li><b>Pemetaan Kolom Dinamis (Column Mapping):</b> Sistem akan mendeteksi header tabel berkas Anda. Jika nama kolom berbeda (misalnya berkas Anda menulis "Nama Lengkap" sedangkan sistem meminta "name"), cocokkan pilihan kolom tersebut pada drop-down yang disediakan sebelum menekan tombol <b>Proses Impor</b>.</li>
+                        </ul>
+                        <div class="attention-box">
+                            Sistem secara otomatis akan membuatkan akun siswa dengan email default: <code>[nisn]@siswa.simbeka.id</code> dan password default berupa NISN siswa tersebut.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- GURU BK PANEL -->
+        <!-- ============================================== -->
+        <div class="panel" id="guru-panel">
+            <div class="step-container">
+                
+                <div class="step-card purple-theme">
+                    <div class="step-badge">01</div>
+                    <div class="step-info">
+                        <h3>Klaim Kelas Bimbingan (Claim Classes) &amp; Carry-Over</h3>
+                        <p>Di awal setiap periode akademik baru, Guru BK wajib mengklaim kelas bimbingan secara mandiri.</p>
+                        <ul class="step-list">
+                            <li>Pilih menu <b>Klaim Kelas</b> pada sidebar.</li>
+                            <li>Pilih kelas-kelas yang ingin diampu dengan mencentang kotak pilihan kelas.</li>
+                            <li>Gunakan tombol <b>Carry-Over</b> untuk secara otomatis menyalin daftar kelas bimbingan yang Anda ampu pada periode akademik semester sebelumnya.</li>
+                            <li>Klik <b>Simpan Klaim</b>. Sistem akan mengecek ketersediaan kelas dan kuota Anda.</li>
+                        </ul>
+                        <div class="attention-box">
+                            <b>PENTING:</b> Klaim akan ditolak oleh sistem apabila: (1) Jumlah total siswa di kelas yang Anda pilih melebihi <b>max_quota</b> bimbingan Anda, atau (2) Kelas tersebut sudah diklaim oleh Guru BK lain di periode akademik saat ini.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card purple-theme">
+                    <div class="step-badge">02</div>
+                    <div class="step-info">
+                        <h3>Penanganan Pelaporan Online &amp; Live Chat</h3>
+                        <p>Menangani laporan aduan atau permintaan konsultasi yang masuk dari siswa.</p>
+                        <ul class="step-list">
+                            <li>Pada dashboard Guru BK, perhatikan menu <b>Kasus Masuk (Pending)</b>.</li>
+                            <li>Klik laporan yang masuk, baca pokok aduan, lalu klik <b>Claim Kasus</b> untuk mulai menanganinya (kasus berubah status menjadi *In-Progress*).</li>
+                            <li>Masuk ke ruang chat konsultasi untuk berkomunikasi secara real-time dengan siswa tersebut.</li>
+                            <li>Jika diskusi telah selesai, klik tombol <b>Kasus Selesai (Resolve)</b>.</li>
+                        </ul>
+                        <div class="attention-box">
+                            <b>KEBIJAKAN KEAMANAN &amp; PRIVASI:</b><br>
+                            1. Guru BK dibatasi hanya boleh menangani maksimal <b>5 kasus aktif (in-progress)</b> secara bersamaan.<br>
+                            2. Menyelesaikan kasus (Resolve) akan memicu fitur <b>Self-Destruct Chat</b> yang menghapus semua isi riwayat chat dari antarmuka web demi privasi siswa. Laporan akan otomatis diarsipkan.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card purple-theme">
+                    <div class="step-badge">03</div>
+                    <div class="step-info">
+                        <h3>Pencatatan Sesi Konseling Formal (Offline)</h3>
+                        <p>Digunakan untuk mencatat konseling tatap muka formal yang tidak berawal dari laporan online.</p>
+                        <ul class="step-list">
+                            <li>Pilih menu <b>Konseling Formal</b> &rarr; klik <b>Catat Sesi Baru</b>.</li>
+                            <li>Pilih nama siswa, tanggal bimbingan, kategori masalah (tersedia 8 opsi seperti Bullying, Akademik, Karir, dll), dan isi ringkasan serta tindak lanjut.</li>
+                            <li>Pilih status bimbingan: <i>Selesai</i>, <i>Monitoring</i>, atau <i>Tindak Lanjut</i>.</li>
+                            <li>Sistem akan merekam Nama dan NIP Anda secara historis langsung ke data sesi saat disimpan.</li>
+                        </ul>
+                        <div class="attention-box">
+                            Sesi konseling yang disimpan dengan status <b>Selesai</b> akan otomatis terkunci (tidak bisa diedit atau dihapus) untuk menjaga integritas data arsip.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card purple-theme">
+                    <div class="step-badge">04</div>
+                    <div class="step-info">
+                        <h3>Generate Surat Keputusan Administratif</h3>
+                        <p>Membuat surat kedisiplinan atau pemanggilan resmi secara instan.</p>
+                        <ul class="step-list">
+                            <li>Masuk ke data Siswa Bimbingan Anda, lalu pilih opsi <b>Buat Surat</b>.</li>
+                            <li>Pilih jenis surat yang dibutuhkan: <b>Surat Panggilan Orang Tua</b>, <b>SP1</b>, <b>SP2</b>, atau <b>Surat Skorsing</b>.</li>
+                            <li>Isi keterangan detail surat, lalu klik <b>Generate PDF</b>.</li>
+                            <li>Surat akan di-render dalam berkas PDF resmi dengan penomoran standar instansi sekolah, disimpan di storage publik, dan otomatis terhubung di riwayat arsip siswa terkait.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card purple-theme">
+                    <div class="step-badge">05</div>
+                    <div class="step-info">
+                        <h3>Sistem Arsip &amp; Ekspor Rekap Laporan Anekdot</h3>
+                        <p>Mengakses data historis dan mengekspor kompilasi catatan konseling siswa.</p>
+                        <ul class="step-list">
+                            <li>Pilih menu <b>Arsip</b> untuk melihat data bimbingan terpilah berdasarkan: Arsip Laporan, Arsip Sesi Konseling, dan Arsip Surat.</li>
+                            <li>Pilih filter Tahun Ajaran atau Semester aktif untuk mempersempit jangkauan data bimbingan.</li>
+                            <li>Untuk mencetak rekap konseling per siswa (Laporan Anekdot), masuk ke profil siswa, tentukan filter periode (Bulan ini / Semester aktif / Tahun Ajaran penuh), lalu klik <b>Ekspor Laporan</b>.</li>
+                            <li>Pilih format keluaran berkas ekspor: <b>PDF</b>, <b>Word (.doc)</b>, atau <b>Excel (.xls)</b>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SISWA / TAMU PANEL -->
+        <!-- ============================================== -->
+        <div class="panel" id="siswa-panel">
+            <div class="step-container">
+                
+                <div class="step-card green-theme">
+                    <div class="step-badge">01</div>
+                    <div class="step-info">
+                        <h3>Pendaftaran Akun &amp; Kode Pemulihan (Recovery Code)</h3>
+                        <p>Membuat akses masuk mandiri dengan pengamanan kunci pemulihan sandi.</p>
+                        <ul class="step-list">
+                            <li>Pada halaman awal login, klik tautan <b>Daftar Akun Baru</b>.</li>
+                            <li>Masukkan username pilihan, password, pilih pertanyaan keamanan, dan ketik jawaban keamanannya.</li>
+                            <li>Setelah pendaftaran berhasil, sistem akan memunculkan sebuah <b>Recovery Code</b> (contoh format: <code>F982-A3D1</code>).</li>
+                        </ul>
+                        <div class="attention-box">
+                            <b>PENTING:</b> Catat dan simpan Recovery Code Anda dengan baik! Kode pemulihan ini di-enkripsi secara ketat di server dan merupakan satu-satunya cara memulihkan akun atau merubah password jika Anda lupa sandi Anda.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card green-theme">
+                    <div class="step-badge">02</div>
+                    <div class="step-info">
+                        <h3>Masuk sebagai Tamu (Guest Login) Anonim</h3>
+                        <p>Bagi siswa yang ingin berkonsultasi secara mendesak tanpa ingin identitas aslinya diketahui.</p>
+                        <ul class="step-list">
+                            <li>Pada halaman awal, klik tombol <b>Masuk sebagai Tamu (Guest)</b>.</li>
+                            <li>Sistem secara otomatis akan membuatkan sesi akun anonim untuk Anda dengan nama acak buah/sayur dan angka (contoh: <code>Mangga284</code>).</li>
+                            <li>Anda akan diberikan kode pemulihan (Recovery Code) darurat. Simpan kode tersebut untuk login kembali ke sesi chat Anda nanti.</li>
+                            <li>Jika di kemudian hari Anda ingin mengubah akun Tamu Anda menjadi akun terdaftar permanen, masuk ke halaman Pengaturan Akun, isi password permanen, dan konfirmasikan menggunakan kode pemulihan Anda.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card green-theme">
+                    <div class="step-badge">03</div>
+                    <div class="step-info">
+                        <h3>Membuat Laporan Keluhan / Curhat</h3>
+                        <p>Mengirimkan aduan atau permohonan konsultasi langsung kepada Guru BK.</p>
+                        <ul class="step-list">
+                            <li>Klik menu <b>Buat Laporan Baru</b> pada portal Anda.</li>
+                            <li>Tulis Judul aduan, ketik kronologi keluhan, dan pilih prioritas kasus (Rendah / Sedang / Tinggi).</li>
+                            <li>Pilih opsi kerahasiaan: centang <b>Sembunyikan Nama (Anonim)</b> jika Anda merupakan siswa terdaftar namun ingin nama Anda dirahasiakan dari tampilan laporan (untuk Guest otomatis anonim).</li>
+                            <li>Klik tombol <b>Kirim Laporan</b>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card green-theme">
+                    <div class="step-badge">04</div>
+                    <div class="step-info">
+                        <h3>Mengakses Sesi Chat &amp; Menyembunyikan Riwayat</h3>
+                        <p>Berkomunikasi dengan Guru BK pembimbing dan mengamankan tampilan portal pribadi.</p>
+                        <ul class="step-list">
+                            <li>Masuk ke <b>Riwayat Laporan</b>, klik laporan Anda yang berstatus <i>In-Progress</i> untuk masuk ke ruang chat.</li>
+                            <li>Ketik pesan dan kirim. Anda dapat melihat status centang jika pesan Anda sudah dibaca oleh Guru BK.</li>
+                            <li>Jika Anda khawatir akun Anda diakses oleh teman yang meminjam HP Anda, klik tombol <b>Sembunyikan Kasus</b> di pojok kanan laporan. Laporan tersebut tidak akan muncul kembali di portal daftar riwayat siswa (tetapi tetap tersimpan aman di arsip Guru BK).</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 SIMBEKA. Semua Hak Cipta Dilindungi.</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Tab switching
+        const tabs = document.querySelectorAll('.role-tab');
+        const panels = document.querySelectorAll('.panel');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+
+                // Hide all panels
+                panels.forEach(p => p.classList.remove('active'));
+                // Show targeted panel
+                const target = tab.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+
+        if (localStorage.getItem('theme') === 'light' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            document.body.classList.add('light-mode');
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        } else {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            
+            if (document.body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
