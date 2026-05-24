@@ -102,10 +102,10 @@
                 <h4 class="text-[10px] font-semibold text-slate-400 font-medium mb-4">Ditangani Oleh</h4>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center text-sm font-semibold border border-slate-200">
-                        {{ substr($session->teacher_name ?? ($session->teacher->user->name ?? '?'), 0, 1) }}
+                        {{ substr($session->teacher_name ?? ($session->teacher?->user?->name ?? '?'), 0, 1) }}
                     </div>
                     <div>
-                        <div class="font-semibold text-slate-900 tracking-tight">{{ $session->teacher_name ?? ($session->teacher->user->name ?? 'Guru BK') }}</div>
+                        <div class="font-semibold text-slate-900 tracking-tight">{{ $session->teacher_name ?? ($session->teacher?->user?->name ?? 'Guru BK') }}</div>
                         <div class="text-[10px] text-slate-500 font-bold uppercase">Guru BK</div>
                     </div>
                 </div>

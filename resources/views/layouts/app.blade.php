@@ -44,13 +44,6 @@
         .sidebar-item-inactive:hover {
             color: white;
             background-color: rgba(255, 255, 255, 0.05);
-        }
-        .bg-white border border-slate-200 rounded-lg shadow-sm {
-            background: #FFFFFF;
-            border-radius: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid #E2E8F0;
-        }
     </style>
 </head>
 <body class="text-slate-800 antialiased" x-data="{ showLogoutModal: false, sidebarOpen: false }">
@@ -288,11 +281,11 @@
                             Simpan Kode Pemulihan!
                         </p>
                         <div 
-                            @click="navigator.clipboard.writeText('{{ auth()->user()->recovery_code }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                            @click="navigator.clipboard.writeText('{{ auth()->user()->recovery_code_decrypt }}'); copied = true; setTimeout(() => copied = false, 2000)"
                             class="bg-white/5 border-2 border-dashed border-white/10 rounded-lg p-4 text-center group cursor-pointer hover:border-primary/50 transition-all relative overflow-hidden"
                         >
                             <span class="text-2xl font-semibold tracking-[0.2em] text-primary select-all transition-opacity" :class="copied ? 'opacity-20' : 'opacity-100'">
-                                {{ auth()->user()->recovery_code ?? 'TIDAK-ADA' }}
+                                {{ auth()->user()->recovery_code_decrypt ?? 'TIDAK-ADA' }}
                             </span>
                             <div x-show="copied" x-transition class="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xs font-medium">
                                 Tersalin!
@@ -336,12 +329,12 @@
             </div>
             <div class="p-8 space-y-6 bg-white" x-data="{ copied: false }">
                 <div 
-                    @click="navigator.clipboard.writeText('{{ auth()->user()->recovery_code }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                    @click="navigator.clipboard.writeText('{{ auth()->user()->recovery_code_decrypt }}'); copied = true; setTimeout(() => copied = false, 2000)"
                     class="bg-slate-50 rounded-lg p-6 text-center border border-slate-100 relative overflow-hidden group cursor-pointer hover:border-primary/50 transition-all"
                 >
                     <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <span class="text-4xl font-semibold tracking-[0.2em] text-slate-900 select-all relative z-10 block mb-2 transition-opacity" :class="copied ? 'opacity-10' : 'opacity-100'">
-                        {{ auth()->user()->recovery_code ?? 'TIDAK-ADA' }}
+                        {{ auth()->user()->recovery_code_decrypt ?? 'TIDAK-ADA' }}
                     </span>
                     <div x-show="copied" x-transition class="absolute inset-0 flex items-center justify-center text-primary font-semibold text-lg font-medium z-20">
                         Tersalin!

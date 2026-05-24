@@ -38,7 +38,7 @@ class RegisterController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => 'siswa',
-            'recovery_code' => $this->generateRecoveryCode(),
+            'recovery_code' => \Illuminate\Support\Facades\Crypt::encryptString($this->generateRecoveryCode()),
             'security_question' => $request->security_question,
             'security_answer' => Hash::make(strtolower($request->security_answer)),
         ]);
@@ -77,7 +77,7 @@ class RegisterController extends Controller
             'password' => Hash::make($password),
             'role' => 'siswa',
             'is_guest' => true,
-            'recovery_code' => $this->generateRecoveryCode(),
+            'recovery_code' => \Illuminate\Support\Facades\Crypt::encryptString($this->generateRecoveryCode()),
         ]);
 
         Auth::login($user);

@@ -14,6 +14,18 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    public function getRecoveryCodeDecryptAttribute()
+    {
+        if (empty($this->recovery_code)) {
+            return null;
+        }
+
+        try {
+            return \Illuminate\Support\Facades\Crypt::decryptString($this->recovery_code);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return $this->recovery_code;
+        }
+    }
     public function teacher()
     {
         return $this->hasOne(Teacher::class);

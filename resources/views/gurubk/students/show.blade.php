@@ -14,7 +14,7 @@
             <div class="h-8 w-px bg-slate-100"></div>
             <div>
                 <h2 class="text-2xl font-semibold text-slate-800 tracking-tight leading-none">{{ $student->name }}</h2>
-                <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">Siswa Binaan: {{ $student->teacher->user->name ?? 'Belum Ditentukan' }}</p>
+                <p class="text-slate-400 text-xs text-slate-500 font-medium mt-2">Siswa Binaan: {{ $student->teacher?->user?->name ?? 'Belum Ditentukan' }}</p>
             </div>
         </div>
         <div class="flex flex-wrap items-center gap-3">
@@ -274,7 +274,7 @@
                                                 </div>
                                             @endif
                                             <div class="flex items-center justify-between pt-4 border-t border-slate-200/60">
-                                                <span class="text-[9px] font-bold text-slate-400">Guru: {{ $session->teacher->user->name }}</span>
+                                                <span class="text-[9px] font-bold text-slate-400">Guru: {{ $session->teacher_name ?? ($session->teacher?->user?->name ?? 'Guru BK') }}</span>
                                                 <div class="flex items-center gap-2">
                                                     @php
                                                         $statusClass = [
@@ -347,7 +347,7 @@
                                                             </div>
                                                         @endif
                                                         <div class="flex items-center justify-between pt-4 border-t border-slate-200/60">
-                                                            <span class="text-[9px] font-bold text-slate-400">Guru: {{ $session->teacher->user->name }}</span>
+                                                            <span class="text-[9px] font-bold text-slate-400">Guru: {{ $session->teacher_name ?? ($session->teacher?->user?->name ?? 'Guru BK') }}</span>
                                                             <div class="flex items-center gap-2">
                                                                 @php
                                                                     $statusClass = [

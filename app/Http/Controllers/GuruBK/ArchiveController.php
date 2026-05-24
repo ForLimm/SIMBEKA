@@ -43,7 +43,7 @@ class ArchiveController extends Controller
             // Group letters by Academic Year and Semester
             $groupedLetters = [];
             foreach ($letters as $letter) {
-                $period = $this->getAcademicPeriod($letter->created_at);
+                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($letter->created_at);
                 $key = $period['academic_year'] . '_' . $period['semester'];
                 if (!isset($groupedLetters[$key])) {
                     $groupedLetters[$key] = [
@@ -55,7 +55,7 @@ class ArchiveController extends Controller
             }
             krsort($groupedLetters);
             
-            $academicYears = $this->getAcademicYearsList();
+            $academicYears = \App\Helpers\AcademicHelper::getAcademicYearsList();
             
             return view('gurubk.archives.index', [
                 'letters' => $groupedLetters,
@@ -87,7 +87,7 @@ class ArchiveController extends Controller
             $groupedSessions = [];
             foreach ($sessions as $session) {
                 $date = $session->completed_at ?? $session->counseling_date;
-                $period = $this->getAcademicPeriod($date);
+                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
                 $key = $period['academic_year'] . '_' . $period['semester'];
                 if (!isset($groupedSessions[$key])) {
                     $groupedSessions[$key] = [
@@ -99,7 +99,7 @@ class ArchiveController extends Controller
             }
             krsort($groupedSessions);
             
-            $academicYears = $this->getAcademicYearsList();
+            $academicYears = \App\Helpers\AcademicHelper::getAcademicYearsList();
             
             return view('gurubk.archives.index', [
                 'sessions' => $groupedSessions,
@@ -140,7 +140,7 @@ class ArchiveController extends Controller
             $groupedArchives = [];
             foreach ($archives as $archive) {
                 $date = $archive->completed_date ?? $archive->created_at;
-                $period = $this->getAcademicPeriod($date);
+                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
                 $key = $period['academic_year'] . '_' . $period['semester'];
                 if (!isset($groupedArchives[$key])) {
                     $groupedArchives[$key] = [
@@ -152,7 +152,7 @@ class ArchiveController extends Controller
             }
             krsort($groupedArchives);
             
-            $academicYears = $this->getAcademicYearsList();
+            $academicYears = \App\Helpers\AcademicHelper::getAcademicYearsList();
             
             return view('gurubk.archives.index', [
                 'archives' => $groupedArchives,
@@ -209,7 +209,7 @@ class ArchiveController extends Controller
         $groupedArchives = [];
         foreach ($archives as $item) {
             $date = $item->archive_sort_date;
-            $period = $this->getAcademicPeriod($date);
+            $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
             $key = $period['academic_year'] . '_' . $period['semester'];
             if (!isset($groupedArchives[$key])) {
                 $groupedArchives[$key] = [
@@ -221,7 +221,7 @@ class ArchiveController extends Controller
         }
         krsort($groupedArchives);
         
-        $academicYears = $this->getAcademicYearsList();
+        $academicYears = \App\Helpers\AcademicHelper::getAcademicYearsList();
         
         return view('gurubk.archives.index', [
             'archives' => $groupedArchives,
@@ -322,36 +322,5 @@ class ArchiveController extends Controller
             }
         }
         return $query;
-    }
-
-    private function getAcademicPeriod($date)
-    {
-        $carbonDate = \Carbon\Carbon::parse($date);
-        $year = $carbonDate->year;
-        $month = $carbonDate->month;
-
-        if ($month >= 7 && $month <= 12) {
-            $semester = '1';
-            $academicYear = $year . '/' . ($year + 1);
-        } else {
-            $semester = '2';
-            $academicYear = ($year - 1) . '/' . $year;
-        }
-
-        return [
-            'semester' => $semester,
-            'academic_year' => $academicYear,
-            'label' => "Semester $semester (TA $academicYear)"
-        ];
-    }
-
-    private function getAcademicYearsList()
-    {
-        $currentYear = date('Y');
-        $years = [];
-        for ($y = 2024; $y <= $currentYear + 1; $y++) {
-            $years[] = $y . '/' . ($y + 1);
-        }
-        return $years;
     }
 }
