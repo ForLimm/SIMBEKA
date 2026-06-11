@@ -1,0 +1,791 @@
+--- PAGE 1 ---
+ 
+PANDUAN  PRAKTIS  CAPSTONE  PROJECT  
+Program  Studi  Teknik  Informatika  dan  Sistem  Informasi   
+A.  Tujuan  Panduan  
+Panduan  ini  disusun  sebagai  acuan  praktis  pelaksanaan  Capstone  Project  pada  Program  
+Studi
+ 
+Teknik
+ 
+Informatika
+ 
+(TI)
+ 
+dan
+ 
+Sistem
+ 
+Informasi
+ 
+(SI)
+.
+ 
+Capstone
+ 
+Project
+ 
+adalah
+ 
+bentuk
+ 
+pelaksanaan
+ 
+dari
+ 
+mata
+ 
+kuliah
+ 
+Teknologi
+ 
+Inovasi
+ 
+Digital
+ 
+pada
+ 
+program
+ 
+studi
+ 
+Teknik
+ 
+Informatika
+ 
+dan
+ 
+matakuliah
+ 
+Proyek
+ 
+Kolaborasi
+ 
+pada
+ 
+program
+ 
+studi
+ 
+Sistem
+ 
+Informasi
+.
+ 
+Dokumen
+ 
+ini
+ 
+berfokus
+ 
+pada
+ 
+penerapan
+ 
+problem-driven
+ 
+design
+ 
+untuk
+ 
+menghasilkan
+ 
+solusi
+ 
+berbasis
+ 
+komputasi
+ 
+dan
+ 
+sistem
+ 
+informasi
+ 
+yang
+ 
+relevan,
+ 
+teruji,
+ 
+dan
+ 
+dapat
+ 
+diimplementasikan
+ 
+di
+ 
+konteks
+ 
+nyata.
+ 
+Capstone  Project  tidak  ditujukan  untuk  penelitian  kebaruan  (novelty),  tetapi  sebagai  
+demonstrasi
+ 
+kompetensi
+ 
+profesional
+ 
+mahasiswa
+ 
+dalam
+ 
+merancang,
+ 
+membangun,
+ 
+dan
+ 
+mengevaluasi
+ 
+solusi
+ 
+teknologi.
+ 
+Capstone  Project  memfasilitasi  mahasiswa  untuk:  
+●  Penerapan  Rekayasa  Nyata :  Memahami  dan  mengimplementasikan  siklus  
+perancangan
+ 
+rekayasa
+ 
+(
+Engineering
+ 
+Design
+ 
+Process
+)
+ 
+secara
+ 
+utuh
+ 
+untuk
+ 
+menyelesaikan
+ 
+masalah
+ 
+teknis
+ 
+yang
+ 
+nyata.
+ ●  Pengembangan  Soft  Skills :  Mengasah  kemampuan  kerja  sama  tim,  kepemimpinan,  
+integritas,
+ 
+serta
+ 
+keterampilan
+ 
+berkomunikasi
+ 
+baik
+ 
+lisan
+ 
+maupun
+ 
+tulisan
+ 
+dalam
+ 
+mempresentasikan
+ 
+produk.
+ 
+Tujuan  dan  Capaian  Mata  kuliah   
+●  Komunikasi  Teknik:  Mahasiswa  belajar  menjelaskan  konsep  teknik  yang  kompleks  
+kepada
+ 
+berbagai
+ 
+audiens
+ 
+secara
+ 
+efektif
+ 
+melalui
+ 
+diskusi
+ 
+tim,
+ 
+penyusunan
+ 
+materi,
+ 
+buku
+ 
+proyek,
+ 
+dan
+ 
+presentasi
+ 
+sidang
+ ●  Presentasi  Profesional:  Menguasai  teknik  penulisan  dan  penyampaian  presentasi  
+oral
+ 
+yang
+ 
+baik
+ 
+melalui
+ 
+proses
+ 
+diskusi
+ 
+dan
+ 
+simulasi
+ 
+sidang
+ ●  Penerapan  Engineering  Design:  Mendapatkan  pengalaman  praktis  dalam  
+menerapkan
+ 
+prinsip-prinsip
+ 
+perancangan
+ 
+rekayasa
+ 
+secara
+ 
+terintegrasi
+ 
+melalui
+ 
+pelaksanaan
+ 
+proses
+ 
+Engineering
+.
+ ●  Analisis  Sistem  Kompleks:  Melakukan  analisis  mendalam  pada  sistem  yang  rumit  
+melalui
+ 
+tahap
+ 
+perancangan
+ 
+topik.
+ ●  Kolaborasi  Tim:  Mempelajari  strategi  kerja  sama  kelompok  agar  dapat  berfungsi  
+secara
+ 
+efektif
+ 
+dan
+ 
+efisien
+ 
+selama
+ 
+proses
+ 
+rekayasa.
+ ●  Pertimbangan  Multi-Aspek:  Merancang  proyek  dengan  memperhatikan  batasan  
+ekonomi,
+ 
+lingkungan,
+ 
+etika,
+ 
+sosial,
+ 
+politik,
+ 
+serta
+ 
+kesehatan
+ 
+dan
+ 
+keselamatan
+ 
+kerja.
+ ●  Manajemen  Proyek:  Mempelajari  keterampilan  manajerial  dalam  mengelola  proyek  
+kerekayasaan
+ 
+selama
+ 
+siklus
+ 
+Engineering
+ 
+berlangsung.
+ ●  Standarisasi  Rekayasa:  Memahami  pengaruh  standar-standar  teknik  terhadap  
+penentuan
+ 
+spesifikasi
+ 
+kebutuhan
+ 
+produk.
+ ●  Integrasi  Keilmuan:  Menggabungkan  berbagai  konsep  dari  mata  kuliah  inti  untuk  
+diaplikasikan
+ 
+dalam
+ 
+solusi
+ 
+nyata.
+ 
+--- PAGE 2 ---
+●  Praktik  Modern:  Mampu  mengaplikasikan  teknik  dan  praktik  rekayasa  modern  dalam  
+penyelesaian
+ 
+masalah.
+ 
+ 
+B.  Karakteristik  Umum  Capstone  Project  TI  dan  SI  
+1.  Berbasis  masalah  nyata  (real-world  problem)  2.  Memiliki  pengguna  dan/atau  organisasi  sasaran  yang  jelas  3.  Menghasilkan  artefak/produk  berupa:  ○  Perangkat  lunak,  dan/atau  ○  Sistem  informasi,  dan/atau  ○  Platform  digital,  dan/atau  ○  Model  analitik,  dan/atau  ○  Sistem  cerdas  4.  Menggunakan  pendekatan  rekayasa  sistem  dan/atau  rekayasa  perangkat  lunak  5.  Memperhatikan  aspek  teknis  dan  non-teknis  (organisasi,  etika,  regulasi,  dampak  
+sosial)
+ 
+C.  Struktur  dan  Tahapan  Capstone  Project  
+Pelaksanaan  Capstone  Project  dilakukan  dalam  semester  6  (enam)  dengan  tahapan  berikut.  
+C-1:  Perumusan  Masalah  dan  Proposal  Proyek  (1  -  2  Minggu)  
+Dokumen  ini  mendefinisikan  masalah  keteknikan  yang  riil  dan  penting  untuk  dipecahkan.  
+●  Formulasi  Masalah:  Masalah  harus  jelas,  tidak  ambigu,  dan  didukung  data  
+pendukung.
+ ●  Analisis  Batasan  ( Constraints ):  Harus  mencakup  minimal  3  aspek  di  luar  ekonomi,  
+seperti
+ 
+aspek
+ 
+sosial,
+ 
+standar,
+ 
+lingkungan,
+ 
+atau
+ 
+keamanan.
+ ●  Pemilihan  Solusi:  Menyajikan  minimal  3  alternatif  solusi  yang  berbeda  signifikan  dan  
+dipilih
+ 
+secara
+ 
+sistematis.
+ 
+Isi  minimum  dokumen:  
+1.  Latar  belakang  masalah  berbasis  data  2.  Deskripsi  pengguna  dan  konteks  penggunaan  3.  Rumusan  masalah   4.  Tujuan  sistem  5.  Batasan  dan  kendala  (teknis  dan  non-teknis)  6.  Alternatif  solusi  tingkat  konseptual  7.  Pemilihan  solusi  secara  sistematis  
+Output  utama:  
+●  Dokumen  proposal  
+C-2:  Spesifikasi  Sistem  (1  Minggu)  
+Fokus  utama:  
+●  Menerjemahkan  kebutuhan  menjadi  spesifikasi  
+Dokumen  yang  merinci  fungsi  dan  kinerja  yang  akan  dijanjikan  dalam  produk.  
+--- PAGE 3 ---
+●  Sifat  Spesifikasi:  Harus  bersifat  traceable  (jelas  alasannya),  tidak  ambigu,  verifiable  
+(terukur),
+ 
+realistic
+,
+ 
+dan
+ 
+abstract
+ 
+(fokus
+ 
+pada
+ 
+fungsi,
+ 
+bukan
+ 
+cara
+ 
+implementasi)
+ ●  Jenis  spesifikasi:  ●  Spesifikasi  fungsional  ●  Spesifikasi  non-fungsional  (kinerja,  keamanan,  usability,  skalabilitas,  dll)  ●  Kriteria  spesifikasi:  ●  Jelas  dan  tidak  ambigu  ●  Terukur  dan  dapat  diuji  ●  Metode  Pengujian:  Setiap  item  spesifikasi  harus  memiliki  cara  pengukuran  dan  
+besaran
+ 
+yang
+ 
+akan
+ 
+diuji
+ ●  Output  utama:  ●  Dokumen  spesifikasi  ●  Daftar  metrik  pengujian  
+C-3:  Perancangan  Sistem  (2-3  Minggu)  
+Fokus  utama:  
+●  Pengambilan  keputusan  desain  
+Proses  perancangan  teknis  detail  yang  menggambarkan  pengambilan  semua  keputusan  
+penting.
+ 
+●  Alternatif  Desain:  Menunjukkan  berbagai  alternatif  arsitektur  atau  algoritma  serta  
+cara
+ 
+pemilihan
+ 
+secara
+ 
+rasional
+ 
+(misalnya
+ 
+menggunakan
+ 
+tabel
+ 
+perbandingan
+ 
+atau
+ 
+metode
+ 
+kuantitatif
+ ●  Dekomposisi  Hirarki:  Menampilkan  diagram  blok  atau  DFD  dari  level  tertinggi  hingga  
+level
+ 
+terendah
+ ●  Verifikasi:  Menyertakan  bukti  berupa  simulasi  atau  perhitungan  yang  menunjukkan  
+rancangan
+ 
+dapat
+ 
+bekerja.
+ 
+Aktivitas  utama  bisa  berupa::  
+1.  Perancangan  arsitektur  sistem  2.  Perancangan  modul  dan  komponen  3.  Perancangan  basis  data  4.  Perancangan  alur  proses  (UML/DFD)  5.  Analisis  alternatif  desain  6.  Justifikasi  pemilihan  desain  
+Output  utama:  
+●  Dokumen  desain  sistem  ●  Diagram  arsitektur  ●  Desain  database  dan  API  
+C-4:  Implementasi  (3-5-8  Minggu)  
+Fokus  utama:  
+●  Realisasi  desain  menjadi  sistem  berjalan  
+Prinsip  implementasi:  
+●  Modular  dan  bertahap  ●  Verifikasi  setiap  modul  ●  Dokumentasi  teknis  lengkap  
+--- PAGE 4 ---
+Output  utama:  
+●  Artefak  implementasi,  yang  dapat  berupa:  ○  Source  code  ○  Konfigurasi  sistem  ○  Dokumentasi  instalasi  dan  penggunaan,  foto  bagian  produk,   instruksi  
+perakitan/kompilasi
+ 
+C-5:  Pengujian  dan  Evaluasi  (2  Minggu)  
+Fokus  utama:  
+●  Memastikan  sistem  memenuhi  spesifikasi  ●  Mengevaluasi  keberhasilan  solusi  terhadap  masalah  
+Jenis  pengujian:  
+1.  Pengujian  fungsional  2.  Pengujian  non-fungsional  3.  Pengujian  pengguna  (user  acceptance)  4.  Evaluasi  dampak  dan  keterbatasan  sistem  
+Output  utama:  
+●  Laporan  pengujian  ●  Analisis  hasil  dan  rekomendasi  perbaikan  
+D.  Perbedaan  Penekanan  TI  dan  SI  
+Teknik  Informatika  
+●  Algoritma  dan  komputasi  ●  Kinerja  dan  efisiensi  ●  Arsitektur  sistem  dan  software  ●  Validasi  teknis  mendalam  
+Sistem  Informasi  
+●  Proses  bisnis  dan  organisasi  ●  Kesesuaian  sistem  dengan  kebutuhan  organisasi  ●  Analisis  biaya  dan  manfaat  ●  Penerimaan  dan  dampak  pengguna  
+E.  Luaran  Tambahan  
+Setiap  kelompok  wajib  menghasilkan:  
+1.  Jadwal  pelaksanaan  proyek  (detail)  2.  Video  demonstrasi  sistem  3.  Poster  produk  4.  Presentasi  akhir  5.  Laporan  Capstone  Project  (ringkas  dan  analitis)  6.  Draft  Hak  Kekayaan  Intelektual  
+--- PAGE 5 ---
+Produk  akhir  yang  terpilih  oleh  Tim  Pelaksana  Capstone  akan  diusulkan  untuk  pengajuan  
+Sertifikat
+ 
+Hak
+ 
+Kekayaan
+ 
+Intelektual
+ 
+(HKI)
+ 
+dan
+ 
+biaya
+ 
+yang
+ 
+ditimbulkan
+ 
+oleh
+ 
+pengajuan
+ 
+tersebut
+ 
+akan
+ 
+ditanggung
+ 
+oleh
+ 
+program
+ 
+studi
+ 
+dengan
+ 
+mempertimbangkan
+ 
+kemampuan
+ 
+anggaran
+ 
+program
+ 
+studi.
+ 
+F.  Prinsip  Penilaian  
+Penilaian  dilakukan  berdasarkan:  
+●  Kejelasan  masalah  ●  Kualitas  desain  dan  implementasi  ●  Rasionalitas  pengambilan  keputusan  ●  Kualitas  pengujian  ●  Profesionalisme  dokumentasi  
+G.  Pihak  Terkait  dan  Bimbingan  
+●  Pembentukan  Kelompok:  Kelompok  terdiri  dari  3  -  5  orang  mahasiswa  lintas  
+konsentrasi/lintas
+ 
+program
+ 
+studi
+ 
+yang
+ 
+ditentukan
+ 
+oleh
+ 
+tim
+ 
+pelaksana
+ 
+(KDK/Tim
+ 
+Pelaksana
+ 
+Capstone).
+ ●  Dosen  Pembimbing:  Minimal  dua  orang  yang  berperan  sebagai  konsultan  teknis.  ●  Intensitas  Bimbingan:  Mahasiswa  wajib  berkonsultasi  minimal  3  kali  untuk  setiap  
+dokumen
+ 
+yang
+ 
+dihasilkan
+ 
+dan
+ 
+mencatatnya
+ 
+dalam
+ 
+logbook
+.
+ ●  Beban  Waktu:  Mahasiswa  mengalokasikan  waktu  minimal  15  jam  per  minggu  
+Mahasiswa  yang  akan  mendaftar  Capstone  Project  berdasarkan  panduan  akademik:  
+●  Beban  Kredit:  Telah  menyelesaikan  dan  lulus  minimal  80  SKS.  ●  Matakuliah:  Telah  lulus  seluruh  mata  kuliah  dan  praktikum  pada  tahun  pertama  dan  
+kedua.
+ 
+H.  Ketentuan  dan  Karakteristik  Topik  Capstone  Project  
+●  Sumber  Topik:  Topik  diusulkan  oleh  Tim  Pelaksana  Capstone/Kelompok  mahasiswa  
+dan/atau
+ 
+oleh
+ 
+dosen
+ 
+pembimbing.
+ 
+Dosen
+ 
+pengusul
+ 
+secara
+ 
+otomatis
+ 
+menjadi
+ 
+pembimbing
+ 
+utama.
+ ●  Lingkup  Aplikasi:  Topik  mencakup  domain  industri  yang  luas  (seperti  transportasi,  
+manufaktur,
+ 
+kesehatan,
+ 
+atau
+ 
+pendidikan,
+ 
+dan
+ 
+lain-lain).
+ 
+Bidang
+ 
+ini
+ 
+dirancang
+ 
+agar
+ 
+tidak
+ 
+membatasi
+ 
+pilihan
+ 
+teknologi
+ 
+atau
+ 
+metode
+ 
+spesifik
+ 
+yang
+ 
+akan
+ 
+digunakan.
+ ●  Kesesuaian  Program  Studi:  Topik  akan  dikategorikan  ke  dalam  konsentrasi  yang  
+relevan,
+ 
+khususnya
+ 
+untuk
+ 
+mahasiswa
+ 
+Teknik
+ 
+Informatika
+ 
+dan
+ 
+Sistem
+ 
+Informasi
+ ●  Formulasi  Masalah:  Dosen  memberikan  masalah  yang  bersifat  umum.  Mahasiswa  
+wajib
+ 
+mengubahnya
+ 
+menjadi
+ 
+masalah
+ 
+rekayasa
+ 
+(
+engineering
+ 
+problem
+)
+ 
+yang
+ 
+terdefinisi
+ 
+dengan
+ 
+jelas,
+ 
+realistis,
+ 
+memiliki
+ 
+solusi
+ 
+yang
+ 
+layak
+ 
+(
+feasible
+),
+ 
+serta
+ 
+dapat
+ 
+diselesaikan
+ 
+dalam
+ 
+jangka
+ 
+waktu
+ 
+satu
+ 
+semester.
+ 
+Mekanisme  Pembentukan  Kelompok  
+●  Prinsip  Kerja  Sama:  Capstone  Project  wajib  dikerjakan  secara  berkelompok  untuk  
+mensimulasikan
+ 
+lingkungan
+ 
+kerja
+ 
+nyata
+ 
+dan
+ 
+mengasah
+ 
+soft
+ 
+skills
+ 
+mahasiswa.
+ ●  Wewenang  Penentuan:  Anggota  kelompok  ditentukan  sepenuhnya  oleh  Tim  
+Pelaksana
+ 
+Capstone,
+ 
+bukan
+ 
+oleh
+ 
+mahasiswa.
+ 
+Hal
+ 
+ini
+ 
+bertujuan
+ 
+agar
+ 
+mahasiswa
+ 
+belajar
+ 
+berkolaborasi
+ 
+dengan
+ 
+rekan
+ 
+kerja
+ 
+yang
+ 
+beragam
+ 
+(
+multidisciplinary
+ 
+teamwork
+).
+ 
+ 
+--- PAGE 6 ---
+  
+I.  Penutup  
+Panduan  ini  bersifat  dinamis  dan  dapat  disesuaikan  dengan  kebutuhan  kurikulum,  
+karakteristik
+ 
+program
+ 
+studi,
+ 
+konsentrasi
+ 
+dan
+ 
+perkembangan
+ 
+teknologi.
+ 
+ 
