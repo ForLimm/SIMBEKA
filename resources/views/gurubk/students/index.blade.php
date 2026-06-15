@@ -5,17 +5,17 @@
 @section('content')
 <div class="w-full space-y-8" x-data="{ showExport: false, exportMode: 'all', selectedStudents: [], selectAll: false, toggleAll() { if(this.selectAll) { this.selectedStudents = [{!! $students->pluck('id')->map(fn($id) => '\'' . $id . '\'')->join(',') !!}]; } else { this.selectedStudents = []; } }, exportPeriod: 'semester', exportYear: '', exportSemester: '' }">
     {{-- Header --}}
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <h2 class="text-3xl font-semibold text-slate-800 tracking-tight">Manajemen Siswa</h2>
             <p class="text-slate-500 font-medium">Kelola data siswa bimbingan Anda ({{ $students->total() }}/{{ $teacher->max_quota }})</p>
         </div>
-        <div class="flex items-center gap-3">
-            <button @click="exportMode = 'all'; showExport = true" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <button @click="exportMode = 'all'; showExport = true" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95 text-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 Cetak Anekdot
             </button>
-            <a href="{{ route('gurubk.students.claim_classes_form') }}" class="inline-flex items-center gap-2 bg-primary hover:bg-secondary text-white font-bold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
+            <a href="{{ route('gurubk.students.claim_classes_form') }}" class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-secondary text-white font-bold px-6 py-3 rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95 text-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 Ambil Kelas
             </a>
@@ -74,29 +74,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3">
-                    <label class="relative col-span-3">
-                        <span class="text-[10px] font-semibold text-slate-400 font-medium block mb-4 ml-1">Format Dokumen</span>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="word" checked class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Word</span>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="pdf" class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">PDF</span>
-                        </div>
-                    </label>
-                    <label class="relative">
-                        <input type="radio" name="format" value="excel" class="peer sr-only">
-                        <div class="p-3 rounded-lg border-2 border-slate-100 bg-slate-50 text-center cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 transition-all">
-                            <span class="block text-[10px] font-semibold text-slate-800 peer-checked:text-indigo-700 font-medium">Excel</span>
-                        </div>
-                    </label>
-                </div>
+                <input type="hidden" name="format" value="pdf">
 
                 <div class="pt-4">
                     <button type="submit" @click="setTimeout(() => showExport = false, 500)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 rounded-lg shadow-xl shadow-indigo-600/20 transition-all active:scale-[0.95] font-medium text-xs flex items-center justify-center gap-3">
@@ -124,7 +102,11 @@
                 <select name="class" class="w-full bg-slate-50 border border-slate-100 rounded-lg py-3 px-4 text-sm font-bold text-slate-700 focus:bg-white focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
                     <option value="">Semua Kelas</option>
                     @php
-                        $classes = ['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'];
+                        $classes = [
+                            '7 andalan', '7 budi pekerti', '7 tut wuri handayani', '7 kebangsaan', '7 ki hajar dewantara', '7 merdeka', '7 kebanggaan', '7 harmonis',
+                            '8 andalan', '8 budi pekerti', '8 tut wuri handayani', '8 kebangsaan', '8 ki hajar dewantara', '8 merdeka', '8 kebanggaan', '8 harmonis',
+                            '9 andalan', '9 budi pekerti', '9 tut wuri handayani', '9 kebangsaan', '9 ki hajar dewantara', '9 merdeka', '9 kebanggaan', '9 harmonis'
+                        ];
                     @endphp
                     @foreach($classes as $class)
                         <option value="{{ $class }}" {{ request('class') == $class ? 'selected' : '' }}>Kelas {{ $class }}</option>
@@ -187,7 +169,7 @@
     <div class="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
-                <thead>
+                <thead class="hidden md:table-header-group">
                     <tr class="bg-slate-50/50">
                         <th class="px-6 py-5 text-center w-12 border-b border-slate-100">
                             <input type="checkbox" x-model="selectAll" @change="toggleAll()" class="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300 cursor-pointer">
@@ -198,12 +180,15 @@
                         <th class="px-4 py-5 text-xs font-bold text-slate-400 font-medium border-b border-slate-100 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="block md:table-row-group divide-y divide-slate-100">
                     @forelse($students as $student)
-                    <tr class="group hover:bg-slate-50/50 transition-colors" :class="selectedStudents.includes('{{ $student->id }}') ? 'bg-primary/5' : ''">
-                        <td class="px-6 py-5 text-center">
+                    <tr class="block md:table-row group hover:bg-slate-50/50 transition-colors p-4 md:p-0 space-y-3 md:space-y-0" :class="selectedStudents.includes('{{ $student->id }}') ? 'bg-primary/5' : ''">
+                        <td class="block md:table-cell px-4 md:px-6 py-2 md:py-5 text-left md:text-center">
+                            <span class="inline-flex md:hidden text-[9px] font-bold text-slate-400 uppercase mr-2">Pilih:</span>
                             <input type="checkbox" x-model="selectedStudents" value="{{ $student->id }}" class="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300 cursor-pointer">
-                        <td class="px-4 py-5">
+                        </td>
+                        <td class="block md:table-cell px-4 py-2 md:py-5">
+                            <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Info Siswa</span>
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 bg-slate-50 flex items-center justify-center">
                                     @if($student->photo && file_exists(public_path('storage/' . $student->photo)))
@@ -220,24 +205,24 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-5">
+                        <td class="block md:table-cell px-4 py-2 md:py-5">
+                            <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">NISN</span>
                             <span class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold">{{ $student->nisn }}</span>
                         </td>
-                        <td class="px-4 py-5">
-                            <p class="text-sm font-bold text-slate-700">{{ $student->class }}</p>
+                        <td class="block md:table-cell px-4 py-2 md:py-5">
+                            <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Kelas</span>
+                            <p class="text-sm font-bold text-slate-700">Kelas {{ $student->class }}</p>
                         </td>
-                        <td class="px-4 py-5">
-                            <div class="flex items-center justify-end gap-2">
-                                <a href="{{ route('gurubk.students.show', $student->id) }}" class="inline-flex items-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn">
-                                    Detail Siswa
-                                    <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-                                </a>
-                            </div>
+                        <td class="block md:table-cell px-4 py-3 md:py-5 text-right">
+                            <a href="{{ route('gurubk.students.show', $student->id) }}" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-primary text-slate-400 hover:text-white font-bold px-4 py-2 rounded-lg border border-slate-200 hover:border-primary transition-all shadow-sm text-xs group/btn w-full md:w-auto">
+                                Detail Siswa
+                                <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                            </a>
                         </td>
                     </tr>
                     @empty
-                    <tr>
-                        <td colspan="5" class="px-8 py-12 text-center">
+                    <tr class="block md:table-row">
+                        <td colspan="5" class="block md:table-cell px-8 py-12 text-center">
                             <div class="flex flex-col items-center justify-center space-y-3">
                                 <div class="w-16 h-16 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>

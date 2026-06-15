@@ -132,16 +132,7 @@
             <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Sistem Informasi yang memprioritaskan privasi dan kemudahan akses siswa.</p>
             
             <div class="flex items-center gap-10 justify-end">
-                <div>
-                    <span class="block text-2xl font-semibold text-white">500+</span>
-                    <span class="text-[9px] font-semibold text-slate-500 font-medium">Siswa Aktif</span>
-                </div>
-                <div class="w-px h-8 bg-white/10"></div>
-                <div>
-                    <span class="block text-2xl font-semibold text-white">100%</span>
-                    <span class="text-[9px] font-semibold text-slate-500 font-medium">Privasi Aman</span>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

@@ -52,22 +52,22 @@
         </div>
 
         @forelse($messages as $message)
-            <div class="flex {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
+            <div class="flex {{ (int)$message->sender_id === (int)auth()->id() ? 'justify-end' : 'justify-start' }}">
                 <div class="max-w-[85%] md:max-w-[65%] group relative">
                     {{-- Sender Name (Other) --}}
-                    @if($message->sender_id !== auth()->id())
+                    @if((int)$message->sender_id !== (int)auth()->id())
                         <span class="block text-[9px] font-semibold text-slate-400 font-medium mb-1 ml-3">{{ $other_user->name }}</span>
                     @endif
 
-                    <div class="relative px-4 py-3 md:px-6 md:py-4 shadow-md {{ $message->sender_id === auth()->id() 
+                    <div class="relative px-4 py-3 md:px-6 md:py-4 shadow-md {{ (int)$message->sender_id === (int)auth()->id() 
                         ? 'bg-blue-600 text-white rounded-lg rounded-tr-none' 
                         : 'bg-white text-slate-700 rounded-lg rounded-tl-none border border-white' }}">
                         
                         <p class="text-sm font-medium leading-relaxed">{{ $message->message }}</p>
                         
-                        <div class="mt-2 flex items-center gap-1.5 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
+                        <div class="mt-2 flex items-center gap-1.5 {{ (int)$message->sender_id === (int)auth()->id() ? 'justify-end' : 'justify-start' }}">
                             <span class="text-[8px] md:text-[9px] font-bold opacity-50 font-medium">{{ $message->created_at->translatedFormat('H:i') }}</span>
-                            @if($message->sender_id === auth()->id())
+                            @if((int)$message->sender_id === (int)auth()->id())
                                 <svg class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             @endif
                         </div>

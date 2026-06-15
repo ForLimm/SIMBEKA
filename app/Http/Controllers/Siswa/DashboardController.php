@@ -42,7 +42,7 @@ class DashboardController extends Controller
 
     public function hide(Report $report)
     {
-        if ($report->reported_by !== Auth::id()) {
+        if ((int)$report->reported_by !== (int)Auth::id()) {
             abort(403);
         }
 

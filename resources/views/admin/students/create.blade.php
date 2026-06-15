@@ -55,8 +55,12 @@
                         <label class="block text-[9px] font-semibold text-slate-400 font-medium mb-1.5 ml-1">Kelas</label>
                         <select name="class" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition appearance-none font-medium">
                             <option value="">Pilih Kelas</option>
-                            @foreach(['VII-1','VII-2','VII-3','VII-4','VII-5','VII-6','VIII-1','VIII-2','VIII-3','VIII-4','VIII-5','VIII-6','IX-1','IX-2','IX-3','IX-4','IX-5','IX-6'] as $kls)
-                                <option value="{{ $kls }}" {{ old('class') == $kls ? 'selected' : '' }}>{{ $kls }}</option>
+                            @foreach([
+                                '7 andalan', '7 budi pekerti', '7 tut wuri handayani', '7 kebangsaan', '7 ki hajar dewantara', '7 merdeka', '7 kebanggaan', '7 harmonis',
+                                '8 andalan', '8 budi pekerti', '8 tut wuri handayani', '8 kebangsaan', '8 ki hajar dewantara', '8 merdeka', '8 kebanggaan', '8 harmonis',
+                                '9 andalan', '9 budi pekerti', '9 tut wuri handayani', '9 kebangsaan', '9 ki hajar dewantara', '9 merdeka', '9 kebanggaan', '9 harmonis'
+                            ] as $kls)
+                                <option value="{{ $kls }}" {{ old('class') == $kls ? 'selected' : '' }}>Kelas {{ $kls }}</option>
                             @endforeach
                         </select>
                     </div>

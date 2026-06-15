@@ -90,10 +90,12 @@ Route::prefix('gurubk')->name('gurubk.')->middleware(['auth', 'role:guru_bk'])->
     Route::post('letters/sp1', [App\Http\Controllers\GuruBK\LetterController::class, 'storeSp1'])->name('letters.sp1.store');
     Route::get('letters/sp2/create', [App\Http\Controllers\GuruBK\LetterController::class, 'createSp2'])->name('letters.sp2.create');
     Route::post('letters/sp2', [App\Http\Controllers\GuruBK\LetterController::class, 'storeSp2'])->name('letters.sp2.store');
+    Route::get('letters/{letter}/download', [App\Http\Controllers\GuruBK\LetterController::class, 'download'])->name('letters.download');
     
     Route::get('archives', [App\Http\Controllers\GuruBK\ArchiveController::class, 'index'])->name('archives.index');
     Route::get('archives/export', [App\Http\Controllers\GuruBK\ArchiveController::class, 'export'])->name('archives.export');
     Route::get('archives/{archive}', [App\Http\Controllers\GuruBK\ArchiveController::class, 'show'])->name('archives.show');
+    Route::get('archives/{archive}/download', [App\Http\Controllers\GuruBK\ArchiveController::class, 'downloadAttachment'])->name('archives.download');
 
     Route::get('anecdotes/export', [App\Http\Controllers\GuruBK\AnecdoteController::class, 'export'])->name('anecdotes.export');
 

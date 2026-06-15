@@ -136,15 +136,6 @@
             <h2 class="text-4xl md:text-5xl font-semibold text-white leading-tight mb-6">Data Kamu Selalu <span class="text-primary italic block mt-1">Anonim.</span></h2>
             <div class="h-1 w-24 bg-primary mb-6 rounded-full ml-auto"></div>
             <p class="text-slate-400 text-sm leading-relaxed mb-8 font-medium">Seluruh proses pendaftaran dirancang untuk melindungi identitas Anda. Username Anda adalah satu-satunya identitas yang diperlukan.</p>
-            
-            <div class="grid grid-cols-2 gap-6 text-right">
-                <div class="p-3 bg-white/5 rounded-lg border border-white/5">
-                    <h4 class="text-white font-semibold text-[10px] font-medium mb-1">Anonimitas</h4>
-                    <p class="text-slate-500 text-[9px] leading-relaxed">Sistem tidak meminta data sensitif seperti email atau no HP.</p>
-                </div>
-                <div class="p-3 bg-white/5 rounded-lg border border-white/5">
-                    <h4 class="text-white font-semibold text-[10px] font-medium mb-1">Keamanan</h4>
-                    <p class="text-slate-500 text-[9px] leading-relaxed">Gunakan pertanyaan keamanan untuk memulihkan akun Anda kapan saja.</p>
                 </div>
             </div>
         </div>

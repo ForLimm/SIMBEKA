@@ -18,17 +18,22 @@ class DashboardController extends Controller
     {
         $teacher = Auth::user()->teacher;
         
-        $pendingReports = Report::where('status', 'pending')->with('reporter')->get();
+        $pendingReports = Report::where('status', 'pending')
+                            ->with('reporter')
+                            ->latest()
+                            ->get();
         
         $myInProgressReports = Report::where('handled_by', Auth::id())
-                           ->where('status', 'in-progress')
-                           ->with('reporter')
-                           ->get();
+                            ->where('status', 'in-progress')
+                            ->with('reporter')
+                            ->latest()
+                            ->get();
 
         $myReports = Report::where('handled_by', Auth::id())
-                           ->whereIn('status', ['in-progress', 'resolved'])
-                           ->with('reporter')
-                           ->get();
+                            ->whereIn('status', ['in-progress', 'resolved'])
+                            ->with('reporter')
+                            ->latest()
+                            ->get();
 
         // New Statistics Part
         $totalStudents = Student::where('teacher_id', $teacher->id)->count();
@@ -78,7 +83,7 @@ class DashboardController extends Controller
 
     public function show(Report $report)
     {
-        if ($report->handled_by !== Auth::id()) {
+        if ((int)$report->handled_by !== (int)Auth::id()) {
             return redirect()->route('gurubk.dashboard')->with('error', 'Anda tidak memiliki akses ke kasus ini.');
         }
 
@@ -119,7 +124,7 @@ class DashboardController extends Controller
 
     public function resolve(Report $report)
     {
-        if ($report->handled_by !== Auth::id()) {
+        if ((int)$report->handled_by !== (int)Auth::id()) {
             return back()->with('error', 'Anda tidak memiliki akses.');
         }
 

@@ -61,7 +61,7 @@ class StudentController extends Controller
     {
         $teacher = Auth::user()->teacher;
         
-        if ($student->teacher_id !== $teacher->id) {
+        if ((int)$student->teacher_id !== (int)$teacher->id) {
             return redirect()->route('gurubk.students.index')->with('error', 'Akses ditolak.');
         }
 
@@ -155,7 +155,7 @@ class StudentController extends Controller
         // Build class handlers info
         $classHandlers = [];
         foreach ($periodAssignments as $cls => $assignment) {
-            if ($assignment->teacher_id !== $teacher->id) {
+            if ((int)$assignment->teacher_id !== (int)$teacher->id) {
                 $classHandlers[$cls] = $assignment->teacher->user->name ?? 'Guru Lain';
             }
         }

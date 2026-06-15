@@ -125,7 +125,7 @@
             </div>
             <div class="overflow-x-auto overflow-y-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-sm text-left">
-                    <thead class="text-sm font-semibold text-slate-600 bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
+                    <thead class="hidden md:table-header-group text-sm font-semibold text-slate-600 bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
                         <tr>
                             <th class="px-6 py-3">Perihal / Topik</th>
                             <th class="px-6 py-3">Pelapor</th>
@@ -133,22 +133,25 @@
                             <th class="px-6 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="block md:table-row-group divide-y divide-slate-100">
                         @forelse($pendingReports as $report)
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4">
+                            <tr class="block md:table-row hover:bg-slate-50 transition-colors p-4 md:p-0 space-y-2 md:space-y-0">
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Perihal / Topik</span>
                                     <div class="font-medium text-slate-900">{{ $report->title }}</div>
                                     <div class="text-xs text-slate-400 mt-1">{{ $report->created_at->diffForHumans() }}</div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Pelapor</span>
                                     <div class="text-slate-700">{{ $report->reporter->username ?? $report->reporter->name ?? '-' }}</div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Tipe</span>
                                     <span class="text-xs font-medium px-2 py-1 rounded {{ $report->type === 'konsultasi' ? 'bg-blue-50 text-blue-600' : 'bg-rose-50 text-rose-600' }}">
                                         {{ ucfirst($report->type) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td class="block md:table-cell px-4 md:px-6 py-3 md:py-4 text-center">
                                     <button 
                                         @click="showDetail = true; selectedReport = {
                                             id: {{ $report->id }},
@@ -159,15 +162,15 @@
                                             is_anonymous: {{ $report->is_anonymous ? 'true' : 'false' }},
                                             created_at: '{{ $report->created_at->diffForHumans() }}'
                                         }"
-                                        class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium px-4 py-1.5 rounded transition"
+                                        class="w-full md:w-auto bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium px-4 py-1.5 rounded transition"
                                     >
                                         Detail Kasus
                                     </button>
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="4" class="px-6 py-10 text-center text-slate-500">Tidak ada antrean kasus saat ini.</td>
+                            <tr class="block md:table-row">
+                                <td colspan="4" class="block md:table-cell px-6 py-10 text-center text-slate-500">Tidak ada antrean kasus saat ini.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -183,7 +186,7 @@
             </div>
             <div class="overflow-x-auto overflow-y-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-sm text-left">
-                    <thead class="text-sm font-semibold text-slate-600 bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
+                    <thead class="hidden md:table-header-group text-sm font-semibold text-slate-600 bg-slate-50 sticky top-0 z-10 border-b border-slate-200">
                         <tr>
                             <th class="px-6 py-3">Perihal</th>
                             <th class="px-6 py-3">Pelapor</th>
@@ -192,33 +195,39 @@
                             <th class="px-6 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="block md:table-row-group divide-y divide-slate-100">
                         @forelse($myInProgressReports as $report)
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-medium text-slate-900">{{ $report->title }}</td>
-                                <td class="px-6 py-4 text-slate-700">
+                            <tr class="block md:table-row hover:bg-slate-50 transition-colors p-4 md:p-0 space-y-2 md:space-y-0">
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4 font-medium text-slate-900">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Perihal</span>
+                                    {{ $report->title }}
+                                </td>
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4 text-slate-700">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Pelapor</span>
                                     {{ $report->reporter->username ?? $report->reporter->name ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Tipe</span>
                                     <span class="text-xs font-medium px-2 py-1 rounded {{ $report->type === 'konsultasi' ? 'bg-blue-50 text-blue-600' : 'bg-rose-50 text-rose-600' }}">
                                         {{ ucfirst($report->type) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="block md:table-cell px-4 md:px-6 py-2 md:py-4">
+                                    <span class="block md:hidden text-[9px] font-bold text-slate-400 uppercase mb-1">Status</span>
                                     <span class="flex items-center gap-1.5 text-blue-600 text-sm">
                                         <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
                                         Dalam Proses
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-center">
-                                    <a href="{{ route('gurubk.report.show', $report->id) }}" class="inline-block bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium px-4 py-1.5 rounded transition">
+                                <td class="block md:table-cell px-4 md:px-6 py-3 md:py-4 text-center">
+                                    <a href="{{ route('gurubk.report.show', $report->id) }}" class="block w-full md:w-auto bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium px-4 py-1.5 rounded transition">
                                         Detail
                                     </a>
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-10 text-center text-slate-500">Anda belum menangani kasus apa pun.</td>
+                            <tr class="block md:table-row">
+                                <td colspan="5" class="block md:table-cell px-6 py-10 text-center text-slate-500">Anda belum menangani kasus apa pun.</td>
                             </tr>
                         @endforelse
                     </tbody>
