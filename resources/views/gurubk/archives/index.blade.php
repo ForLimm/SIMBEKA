@@ -4,17 +4,22 @@
 
 @section('content')
 @php
-    $now = now();
-    $currentYear = $now->year;
-    $currentMonth = $now->month;
-    if ($currentMonth >= 7 && $currentMonth <= 12) {
-        $currSem = '1';
-        $currYear = $currentYear . '/' . ($currentYear + 1);
+    $activePeriod = \App\Models\AcademicPeriod::active();
+    if ($activePeriod) {
+        $currKey = $activePeriod->academic_year . '_' . $activePeriod->semester;
     } else {
-        $currSem = '2';
-        $currYear = ($currentYear - 1) . '/' . $currentYear;
+        $now = now();
+        $currentYear = $now->year;
+        $currentMonth = $now->month;
+        if ($currentMonth >= 7 && $currentMonth <= 12) {
+            $currSem = '1';
+            $currYear = $currentYear . '/' . ($currentYear + 1);
+        } else {
+            $currSem = '2';
+            $currYear = ($currentYear - 1) . '/' . $currentYear;
+        }
+        $currKey = $currYear . '_' . $currSem;
     }
-    $currKey = $currYear . '_' . $currSem;
 @endphp
 <div class="w-full space-y-8">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4" x-data="{ showExport: false, showExportSurat: false }">

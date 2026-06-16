@@ -3,20 +3,23 @@
 @section('title_display', 'Ambil Kelas Bimbingan')
 
 @section('content')
+@php
+    $formattedClasses = [];
+    foreach($classData as $c) {
+        $formattedClasses[] = [
+            'name' => $c->class,
+            'count' => (int)$c->total_students,
+            'checked' => in_array($c->class, $myAssignedClasses),
+            'lockedByOther' => isset($classHandlers[$c->class]),
+            'handler' => $classHandlers[$c->class] ?? ''
+        ];
+    }
+@endphp
+
 <div class="w-full space-y-6" x-data="{
-    maxQuota: {{ $teacher->max_quota }},
-    classes: [
-        @foreach($classData as $c)
-        {
-            name: '{{ $c->class }}',
-            count: {{ $c->total_students }},
-            checked: {{ in_array($c->class, $myAssignedClasses) ? 'true' : 'false' }},
-            lockedByOther: {{ isset($classHandlers[$c->class]) ? 'true' : 'false' }},
-            handler: '{{ $classHandlers[$c->class] ?? '' }}'
-        },
-        @endforeach
-    ],
-    previousClasses: @json($previousAssignments),
+    maxQuota: {{ (int)$teacher->max_quota }},
+    classes: {{ json_encode($formattedClasses) }},
+    previousClasses: {{ json_encode($previousAssignments) }},
     get totalClaimed() {
         return this.classes.filter(c => c.checked).reduce((sum, c) => sum + c.count, 0);
     },
