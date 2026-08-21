@@ -62,7 +62,7 @@
                                 @endif
                             </div>
                             <p class="text-sm text-slate-500 font-medium">
-                                {{ $period->start_date->format('d M Y') }} — {{ $period->end_date->format('d M Y') }}
+                                {{ $period->start_date->isoFormat('D MMMM YYYY') }} — {{ $period->end_date->isoFormat('D MMMM YYYY') }}
                             </p>
                             <div class="flex items-center gap-6 mt-3">
                                 <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">

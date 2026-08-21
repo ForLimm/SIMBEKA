@@ -411,7 +411,7 @@
                                             @if(($letter->type ?? 'panggilan') == 'skorsing')
                                                 Durasi: {{ $letter->content_json['duration'] ?? '-' }} Hari | {{ isset($letter->content_json['start_date']) ? date('d M Y', strtotime($letter->content_json['start_date'])) : '-' }} s/d {{ isset($letter->content_json['end_date']) ? date('d M Y', strtotime($letter->content_json['end_date'])) : '-' }}
                                             @elseif(($letter->type ?? 'panggilan') == 'sp1' || ($letter->type ?? 'panggilan') == 'sp2')
-                                                Dibuat: {{ $letter->created_at->format('d M Y') }}
+                                                Dibuat: {{ $letter->created_at->isoFormat('D MMMM YYYY') }}
                                             @else
                                                 Rencana: {{ isset($letter->content_json['date']) ? date('d M Y', strtotime($letter->content_json['date'])) : '-' }} | Pukul {{ $letter->content_json['time'] ?? '09:00' }} WITA
                                             @endif

@@ -22,7 +22,7 @@
                 @endif
             </div>
             <p class="text-slate-500 text-xs font-medium mt-2">
-                {{ $academicPeriod->start_date->format('d M Y') }} — {{ $academicPeriod->end_date->format('d M Y') }}
+                {{ $academicPeriod->start_date->isoFormat('D MMMM YYYY') }} — {{ $academicPeriod->end_date->isoFormat('D MMMM YYYY') }}
             </p>
         </div>
     </div>
