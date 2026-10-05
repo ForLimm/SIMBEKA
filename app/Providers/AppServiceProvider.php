@@ -11,7 +11,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Fix public_path and dompdf for shared hosting (cPanel) 
+        if (isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT'])) {
+            $this->app->usePublicPath($_SERVER['DOCUMENT_ROOT']);
+            config(['dompdf.public_path' => $_SERVER['DOCUMENT_ROOT']]);
+        } else {
+            config(['dompdf.public_path' => base_path('public')]);
+        }
     }
 
     /**
