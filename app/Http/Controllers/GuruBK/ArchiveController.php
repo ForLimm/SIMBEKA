@@ -19,7 +19,7 @@ class ArchiveController extends Controller
         
         // Handle Surat (Letters) separately!
         if ($request->type === 'surat') {
-            $lettersQuery = Letter::with('student.user')->where('teacher_id', $teacher->id);
+            $lettersQuery = Letter::with(['student.user', 'academicPeriod'])->where('teacher_id', $teacher->id);
             
             if ($request->filled('name')) {
                 $searchName = $request->name;
@@ -43,11 +43,19 @@ class ArchiveController extends Controller
             // Group letters by Academic Year and Semester
             $groupedLetters = [];
             foreach ($letters as $letter) {
-                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($letter->created_at);
-                $key = $period['academic_year'] . '_' . $period['semester'];
+                if ($letter->academicPeriod) {
+                    $sem = $letter->academicPeriod->semester;
+                    $ay = $letter->academicPeriod->academic_year;
+                    $key = $ay . '_' . $sem;
+                    $label = "Semester $sem (TA $ay)";
+                } else {
+                    $period = \App\Helpers\AcademicHelper::getAcademicPeriod($letter->created_at);
+                    $key = $period['academic_year'] . '_' . $period['semester'];
+                    $label = $period['label'];
+                }
                 if (!isset($groupedLetters[$key])) {
                     $groupedLetters[$key] = [
-                        'label' => $period['label'],
+                        'label' => $label,
                         'items' => []
                     ];
                 }
@@ -65,7 +73,7 @@ class ArchiveController extends Controller
         
         // Handle Konseling (Counseling Sessions) separately!
         if ($request->type === 'konseling') {
-            $sessionsQuery = CounselingSession::with('student')->where('teacher_id', $teacher->id)->where('status', 'selesai');
+            $sessionsQuery = CounselingSession::with(['student', 'academicPeriod'])->where('teacher_id', $teacher->id)->where('status', 'selesai');
             
             if ($request->filled('name')) {
                 $searchName = $request->name;
@@ -86,12 +94,20 @@ class ArchiveController extends Controller
             // Group sessions by Academic Year and Semester
             $groupedSessions = [];
             foreach ($sessions as $session) {
-                $date = $session->completed_at ?? $session->counseling_date;
-                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
-                $key = $period['academic_year'] . '_' . $period['semester'];
+                if ($session->academicPeriod) {
+                    $sem = $session->academicPeriod->semester;
+                    $ay = $session->academicPeriod->academic_year;
+                    $key = $ay . '_' . $sem;
+                    $label = "Semester $sem (TA $ay)";
+                } else {
+                    $date = $session->completed_at ?? $session->counseling_date;
+                    $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
+                    $key = $period['academic_year'] . '_' . $period['semester'];
+                    $label = $period['label'];
+                }
                 if (!isset($groupedSessions[$key])) {
                     $groupedSessions[$key] = [
-                        'label' => $period['label'],
+                        'label' => $label,
                         'items' => []
                     ];
                 }
@@ -109,7 +125,7 @@ class ArchiveController extends Controller
         
         // Handle normal consultation/reporting archives separately if requested explicitly
         if ($request->type === 'konsultasi' || $request->type === 'pelaporan') {
-            $query = Archive::with(['student.user', 'report.reporter'])->where('teacher_id', $teacher->id);
+            $query = Archive::with(['student.user', 'report.reporter', 'academicPeriod'])->where('teacher_id', $teacher->id);
             
             if ($request->filled('name')) {
                 $searchName = $request->name;
@@ -139,12 +155,20 @@ class ArchiveController extends Controller
             // Group archives by Academic Year and Semester
             $groupedArchives = [];
             foreach ($archives as $archive) {
-                $date = $archive->completed_date ?? $archive->created_at;
-                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
-                $key = $period['academic_year'] . '_' . $period['semester'];
+                if ($archive->academicPeriod) {
+                    $sem = $archive->academicPeriod->semester;
+                    $ay = $archive->academicPeriod->academic_year;
+                    $key = $ay . '_' . $sem;
+                    $label = "Semester $sem (TA $ay)";
+                } else {
+                    $date = $archive->completed_date ?? $archive->created_at;
+                    $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
+                    $key = $period['academic_year'] . '_' . $period['semester'];
+                    $label = $period['label'];
+                }
                 if (!isset($groupedArchives[$key])) {
                     $groupedArchives[$key] = [
-                        'label' => $period['label'],
+                        'label' => $label,
                         'items' => []
                     ];
                 }
@@ -161,11 +185,11 @@ class ArchiveController extends Controller
         }
 
         // Handle "Semua Kasus" (All completed counseling sessions AND archived reports)
-        $sessionsQuery = CounselingSession::with('student')
+        $sessionsQuery = CounselingSession::with(['student', 'academicPeriod'])
             ->where('teacher_id', $teacher->id)
             ->where('status', 'selesai');
         
-        $archivesQuery = Archive::with(['student.user', 'report.reporter'])
+        $archivesQuery = Archive::with(['student.user', 'report.reporter', 'academicPeriod'])
             ->where('teacher_id', $teacher->id)
             ->whereNotNull('report_id');
             
@@ -208,12 +232,20 @@ class ArchiveController extends Controller
         // Group all mixed archives by Academic Year and Semester
         $groupedArchives = [];
         foreach ($archives as $item) {
-            $date = $item->archive_sort_date;
-            $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
-            $key = $period['academic_year'] . '_' . $period['semester'];
+            if ($item->academicPeriod) {
+                $sem = $item->academicPeriod->semester;
+                $ay = $item->academicPeriod->academic_year;
+                $key = $ay . '_' . $sem;
+                $label = "Semester $sem (TA $ay)";
+            } else {
+                $date = $item->archive_sort_date;
+                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($date);
+                $key = $period['academic_year'] . '_' . $period['semester'];
+                $label = $period['label'];
+            }
             if (!isset($groupedArchives[$key])) {
                 $groupedArchives[$key] = [
-                    'label' => $period['label'],
+                    'label' => $label,
                     'items' => []
                 ];
             }
@@ -254,7 +286,7 @@ class ArchiveController extends Controller
         $data = [];
         
         if ($include_konseling) {
-            $query = CounselingSession::with('student')
+            $query = CounselingSession::with(['student', 'academicPeriod'])
                 ->where('teacher_id', $teacher->id)
                 ->where('status', 'selesai');
             $this->applyAcademicFilters($query, 'counseling_date', $request);
@@ -266,7 +298,7 @@ class ArchiveController extends Controller
             if ($include_konsultasi) $types[] = 'konsultasi';
             if ($include_pelaporan) $types[] = 'pelaporan';
             
-            $query = Archive::with(['student.user', 'report.reporter'])
+            $query = Archive::with(['student.user', 'report.reporter', 'academicPeriod'])
                 ->where('teacher_id', $teacher->id)
                 ->whereHas('report', function($q) use ($types) {
                     $q->whereIn('type', $types);
@@ -276,7 +308,7 @@ class ArchiveController extends Controller
         }
         
         if ($include_surat) {
-            $query = Letter::with('student.user')
+            $query = Letter::with(['student.user', 'academicPeriod'])
                 ->where('teacher_id', $teacher->id);
                 
             if ($request->filled('letter_types')) {
@@ -294,32 +326,49 @@ class ArchiveController extends Controller
 
     private function applyAcademicFilters($query, $dateField, Request $request)
     {
-        if ($request->filled('academic_year')) {
-            $yearParts = explode('/', $request->academic_year);
-            if (count($yearParts) === 2) {
-                $startYear = $yearParts[0];
-                $endYear = $yearParts[1];
-                
-                if ($request->filled('semester')) {
-                    $sem = $request->semester;
-                    if ($sem == '1') {
-                        $query->whereBetween($dateField, ["$startYear-07-01 00:00:00", "$startYear-12-31 23:59:59"]);
-                    } elseif ($sem == '2') {
-                        $query->whereBetween($dateField, ["$endYear-01-01 00:00:00", "$endYear-06-30 23:59:59"]);
+        if ($request->filled('academic_year') || $request->filled('semester')) {
+            $periodQuery = \App\Models\AcademicPeriod::query();
+            if ($request->filled('academic_year')) {
+                $periodQuery->where('academic_year', $request->academic_year);
+            }
+            if ($request->filled('semester')) {
+                $periodQuery->where('semester', $request->semester);
+            }
+            $periodIds = $periodQuery->pluck('id')->toArray();
+
+            $query->where(function($q) use ($periodIds, $dateField, $request) {
+                $q->whereIn('academic_period_id', $periodIds);
+
+                $q->orWhere(function($subQ) use ($dateField, $request) {
+                    $subQ->whereNull('academic_period_id');
+                    
+                    if ($request->filled('academic_year')) {
+                        $yearParts = explode('/', $request->academic_year);
+                        if (count($yearParts) === 2) {
+                            $startYear = $yearParts[0];
+                            $endYear = $yearParts[1];
+                            
+                            if ($request->filled('semester')) {
+                                $sem = $request->semester;
+                                if ($sem == '1') {
+                                    $subQ->whereBetween($dateField, ["$startYear-07-01 00:00:00", "$startYear-12-31 23:59:59"]);
+                                } elseif ($sem == '2') {
+                                    $subQ->whereBetween($dateField, ["$endYear-01-01 00:00:00", "$endYear-06-30 23:59:59"]);
+                                }
+                            } else {
+                                $subQ->whereBetween($dateField, ["$startYear-07-01 00:00:00", "$endYear-06-30 23:59:59"]);
+                            }
+                        }
+                    } elseif ($request->filled('semester')) {
+                        $sem = $request->semester;
+                        if ($sem == '1') {
+                            $subQ->whereMonth($dateField, '>=', 7)->whereMonth($dateField, '<=', 12);
+                        } elseif ($sem == '2') {
+                            $subQ->whereMonth($dateField, '>=', 1)->whereMonth($dateField, '<=', 6);
+                        }
                     }
-                } else {
-                    $query->whereBetween($dateField, ["$startYear-07-01 00:00:00", "$endYear-06-30 23:59:59"]);
-                }
-            }
-        } elseif ($request->filled('semester')) {
-            $sem = $request->semester;
-            if ($sem == '1') {
-                $query->whereMonth($dateField, '>=', 7)
-                      ->whereMonth($dateField, '<=', 12);
-            } elseif ($sem == '2') {
-                $query->whereMonth($dateField, '>=', 1)
-                      ->whereMonth($dateField, '<=', 6);
-            }
+                });
+            });
         }
         return $query;
     }

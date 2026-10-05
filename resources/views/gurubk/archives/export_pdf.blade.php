@@ -151,7 +151,7 @@
                             <br>
                             <span style="font-size: 8pt; color: #555;">Kategori: {{ ucfirst($session->category) }}</span>
                         </td>
-                        <td style="text-align: center;">{{ $session->completed_at ? $session->completed_at->format('d/m/Y') : $session->counseling_date->format('d/m/Y') }}</td>
+                        <td style="text-align: center;">{{ $session->completed_at ? $session->completed_at->isoFormat('DD/MM/YYYY') : $session->counseling_date->isoFormat('DD/MM/YYYY') }}</td>
                         <td style="text-align: center;">Selesai</td>
                     </tr>
                 @endforeach
@@ -192,7 +192,7 @@
                         <td>{{ $archive->report->title }}</td>
                         <td>{{ $archive->student?->name ?? $archive->student?->user?->name ?? $archive->report?->reporter?->name ?? $archive->report?->reporter?->username ?? '-' }}</td>
                         <td style="text-align: center;">{{ $archive->student?->class ?? '-' }}</td>
-                        <td style="text-align: center;">{{ $archive->completed_date->format('d/m/Y') }}</td>
+                        <td style="text-align: center;">{{ $archive->completed_date->isoFormat('DD/MM/YYYY') }}</td>
                         <td style="text-align: center;">{{ $statusIndo }}</td>
                     </tr>
                 @endforeach
@@ -230,7 +230,7 @@
                         <td style="text-align: center; font-weight: bold;">{{ $typeIndo }}</td>
                         <td>{{ $letter->student?->name ?? ($letter->student?->user?->name ?? 'Tanpa Nama') }}</td>
                         <td style="text-align: center;">{{ $letter->student?->class ?? '-' }}</td>
-                        <td style="text-align: center;">{{ $letter->created_at->format('d/m/Y') }}</td>
+                        <td style="text-align: center;">{{ $letter->created_at->isoFormat('DD/MM/YYYY') }}</td>
                         <td>Arsip Digital Terverifikasi</td>
                     </tr>
                 @endforeach

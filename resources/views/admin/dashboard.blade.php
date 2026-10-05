@@ -18,7 +18,7 @@
     </div>
 
     {{-- Stats Grid (Hanya Akun) --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {{-- Total Guru BK --}}
         <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 flex items-center gap-6 bg-white hover:border-primary/30 transition-all group">
             <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-500 shadow-sm">
@@ -30,16 +30,6 @@
             </div>
         </div>
 
-        {{-- Akun Terdaftar (Manual) --}}
-        <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 flex items-center gap-6 bg-white hover:border-primary/30 transition-all group">
-            <div class="w-16 h-16 bg-indigo-50 text-indigo-500 rounded-lg flex items-center justify-center group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-500 shadow-sm">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-            </div>
-            <div>
-                <p class="text-[10px] font-semibold text-slate-400 font-medium leading-none mb-2">Siswa Regis Manual</p>
-                <h3 class="text-4xl font-semibold text-slate-900 tracking-tight">{{ $stats['total_manual_students'] }}</h3>
-            </div>
-        </div>
 
         {{-- Akun Guest --}}
         <div class="bg-white border border-slate-200 rounded-lg shadow-sm p-8 flex items-center gap-6 bg-white hover:border-amber-300/30 transition-all group">

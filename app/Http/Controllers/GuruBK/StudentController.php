@@ -68,28 +68,45 @@ class StudentController extends Controller
         $student->load([
             'teacher.user', 
             'counselingSessions' => function($q) {
-                $q->latest('counseling_date');
+                $q->with('academicPeriod')->latest('counseling_date');
             },
             'letters' => function($q) {
-                $q->latest();
+                $q->with('academicPeriod')->latest();
             }
         ]);
 
-        $now = \Carbon\Carbon::now();
-        $currentPeriod = \App\Helpers\AcademicHelper::getAcademicPeriod($now);
-        $currentPeriodKey = $currentPeriod['academic_year'] . '_' . $currentPeriod['semester'];
+        $activePeriod = \App\Models\AcademicPeriod::active();
+        if ($activePeriod) {
+            $currentPeriodKey = $activePeriod->academic_year . '_' . $activePeriod->semester;
+        } else {
+            $now = \Carbon\Carbon::now();
+            $currentPeriod = \App\Helpers\AcademicHelper::getAcademicPeriod($now);
+            $currentPeriodKey = $currentPeriod['academic_year'] . '_' . $currentPeriod['semester'];
+        }
 
         // Group anecdotes (counselingSessions)
         $anecdotesByPeriod = [];
         foreach ($student->counselingSessions as $session) {
-            $period = \App\Helpers\AcademicHelper::getAcademicPeriod($session->counseling_date);
-            $key = $period['academic_year'] . '_' . $period['semester'];
+            if ($session->academicPeriod) {
+                $sem = $session->academicPeriod->semester;
+                $ay = $session->academicPeriod->academic_year;
+                $key = $ay . '_' . $sem;
+                $label = "Semester $sem (TA $ay)";
+                $academicYear = $ay;
+                $semester = $sem;
+            } else {
+                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($session->counseling_date);
+                $key = $period['academic_year'] . '_' . $period['semester'];
+                $label = $period['label'];
+                $academicYear = $period['academic_year'];
+                $semester = $period['semester'];
+            }
             
             if (!isset($anecdotesByPeriod[$key])) {
                 $anecdotesByPeriod[$key] = [
-                    'label' => $period['label'],
-                    'academic_year' => $period['academic_year'],
-                    'semester' => $period['semester'],
+                    'label' => $label,
+                    'academic_year' => $academicYear,
+                    'semester' => $semester,
                     'items' => []
                 ];
             }
@@ -100,14 +117,26 @@ class StudentController extends Controller
         // Group letters
         $lettersByPeriod = [];
         foreach ($student->letters as $letter) {
-            $period = \App\Helpers\AcademicHelper::getAcademicPeriod($letter->created_at);
-            $key = $period['academic_year'] . '_' . $period['semester'];
+            if ($letter->academicPeriod) {
+                $sem = $letter->academicPeriod->semester;
+                $ay = $letter->academicPeriod->academic_year;
+                $key = $ay . '_' . $sem;
+                $label = "Semester $sem (TA $ay)";
+                $academicYear = $ay;
+                $semester = $sem;
+            } else {
+                $period = \App\Helpers\AcademicHelper::getAcademicPeriod($letter->created_at);
+                $key = $period['academic_year'] . '_' . $period['semester'];
+                $label = $period['label'];
+                $academicYear = $period['academic_year'];
+                $semester = $period['semester'];
+            }
             
             if (!isset($lettersByPeriod[$key])) {
                 $lettersByPeriod[$key] = [
-                    'label' => $period['label'],
-                    'academic_year' => $period['academic_year'],
-                    'semester' => $period['semester'],
+                    'label' => $label,
+                    'academic_year' => $academicYear,
+                    'semester' => $semester,
                     'items' => []
                 ];
             }
